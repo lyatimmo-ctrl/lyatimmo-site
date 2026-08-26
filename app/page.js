@@ -71,8 +71,7 @@ export default function Home() {
     {q:"C’est avec un grand professionnalisme, l’utilisation d’outils modernes, et un suivi impeccable qu’il s’est attaché à remplir avec succès et efficacité sa mission.",a:"Jean Michel D."},
     {q:"Disponibilité, réactivité, humilité, professionnalisme et humour : cocktail parfait.",a:"Jean-David B."},
   ];
-  // Renseigner l'URL de la fiche Google Business Profile de LYAT IMMO pour afficher le lien "Voir tous nos avis Google".
-  const googleReviewsUrl = "";
+  const googleReviewsUrl = "https://www.google.com/maps?cid=17709286108777591380";
 
   return (
     <>
