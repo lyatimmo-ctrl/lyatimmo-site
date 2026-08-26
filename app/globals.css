@@ -145,9 +145,6 @@ em { font-style: italic; }
 .ly-bn-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
 .ly-bn-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,3.5vw,44px); line-height: 1.2; color: var(--creme); font-weight: 400; margin: 16px 0 24px; }
 .ly-bn-text { font-size: 13px; line-height: 1.85; color: rgba(245,242,236,.75); font-weight: 300; }
-.ly-cfei { margin-top: 36px; border-top: 1px solid rgba(201,168,76,.25); padding-top: 24px; }
-.ly-cfei-badge { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--or); }
-.ly-cfei-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,242,236,.5); margin-top: 4px; }
 .ly-bn-pillars { display: flex; flex-direction: column; gap: 28px; }
 .ly-pillar { border-top: 1px solid rgba(201,168,76,.2); padding-top: 20px; }
 .ly-pillar-num { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 6px; }
@@ -189,6 +186,7 @@ em { font-style: italic; }
 .ly-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
 .ly-footer-logo-name { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--creme); letter-spacing: 1px; }
 .ly-footer-logo-sub { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,242,236,.4); margin-top: 4px; }
+.ly-footer-cfei { font-size: 10px; letter-spacing: 1px; color: rgba(245,242,236,.4); margin-top: 8px; font-weight: 500; }
 .ly-footer-desc { font-size: 12px; color: rgba(245,242,236,.45); line-height: 1.75; margin-top: 16px; font-weight: 300; }
 .ly-footer-col-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 16px; }
 .ly-footer-col a { display: block; font-size: 12px; color: rgba(245,242,236,.55); margin-bottom: 9px; transition: color .2s; font-weight: 300; }

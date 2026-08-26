@@ -219,10 +219,6 @@ export default function Home() {
             <p className="ly-bn-text" style={{marginTop:"16px"}}>Notre rôle est d’analyser l’ensemble de ces éléments pour déterminer une valeur cohérente, construire une stratégie de commercialisation adaptée et défendre les intérêts de notre client jusqu’à l’aboutissement de la vente.</p>
             <p className="ly-bn-text" style={{marginTop:"16px"}}>Nous ne promettons pas de vendre à n’importe quel prix ni dans un délai irréaliste. Nous préférons une recommandation sincère à une promesse séduisante, parce qu’une vente réussie commence toujours par un positionnement juste et un dossier bien préparé.</p>
             <p className="ly-bn-text" style={{marginTop:"16px"}}>Les acquéreurs qui se positionnent sur les biens qui nous sont confiés bénéficient, eux aussi, d’informations claires et d’un accompagnement attentif. Une bonne transaction est celle dans laquelle chacun sait ce qu’il achète, ce qu’il vend et dans quelles conditions il s’engage.</p>
-            <div className="ly-cfei">
-              <div className="ly-cfei-badge">CFEI®</div>
-              <div className="ly-cfei-label">Expertise immobilière</div>
-            </div>
           </div>
         </div>
       </div>
@@ -236,7 +232,6 @@ export default function Home() {
         <div className="ly-methode-grid">
           {steps.map((s,i) => (
             <div key={i} className="ly-methode-step">
-              <p className="ly-step-num">{s.n} - {s.t}</p>
               <p className="ly-step-name">{s.t}</p>
               <p className="ly-step-desc">{s.d}</p>
             </div>
@@ -252,7 +247,6 @@ export default function Home() {
         <div className="ly-methode-grid">
           {valeurs.map((v,i) => (
             <div key={i} className="ly-methode-step">
-              <p className="ly-step-num">0{i+1}</p>
               <p className="ly-step-name">{v.t}</p>
               <p className="ly-step-desc">{v.d}</p>
             </div>
@@ -267,12 +261,10 @@ export default function Home() {
         <div className="ly-divider" />
         <div className="ly-services-grid">
           <div className="ly-service-main">
-            <p className="ly-service-num">01</p>
             <p className="ly-service-name">Transaction immobilière</p>
             <p className="ly-service-body">Vendre un bien demande davantage qu’une mise en ligne. Nous accompagnons les propriétaires dans l’évaluation, la préparation, la présentation et la commercialisation de maisons, appartements, villas, immeubles, locaux professionnels et terrains, jusqu’à la signature de l’acte authentique.</p>
           </div>
           <div className="ly-service-main">
-            <p className="ly-service-num">02</p>
             <p className="ly-service-name">Expertise immobilière</p>
             <p className="ly-service-body">Nous déterminons la valeur d’un bien à partir de ses caractéristiques juridiques, techniques et économiques, de son environnement et des données du marché. Selon la nature de la mission, notre intervention peut prendre la forme d’un avis de valeur ou d’un rapport d’expertise détaillé.</p>
           </div>
@@ -344,6 +336,7 @@ export default function Home() {
           <div>
             <div className="ly-footer-logo-name">LYAT IMMO</div>
             <div className="ly-footer-logo-sub">Transaction &amp; Expertise Immobilière</div>
+            <div className="ly-footer-cfei">CFEI®</div>
             <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et de l’exigence de chaque vendeur.</p>
             <a href="mailto:contact@lyatimmo.com" className="ly-footer-email">contact@lyatimmo.com</a>
             <a href="tel:+596696335811" className="ly-footer-email">0696 33 58 11</a>
