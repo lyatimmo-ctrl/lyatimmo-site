@@ -96,4 +96,5 @@ export const propertyTypes = [
   "Immeuble",
   "Local commercial",
   "Bureau",
+  "Terrain",
 ];
