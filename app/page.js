@@ -65,8 +65,6 @@ export default function Home() {
       {/* ESPACES */}
       <div className="ly-espaces">
         <a href="https://app.lyatimmo.com" className="ly-esp-btn" target="_blank" rel="noreferrer">Espace Conseiller</a>
-        <a href="https://app.lyatimmo.com/vendeur.html" className="ly-esp-btn" target="_blank" rel="noreferrer">Espace Vendeur</a>
-        <a href="https://app.lyatimmo.com/acquereur.html" className="ly-esp-btn" target="_blank" rel="noreferrer">Espace Acquéreur</a>
       </div>
 
       {/* HERO */}
@@ -247,8 +245,6 @@ export default function Home() {
           <div className="ly-footer-col">
             <p className="ly-footer-col-title">Espaces</p>
             <a href="https://app.lyatimmo.com" target="_blank" rel="noreferrer">Espace Conseiller</a>
-            <a href="https://app.lyatimmo.com/vendeur.html" target="_blank" rel="noreferrer">Espace Vendeur</a>
-            <a href="https://app.lyatimmo.com/acquereur.html" target="_blank" rel="noreferrer">Espace Acquéreur</a>
           </div>
         </div>
         <div className="ly-footer-legal">
