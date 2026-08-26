@@ -218,6 +218,7 @@ em { font-style: italic; }
 
 /* FOOTER — email de contact */
 .ly-footer-email { display: block; margin-top: 16px; font-size: 12px; color: rgba(245,242,236,.55); transition: color .2s; }
+.ly-footer-email + .ly-footer-email { margin-top: 6px; }
 .ly-footer-email:hover { color: var(--creme); }
 
 /* RESPONSIVE */

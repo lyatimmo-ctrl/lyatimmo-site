@@ -34,8 +34,8 @@ export default function Footer() {
           <a href="mailto:contact@lyatimmo.com" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
             contact@lyatimmo.com
           </a>
-          <a href="tel:+596000000" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
-            +596 XX XX XX XX
+          <a href="tel:+596696335811" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
+            0696 33 58 11
           </a>
           <Link href="/contact" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
             Demander une estimation

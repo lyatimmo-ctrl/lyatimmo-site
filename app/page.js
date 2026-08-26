@@ -319,6 +319,7 @@ export default function Home() {
             <div className="ly-footer-logo-sub">Transaction &amp; Expertise Immobilière</div>
             <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et de l’exigence de chaque vendeur.</p>
             <a href="mailto:contact@lyatimmo.com" className="ly-footer-email">contact@lyatimmo.com</a>
+            <a href="tel:+596696335811" className="ly-footer-email">0696 33 58 11</a>
           </div>
           <div className="ly-footer-col">
             <p className="ly-footer-col-title">Navigation</p>
