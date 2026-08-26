@@ -6,11 +6,31 @@ import Footer from "@/components/Footer";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // À brancher plus tard sur un envoi réel (email / CRM Transactimo).
-    setSent(true);
+    setSending(true);
+    setError("");
+
+    const payload = Object.fromEntries(new FormData(e.currentTarget).entries());
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("send-failed");
+      setSent(true);
+    } catch {
+      setError(
+        "Une erreur est survenue lors de l'envoi. Merci de réessayer, ou de nous contacter directement par téléphone ou par email."
+      );
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -48,7 +68,7 @@ export default function ContactPage() {
               <label htmlFor="motif" className="block text-[10px] tracking-[0.12em] uppercase text-stone mb-2">
                 Votre demande
               </label>
-              <select id="motif" className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold">
+              <select id="motif" name="motif" className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold">
                 <option>Estimation de mon bien</option>
                 <option>Vendre un bien</option>
                 <option>Mettre un bien en location</option>
@@ -62,16 +82,20 @@ export default function ContactPage() {
               </label>
               <textarea
                 id="message"
+                name="message"
+                required
                 rows={5}
                 className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold resize-none"
                 placeholder="Décrivez votre bien ou votre projet…"
               />
             </div>
+            {error && <p className="text-red-600 text-[13px]">{error}</p>}
             <button
               type="submit"
-              className="bg-ink text-paper px-9 py-4 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity"
+              disabled={sending}
+              className="bg-ink text-paper px-9 py-4 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              Envoyer ma demande
+              {sending ? "Envoi en cours…" : "Envoyer ma demande"}
             </button>
           </form>
         )}
@@ -90,6 +114,7 @@ function FormField({ label, id, type = "text", required }) {
       </label>
       <input
         id={id}
+        name={id}
         type={type}
         required={required}
         className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold"
