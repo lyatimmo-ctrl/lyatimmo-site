@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { propertyTypes } from "@/data/properties";
 
 export default function Home() {
@@ -60,7 +61,30 @@ export default function Home() {
     {t:"L’honnêteté comme fondement",d:"Nous ne concevons pas la confiance sans honnêteté. Elle est la base de nos relations, de nos conseils et de chacune de nos décisions."},
   ];
 
-  const typologies = ["Appartement","Maison","Villa","Immeuble","Local commercial","Bureau","Terrain"];
+  const typologies = [
+    {label:"Appartement",icon:"appartement"},
+    {label:"Maison",icon:"maison"},
+    {label:"Villa",icon:"villa"},
+    {label:"Immeuble",icon:"immeuble"},
+    {label:"Local commercial",icon:"local-commercial"},
+    {label:"Bureau",icon:"bureau"},
+    {label:"Terrain",icon:"terrain"},
+  ];
+
+  const services = [
+    {
+      key:"transaction",
+      titre:"Transaction immobilière",
+      texte:"Vendre un bien demande davantage qu’une mise en ligne. Nous accompagnons les propriétaires dans l’évaluation, la préparation, la présentation et la commercialisation de maisons, appartements, villas, immeubles, locaux professionnels et terrains, jusqu’à la signature de l’acte authentique.",
+      img:"/images/services/transaction.jpg",
+    },
+    {
+      key:"expertise",
+      titre:"Expertise immobilière",
+      texte:"Nous déterminons la valeur d’un bien à partir de ses caractéristiques juridiques, techniques et économiques, de son environnement et des données du marché. Selon la nature de la mission, notre intervention peut prendre la forme d’un avis de valeur ou d’un rapport d’expertise détaillé.",
+      img:"/images/services/expertise.jpg",
+    },
+  ];
 
   // Avis reels, issus de Google (tous notes 5/5) — ne pas reformuler ni en ajouter sans confirmation.
   const temoignages = [
@@ -260,19 +284,17 @@ export default function Home() {
         <h2 className="ly-section-title">Nos services</h2>
         <div className="ly-divider" />
         <div className="ly-services-grid">
-          <div className="ly-service-main">
-            <p className="ly-service-name">Transaction immobilière</p>
-            <p className="ly-service-body">Vendre un bien demande davantage qu’une mise en ligne. Nous accompagnons les propriétaires dans l’évaluation, la préparation, la présentation et la commercialisation de maisons, appartements, villas, immeubles, locaux professionnels et terrains, jusqu’à la signature de l’acte authentique.</p>
-          </div>
-          <div className="ly-service-main">
-            <p className="ly-service-name">Expertise immobilière</p>
-            <p className="ly-service-body">Nous déterminons la valeur d’un bien à partir de ses caractéristiques juridiques, techniques et économiques, de son environnement et des données du marché. Selon la nature de la mission, notre intervention peut prendre la forme d’un avis de valeur ou d’un rapport d’expertise détaillé.</p>
-          </div>
-        </div>
-        <div className="ly-service-secondary">
-          <p className="ly-service-label-or">Complémentaire</p>
-          <p className="ly-service-name" style={{fontSize:"16px",margin:"6px 0 10px"}}>Location</p>
-          <p className="ly-service-body" style={{fontSize:"12px"}}>LYAT IMMO propose également, de manière ponctuelle, certains biens en location meublée ou saisonnière.</p>
+          {services.map((s) => (
+            <div key={s.key} className="ly-service-main">
+              <div className="ly-service-img">
+                <Image src={s.img} alt={s.titre} fill sizes="(max-width: 768px) 100vw, 50vw" className="ly-service-img-el" />
+              </div>
+              <div className="ly-service-body-wrap">
+                <p className="ly-service-name">{s.titre}</p>
+                <p className="ly-service-body">{s.texte}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -283,7 +305,10 @@ export default function Home() {
         <div className="ly-divider" />
         <div className="ly-typologies-row">
           {typologies.map((t) => (
-            <a key={t} href={`/biens?transaction=vente&type=${encodeURIComponent(t)}`} className="ly-typologie-pill">{t}</a>
+            <a key={t.label} href={`/biens?transaction=vente&type=${encodeURIComponent(t.label)}`} className="ly-typologie-pill">
+              <Image src={`/images/typologies/${t.icon}.png`} alt="" width={20} height={20} className="ly-typologie-icon" aria-hidden="true" />
+              {t.label}
+            </a>
           ))}
         </div>
       </section>

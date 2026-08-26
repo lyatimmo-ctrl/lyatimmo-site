@@ -162,12 +162,12 @@ em { font-style: italic; }
 
 /* SERVICES */
 .ly-services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 48px; }
-.ly-service-main { background: var(--blanc); padding: 40px 36px; }
-.ly-service-label-or { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 8px; }
-.ly-service-num { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--texte-sec); font-weight: 500; margin-bottom: 16px; }
+.ly-service-main { background: var(--blanc); }
+.ly-service-img { position: relative; width: 100%; height: 220px; background: var(--creme-dark); }
+.ly-service-img-el { object-fit: cover; }
+.ly-service-body-wrap { padding: 32px 36px 40px; }
 .ly-service-name { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--noir); margin-bottom: 16px; }
 .ly-service-body { font-size: 13px; color: var(--texte-sec); line-height: 1.75; font-weight: 300; }
-.ly-service-secondary { background: var(--creme); padding: 28px 36px; margin-top: 2px; }
 
 /* TEMOIGNAGES */
 .ly-temoignages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 48px; }
@@ -205,8 +205,9 @@ em { font-style: italic; }
 
 /* TYPOLOGIES */
 .ly-typologies-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
-.ly-typologie-pill { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; padding: 10px 22px; border: 1px solid rgba(15,15,15,.25); color: var(--texte); transition: all .2s; }
+.ly-typologie-pill { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; padding: 10px 22px; border: 1px solid rgba(15,15,15,.25); color: var(--texte); transition: all .2s; }
 .ly-typologie-pill:hover { background: var(--noir); color: var(--creme); border-color: var(--noir); }
+.ly-typologie-icon { flex-shrink: 0; }
 
 /* TEMOIGNAGES — etat vide */
 .ly-temoignages-empty { margin-top: 40px; font-size: 13px; color: var(--texte-sec); font-style: italic; }
