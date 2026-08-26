@@ -213,6 +213,14 @@ em { font-style: italic; }
 /* TEMOIGNAGES — etat vide */
 .ly-temoignages-empty { margin-top: 40px; font-size: 13px; color: var(--texte-sec); font-style: italic; }
 
+/* TEMOIGNAGES — avatar, etoiles, badge Google, lien */
+.ly-temo-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.ly-temo-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--noir); color: var(--creme); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+.ly-temo-stars { color: var(--or); font-size: 12px; letter-spacing: 2px; line-height: 1; }
+.ly-temo-badge { display: flex; align-items: center; gap: 5px; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--texte-sec); font-weight: 500; margin-top: 5px; }
+.ly-temo-cta { display: block; text-align: center; width: fit-content; margin: 44px auto 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--noir); border-bottom: 1px solid var(--or); padding-bottom: 2px; transition: color .2s; }
+.ly-temo-cta:hover { color: var(--or); }
+
 /* CTA — texte long (remplace ly-cta-sub quand le contenu est une phrase complete) */
 .ly-cta-text { font-size: 14px; line-height: 1.8; color: rgba(245,242,236,.75); max-width: 520px; margin: 0 auto 36px; font-weight: 300; }
 

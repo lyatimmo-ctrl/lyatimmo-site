@@ -62,6 +62,18 @@ export default function Home() {
 
   const typologies = ["Appartement","Maison","Villa","Immeuble","Local commercial","Bureau","Terrain"];
 
+  // Avis reels, issus de Google (tous notes 5/5) — ne pas reformuler ni en ajouter sans confirmation.
+  const temoignages = [
+    {q:"Je recommande vivement Miguel pour son professionnalisme et la qualité de son accompagnement.",a:"Elodie E."},
+    {q:"Tout a été clair dès le départ, fluide, sans ambiguïté, avec une communication effective et efficiente.",a:"Régine R."},
+    {q:"M. Attely est bien plus qu’un agent immobilier, c’est un véritable allié !",a:"Claude D."},
+    {q:"Une communication comme il y en a peu, avec un souci de transparence des procédures et différentes étapes du parcours de vente.",a:"Christelle D."},
+    {q:"C’est avec un grand professionnalisme, l’utilisation d’outils modernes, et un suivi impeccable qu’il s’est attaché à remplir avec succès et efficacité sa mission.",a:"Jean Michel D."},
+    {q:"Disponibilité, réactivité, humilité, professionnalisme et humour : cocktail parfait.",a:"Jean-David B."},
+  ];
+  // Renseigner l'URL de la fiche Google Business Profile de LYAT IMMO pour afficher le lien "Voir tous nos avis Google".
+  const googleReviewsUrl = "";
+
   return (
     <>
       {/* HEADER */}
@@ -290,17 +302,33 @@ export default function Home() {
         <div className="ly-section-label">Témoignages</div>
         <h2 className="ly-section-title">Ils nous ont fait confiance</h2>
         <div className="ly-divider" />
-        {/*
-          Aucun véritable avis n'est encore disponible : ne pas publier de
-          témoignage inventé. Dès qu'un avis réel (Google ou autre) est
-          disponible, l'intégrer ici sous la forme d'un bloc ".ly-temoignage"
-          dans ".ly-temoignages-grid", au format suivant :
-            « [Texte réel de l'avis ou extrait fidèle] »
-            [Prénom et nom ou initiale], [Vendeur ou Acquéreur]
-          Ne pas afficher de secteur géographique lorsque cette information
-          n'est pas connue avec certitude.
-        */}
-        <p className="ly-temoignages-empty">Les avis de nos clients seront bientôt réunis ici.</p>
+        <div className="ly-temoignages-grid">
+          {temoignages.map((t,i) => (
+            <div key={i} className="ly-temoignage">
+              <div className="ly-temo-top">
+                <div className="ly-temo-avatar" aria-hidden="true">{t.a.charAt(0)}</div>
+                <div>
+                  <div className="ly-temo-stars" aria-label="Note 5 sur 5 étoiles">★★★★★</div>
+                  <div className="ly-temo-badge">
+                    <svg viewBox="0 0 18 18" width="12" height="12" aria-hidden="true">
+                      <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                      <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                      <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+                      <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+                    </svg>
+                    Avis Google
+                  </div>
+                </div>
+              </div>
+              <p className="ly-temo-quote">« {t.q} »</p>
+              <div className="ly-temo-line" />
+              <p className="ly-temo-author">{t.a}</p>
+            </div>
+          ))}
+        </div>
+        {googleReviewsUrl && (
+          <a href={googleReviewsUrl} target="_blank" rel="noreferrer" className="ly-temo-cta">Voir tous nos avis Google</a>
+        )}
       </section>
 
       {/* SECTION 10 — APPEL À L’ACTION FINAL */}
