@@ -20,6 +20,9 @@ export default function Nav() {
         <Link href="/#services" className="hover:text-ink transition-colors">
           Nos services
         </Link>
+        <Link href="/nous-rejoindre" className="hover:text-ink transition-colors">
+          Nous rejoindre
+        </Link>
         <Link href="/contact" className="hover:text-ink transition-colors">
           Contact
         </Link>
