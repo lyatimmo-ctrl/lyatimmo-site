@@ -194,6 +194,9 @@ export default function ContactForm() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [sendError, setSendError] = useState("");
+  // Honeypot anti-robot : hors de `values` pour ne pas interférer avec le
+  // changement de motif. Un envoi avec ce champ rempli est rejeté silencieusement.
+  const [honeypot, setHoneypot] = useState("");
 
   const motif = values.motif;
   const showConsent = CONSENT_MOTIFS.includes(motif);
@@ -266,6 +269,7 @@ export default function ContactForm() {
         p.consentContext = `${MOTIF_LABEL[motif]} — formulaire de contact, lyatimmo.com`;
       }
     }
+    p.site_web = honeypot; // honeypot — doit rester vide
     return p;
   }
 
@@ -288,6 +292,12 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(buildPayload()),
       });
+      if (res.status === 429) {
+        setSendError(
+          "Trop de demandes ont été envoyées depuis votre appareil. Merci de patienter quelques minutes avant de réessayer."
+        );
+        return;
+      }
       if (!res.ok) throw new Error("send-failed");
       setSent(true);
     } catch {
@@ -310,6 +320,21 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate className="mt-10 space-y-7">
+      {/* Honeypot — masqué aux humains, non focusable, non annoncé. Les robots
+          qui remplissent tous les champs déclenchent un rejet silencieux serveur. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+        <label htmlFor="site_web">Ne pas remplir</label>
+        <input
+          id="site_web"
+          name="site_web"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
         <TextField id="nom" label="Nom et prénom" value={values.nom} onChange={(v) => set("nom", v)} required autoComplete="name" error={errors.nom} />
         <TextField id="tel" label="Téléphone" type="tel" value={values.tel} onChange={(v) => set("tel", v)} required autoComplete="tel" error={errors.tel} />
@@ -395,6 +420,10 @@ export default function ContactForm() {
           className={`${inputCls} resize-none`}
           placeholder="Votre message…"
         />
+        <p className="text-[12px] text-stone leading-[1.6] mt-2">
+          Indiquez uniquement les informations utiles au traitement de votre demande.
+          Merci de ne pas transmettre de données sensibles ni de documents à ce stade.
+        </p>
         {errors.message && <ErrText id="message-err">{errors.message}</ErrText>}
       </div>
 

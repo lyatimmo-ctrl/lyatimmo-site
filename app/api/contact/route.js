@@ -1,7 +1,39 @@
+import crypto from "node:crypto";
 import { Resend } from "resend";
 
 const CONTACT_TO = "contact@lyatimmo.com";
 const CONTACT_FROM = "LYAT IMMO — Site <contact@lyatimmo.com>";
+
+/* ─── Limitation de débit — en mémoire, sans stockage ni prestataire externe ───
+   Best-effort : l'état vit dans l'instance serverless courante (réinitialisé au
+   cold start, non partagé entre instances). Suffisant pour freiner un flood
+   depuis une même origine. L'IP n'est ni journalisée ni conservée : seule une
+   empreinte SHA-256 sert de clé, purgée après la fenêtre. */
+const RL_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const RL_MAX = 5; // envois autorisés par fenêtre et par origine
+const rlHits = new Map();
+
+function isRateLimited(request) {
+  const xff = request.headers.get("x-forwarded-for") || "";
+  const ip = (xff.split(",")[0] || "").trim() || "unknown";
+  const key = crypto.createHash("sha256").update(ip).digest("hex");
+  const now = Date.now();
+  const hits = (rlHits.get(key) || []).filter((t) => now - t < RL_WINDOW_MS);
+  if (hits.length >= RL_MAX) {
+    rlHits.set(key, hits);
+    return true;
+  }
+  hits.push(now);
+  rlHits.set(key, hits);
+  if (rlHits.size > 5000) {
+    for (const [k, v] of rlHits) {
+      const keep = v.filter((t) => now - t < RL_WINDOW_MS);
+      if (keep.length) rlHits.set(k, keep);
+      else rlHits.delete(k);
+    }
+  }
+  return false;
+}
 
 const MOTIF_LABEL = {
   vente: "Projet de vente",
@@ -33,11 +65,21 @@ function clean(v) {
 }
 
 export async function POST(request) {
+  if (isRateLimited(request)) {
+    return Response.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let data;
   try {
     data = await request.json();
   } catch {
     return Response.json({ error: "invalid_body" }, { status: 400 });
+  }
+
+  // Honeypot : champ invisible pour les humains. S'il est rempli, la soumission
+  // est automatisée → accusé de réception silencieux, aucun e-mail n'est envoyé.
+  if (clean(data?.site_web)) {
+    return Response.json({ ok: true, id: null });
   }
 
   const motif = clean(data?.motif);

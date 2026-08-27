@@ -18,8 +18,8 @@
   --color-gold-soft: var(--gold-soft);
   --color-stone: var(--stone);
   --color-line: var(--line);
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
+  --font-serif: var(--font-playfair), "Playfair Display", serif;
+  --font-sans: var(--font-inter), "Inter", sans-serif;
 }
 
 html {
@@ -29,7 +29,7 @@ html {
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-inter), "Inter", sans-serif;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
 }
@@ -70,7 +70,7 @@ em { font-style: italic; }
 .ly-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 5%; height: 70px; display: flex; align-items: center; justify-content: space-between; transition: background .3s, backdrop-filter .3s; }
 .ly-header.scrolled { background: rgba(245,242,236,.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,.15); }
 .ly-logo { display: flex; flex-direction: column; line-height: 1; }
-.ly-logo-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; letter-spacing: 2px; color: var(--noir); }
+.ly-logo-name { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 18px; font-weight: 500; letter-spacing: 2px; color: var(--noir); }
 .ly-logo-sub { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--texte-sec); margin-top: 2px; }
 .ly-nav { display: flex; align-items: center; gap: 36px; }
 .ly-nav a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--texte-sec); font-weight: 500; transition: color .2s; }
@@ -94,7 +94,7 @@ em { font-style: italic; }
 .ly-hero-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(245,242,236,.88) 0%, rgba(245,242,236,.60) 45%, rgba(245,242,236,.10) 100%); }
 .ly-hero-inner { position: relative; z-index: 1; padding: 0 5%; max-width: 700px; }
 .ly-hero-tag { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 24px; }
-.ly-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(38px,5.5vw,72px); line-height: 1.1; color: var(--noir); margin-bottom: 20px; font-weight: 400; }
+.ly-hero-title { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: clamp(38px,5.5vw,72px); line-height: 1.1; color: var(--noir); margin-bottom: 20px; font-weight: 400; }
 .ly-hero-body { font-size: 14px; line-height: 1.75; color: var(--texte); max-width: 460px; margin-bottom: 36px; font-weight: 300; }
 .ly-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 
@@ -123,7 +123,7 @@ em { font-style: italic; }
 .ly-bg-creme { background: var(--creme); }
 .ly-bg-blanc { background: var(--blanc); }
 .ly-section-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 16px; }
-.ly-section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,3.5vw,42px); line-height: 1.2; color: var(--noir); font-weight: 400; }
+.ly-section-title { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: clamp(26px,3.5vw,42px); line-height: 1.2; color: var(--noir); font-weight: 400; }
 .ly-divider { width: 36px; height: 1px; background: var(--or); margin: 20px 0; }
 .ly-or { color: var(--or) !important; }
 
@@ -136,19 +136,19 @@ em { font-style: italic; }
 .ly-bien-badge { position: absolute; top: 16px; left: 16px; background: var(--noir); color: var(--creme); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; padding: 4px 10px; }
 .ly-bien-body { padding: 20px 22px; }
 .ly-bien-commune { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--texte-sec); font-weight: 500; margin-bottom: 6px; }
-.ly-bien-type { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--noir); margin-bottom: 10px; }
+.ly-bien-type { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 17px; color: var(--noir); margin-bottom: 10px; }
 .ly-bien-prix { font-size: 18px; font-weight: 600; color: var(--noir); }
 .ly-bien-meta { font-size: 11px; color: var(--texte-sec); margin-top: 8px; font-weight: 300; }
 
 /* BLOC NOIR */
 .ly-bloc-noir { background: var(--noir); color: var(--creme); padding: 72px 5%; }
 .ly-bn-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
-.ly-bn-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,3.5vw,44px); line-height: 1.2; color: var(--creme); font-weight: 400; margin: 16px 0 24px; }
+.ly-bn-title { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: clamp(28px,3.5vw,44px); line-height: 1.2; color: var(--creme); font-weight: 400; margin: 16px 0 24px; }
 .ly-bn-text { font-size: 13px; line-height: 1.85; color: rgba(245,242,236,.75); font-weight: 300; }
 .ly-bn-pillars { display: flex; flex-direction: column; gap: 28px; }
 .ly-pillar { border-top: 1px solid rgba(201,168,76,.2); padding-top: 20px; }
 .ly-pillar-num { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 6px; }
-.ly-pillar-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--creme); margin-bottom: 6px; }
+.ly-pillar-name { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 17px; color: var(--creme); margin-bottom: 6px; }
 .ly-pillar-desc { font-size: 12px; color: rgba(245,242,236,.6); font-weight: 300; line-height: 1.65; }
 
 /* METHODE */
@@ -157,7 +157,7 @@ em { font-style: italic; }
 .ly-methode-step:nth-child(3n) { border-right: none; }
 .ly-methode-step:nth-child(4),.ly-methode-step:nth-child(5),.ly-methode-step:nth-child(6) { border-bottom: none; }
 .ly-step-num { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); font-weight: 600; margin-bottom: 12px; }
-.ly-step-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--noir); margin-bottom: 10px; }
+.ly-step-name { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 17px; color: var(--noir); margin-bottom: 10px; }
 .ly-step-desc { font-size: 12px; color: var(--texte-sec); line-height: 1.65; font-weight: 300; }
 
 /* SERVICES */
@@ -166,25 +166,25 @@ em { font-style: italic; }
 .ly-service-img { position: relative; width: 100%; aspect-ratio: 4 / 3; background: var(--creme-dark); }
 .ly-service-img-el { object-fit: cover; }
 .ly-service-body-wrap { padding: 32px 36px 40px; }
-.ly-service-name { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--noir); margin-bottom: 16px; }
+.ly-service-name { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 22px; color: var(--noir); margin-bottom: 16px; }
 .ly-service-body { font-size: 13px; color: var(--texte-sec); line-height: 1.75; font-weight: 300; }
 
 /* TEMOIGNAGES */
 .ly-temoignages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 48px; }
-.ly-temo-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-style: italic; color: var(--noir); line-height: 1.7; margin-bottom: 20px; }
+.ly-temo-quote { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 15px; font-style: italic; color: var(--noir); line-height: 1.7; margin-bottom: 20px; }
 .ly-temo-line { width: 24px; height: 1px; background: var(--or); margin-bottom: 16px; }
 .ly-temo-author { font-size: 11px; font-weight: 600; color: var(--noir); }
 .ly-temo-detail { font-size: 10px; color: var(--texte-sec); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
 
 /* CTA */
 .ly-cta-section { background: var(--noir); color: var(--creme); text-align: center; padding: 80px 5%; }
-.ly-cta-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,3.5vw,42px); color: var(--creme); margin-bottom: 14px; font-weight: 400; }
+.ly-cta-title { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: clamp(26px,3.5vw,42px); color: var(--creme); margin-bottom: 14px; font-weight: 400; }
 .ly-cta-sub { font-size: 12px; color: rgba(245,242,236,.55); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; font-weight: 300; }
 
 /* FOOTER */
 .ly-footer { background: var(--noir); border-top: 1px solid rgba(255,255,255,.08); padding: 56px 5% 28px; }
 .ly-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-.ly-footer-logo-name { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--creme); letter-spacing: 1px; }
+.ly-footer-logo-name { font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 18px; color: var(--creme); letter-spacing: 1px; }
 .ly-footer-logo-sub { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,242,236,.4); margin-top: 4px; }
 .ly-footer-cfei { font-size: 10px; letter-spacing: 1px; color: rgba(245,242,236,.4); margin-top: 8px; font-weight: 500; }
 .ly-footer-desc { font-size: 12px; color: rgba(245,242,236,.45); line-height: 1.75; margin-top: 16px; font-weight: 300; }
@@ -214,7 +214,7 @@ em { font-style: italic; }
 
 /* TEMOIGNAGES — avatar, etoiles, badge Google, lien */
 .ly-temo-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.ly-temo-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--noir); color: var(--creme); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+.ly-temo-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--noir); color: var(--creme); display: flex; align-items: center; justify-content: center; font-family: var(--font-playfair), 'Playfair Display', serif; font-size: 14px; font-weight: 600; flex-shrink: 0; }
 .ly-temo-stars { color: var(--or); font-size: 12px; letter-spacing: 2px; line-height: 1; }
 .ly-temo-badge { display: flex; align-items: center; gap: 5px; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--texte-sec); font-weight: 500; margin-top: 5px; }
 .ly-temo-cta { display: block; text-align: center; width: fit-content; margin: 44px auto 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--noir); border-bottom: 1px solid var(--or); padding-bottom: 2px; transition: color .2s; }
