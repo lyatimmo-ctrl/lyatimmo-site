@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
-export const metadata = { title: "Honoraires — LYAT IMMO" };
+export const metadata = { title: "Honoraires - LYAT IMMO" };
 
 export default function HonorairesPage() {
   return (

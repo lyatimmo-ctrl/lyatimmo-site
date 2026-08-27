@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import { Resend } from "resend";
 
 const CONTACT_TO = "contact@lyatimmo.com";
-const CONTACT_FROM = "LYAT IMMO — Site <contact@lyatimmo.com>";
+const CONTACT_FROM = "LYAT IMMO - Site <contact@lyatimmo.com>";
 
 /* ─── Limitation de débit — en mémoire, sans stockage ni prestataire externe ───
    Best-effort : l'état vit dans l'instance serverless courante (réinitialisé au
@@ -163,10 +163,10 @@ export async function POST(request) {
     `Consentement à une sollicitation commerciale ultérieure : ${consentGiven ? "OUI" : "NON"}`,
   ];
   if (consentGiven) {
-    consentBlock.push(`  — Date/heure du consentement : ${new Date().toISOString()}`);
-    consentBlock.push(`  — Texte présenté : "${clean(data?.consentText) || CONSENT_TEXT_FALLBACK}"`);
+    consentBlock.push(`  - Date/heure du consentement : ${new Date().toISOString()}`);
+    consentBlock.push(`  - Texte présenté : "${clean(data?.consentText) || CONSENT_TEXT_FALLBACK}"`);
     consentBlock.push(
-      `  — Contexte de collecte : ${clean(data?.consentContext) || `${MOTIF_LABEL[motif]} — formulaire de contact, lyatimmo.com`}`
+      `  - Contexte de collecte : ${clean(data?.consentContext) || `${MOTIF_LABEL[motif]} - formulaire de contact, lyatimmo.com`}`
     );
   }
 
@@ -190,7 +190,7 @@ export async function POST(request) {
       from: CONTACT_FROM,
       to: CONTACT_TO,
       replyTo: email,
-      subject: `LYAT IMMO — ${MOTIF_LABEL[motif]} — ${nom}`,
+      subject: `LYAT IMMO - ${MOTIF_LABEL[motif]} - ${nom}`,
       text,
     });
 

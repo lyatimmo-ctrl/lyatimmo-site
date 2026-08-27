@@ -168,7 +168,7 @@ export default function SearchCard() {
                   onChange={(e) => update("surfaceMin", e.target.value)}
                   className="w-full bg-transparent text-[14px] focus:outline-none placeholder:text-stone/70"
                 />
-                <span className="text-stone text-xs">—</span>
+                <span className="text-stone text-xs">-</span>
                 <input
                   type="text"
                   inputMode="numeric"

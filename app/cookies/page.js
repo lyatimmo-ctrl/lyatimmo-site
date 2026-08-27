@@ -100,7 +100,7 @@ export default function CookiesPage() {
             <ul className="list-disc pl-5 space-y-2 mt-3">
               {analytics.map((s) => (
                 <li key={s.id}>
-                  <span className="text-ink">{s.name}</span> — {s.provider}. {s.purpose}
+                  <span className="text-ink">{s.name}</span> - {s.provider}. {s.purpose}
                   {s.doc?.transfer ? ` Transfert : ${s.doc.transfer}` : ""}
                 </li>
               ))}
@@ -124,7 +124,7 @@ export default function CookiesPage() {
             <ul className="list-disc pl-5 space-y-2 mt-3">
               {external.map((s) => (
                 <li key={s.id}>
-                  <span className="text-ink">{s.name}</span> — {s.provider}. {s.purpose}
+                  <span className="text-ink">{s.name}</span> - {s.provider}. {s.purpose}
                 </li>
               ))}
             </ul>

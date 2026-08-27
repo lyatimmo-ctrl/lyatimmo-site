@@ -43,7 +43,7 @@ export default function MentionsLegalesPage() {
               1 000 euros
             </p>
             <p>
-              Siège social : MBE – 551 Mangot Vulcin, 97232 Le Lamentin,
+              Siège social : MBE - 551 Mangot Vulcin, 97232 Le Lamentin,
               Martinique
             </p>
             <p>RCS Fort-de-France : 107 987 687</p>

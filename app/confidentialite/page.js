@@ -52,7 +52,7 @@ export default function ConfidentialitePage() {
             <p className="text-ink">LYAT IMMO</p>
             <p>SARL à associé unique au capital de 1 000 euros</p>
             <p>RCS Fort-de-France : 107 987 687</p>
-            <p>Siège social : MBE – 551 Mangot Vulcin, 97232 Le Lamentin, Martinique</p>
+            <p>Siège social : MBE - 551 Mangot Vulcin, 97232 Le Lamentin, Martinique</p>
             <p>
               E-mail :{" "}
               <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
@@ -297,16 +297,16 @@ export default function ConfidentialitePage() {
 
           {/* 8 */}
           <H2>8. Nos prestataires techniques</H2>
-          <p className="text-ink mt-2">Vercel Inc. (États-Unis) — hébergement du site</p>
+          <p className="text-ink mt-2">Vercel Inc. (États-Unis) - hébergement du site</p>
           <p className="mt-1">
             Le site et la fonction serveur qui reçoit le formulaire sont hébergés par
             Vercel (offre Pro). Vercel traite des données techniques (dont l’adresse IP
-            et les métadonnées de requête) et assure le transit — sans conservation
-            durable — du contenu du formulaire au moment de son envoi. Les journaux
+            et les métadonnées de requête) et assure le transit - sans conservation
+            durable - du contenu du formulaire au moment de son envoi. Les journaux
             d’exécution sont conservés par Vercel pendant 1 jour sur l’offre Pro,
             conformément à sa documentation.
           </p>
-          <p className="text-ink mt-4">Resend, Inc. (États-Unis) — envoi de l’e-mail</p>
+          <p className="text-ink mt-4">Resend, Inc. (États-Unis) - envoi de l’e-mail</p>
           <p className="mt-1">
             Le contenu de votre demande est transmis par e-mail à{" "}
             <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
@@ -319,7 +319,7 @@ export default function ConfidentialitePage() {
             la clôture du compte.
           </p>
           <p className="text-ink mt-4">
-            Google (Google Workspace / Gmail, États-Unis) — messagerie
+            Google (Google Workspace / Gmail, États-Unis) - messagerie
           </p>
           <p className="mt-1">
             L’adresse{" "}
@@ -351,16 +351,16 @@ export default function ConfidentialitePage() {
             <li>
               <span className="text-ink">Vercel</span> : clauses contractuelles types
               de la Commission européenne et certification au titre du Data Privacy
-              Framework UE–États-Unis ;
+              Framework UE-États-Unis ;
             </li>
             <li>
               <span className="text-ink">Resend</span> : clauses contractuelles types et
-              certification au titre du Data Privacy Framework UE–États-Unis (et de son
+              certification au titre du Data Privacy Framework UE-États-Unis (et de son
               extension britannique) ;
             </li>
             <li>
               <span className="text-ink">Google</span> : clauses contractuelles types et
-              inscription au registre du Data Privacy Framework UE–États-Unis.
+              inscription au registre du Data Privacy Framework UE-États-Unis.
             </li>
           </ul>
           <p className="mt-3">
@@ -398,7 +398,7 @@ export default function ConfidentialitePage() {
             <li>
               <span className="text-ink">Clients</span> : les données sont utilisées
               pendant la durée de la relation, puis conservées séparément selon leur
-              nature — obligations comptables et fiscales (généralement 10 ans),
+              nature - obligations comptables et fiscales (généralement 10 ans),
               archivage nécessaire à la défense des droits (durées de prescription
               applicables) et documents immobiliers soumis à des obligations propres
               (par exemple registre des mandats). Aucune durée unique n’est appliquée
@@ -542,7 +542,7 @@ export default function ConfidentialitePage() {
             l’informatique et des libertés (CNIL) :
           </p>
           <div className="space-y-1 mt-2">
-            <p>3 Place de Fontenoy – TSA 80715 – 75334 Paris Cedex 07</p>
+            <p>3 Place de Fontenoy - TSA 80715 - 75334 Paris Cedex 07</p>
             <p>Téléphone : 01 53 73 22 22</p>
             <p>
               <a
@@ -618,7 +618,7 @@ export default function ConfidentialitePage() {
           <H2>22. Nous contacter</H2>
           <div className="space-y-1">
             <p className="text-ink">LYAT IMMO</p>
-            <p>MBE – 551 Mangot Vulcin, 97232 Le Lamentin, Martinique</p>
+            <p>MBE - 551 Mangot Vulcin, 97232 Le Lamentin, Martinique</p>
             <p>
               <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
                 contact@lyatimmo.com

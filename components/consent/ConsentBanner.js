@@ -17,7 +17,7 @@ export default function ConsentBanner() {
     <div
       role="region"
       aria-label="Cookies et confidentialité"
-      className="animate-rise fixed inset-x-0 bottom-0 z-[100] border-t border-line bg-paper px-6 md:px-14 py-5"
+      className="fixed inset-x-0 bottom-0 z-[100] border-t border-line bg-paper px-6 md:px-14 py-5"
     >
       <div className="mx-auto max-w-[1100px] flex flex-col gap-4 md:flex-row md:items-center md:gap-10">
         <div className="flex-1">

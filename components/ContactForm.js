@@ -266,7 +266,7 @@ export default function ContactForm() {
       p.consentCommercial = values.consent ? "oui" : "non";
       if (values.consent) {
         p.consentText = CONSENT_TEXT;
-        p.consentContext = `${MOTIF_LABEL[motif]} — formulaire de contact, lyatimmo.com`;
+        p.consentContext = `${MOTIF_LABEL[motif]} - formulaire de contact, lyatimmo.com`;
       }
     }
     p.site_web = honeypot; // honeypot — doit rester vide

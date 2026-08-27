@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "LYAT IMMO — Transaction & expertise immobilière",
+  title: "LYAT IMMO - Transaction & expertise immobilière",
   description:
     "LYAT IMMO accompagne vendeurs et acquéreurs avec exigence : estimation, mise en valeur et suivi jusqu'à l'acte.",
 };

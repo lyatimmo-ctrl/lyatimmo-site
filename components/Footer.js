@@ -60,7 +60,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-line pt-6 flex flex-wrap justify-between gap-3 text-[11px] tracking-[0.1em] text-stone">
-        <span>© {new Date().getFullYear()} LYAT IMMO — Tous droits réservés</span>
+        <span>© {new Date().getFullYear()} LYAT IMMO - Tous droits réservés</span>
         <span className="flex gap-2">
           <Link href="/mentions-legales" className="underline underline-offset-2">
             Mentions légales

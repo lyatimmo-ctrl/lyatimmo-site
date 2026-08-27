@@ -105,7 +105,7 @@ function BiensContent() {
         {results.length === 0 ? (
           <p className="text-stone text-[15px] py-16 text-center">
             Aucun bien ne correspond à ces critères pour le moment. Élargissez votre recherche
-            ou contactez-nous directement — de nouvelles annonces arrivent régulièrement.
+            ou contactez-nous directement - de nouvelles annonces arrivent régulièrement.
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-14">
