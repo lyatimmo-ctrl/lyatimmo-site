@@ -1,14 +1,28 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function PropertyCard({ property }) {
   const priceLabel =
-    property.transaction === "location"
-      ? `${property.price.toLocaleString("fr-FR")} € / mois`
-      : `${property.price.toLocaleString("fr-FR")} €`;
+    property.price > 0
+      ? property.transaction === "location"
+        ? `${property.price.toLocaleString("fr-FR")} € / mois`
+        : `${property.price.toLocaleString("fr-FR")} €`
+      : "Prix sur demande";
+
+  const photo = Array.isArray(property.photos) ? property.photos[0] : null;
 
   return (
     <Link href={`/biens/${property.slug}`} className="group block">
       <div className="aspect-[4/5] bg-paper-deep relative overflow-hidden">
+        {photo ? (
+          <Image
+            src={photo}
+            alt={property.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover"
+          />
+        ) : null}
         <div className="absolute inset-[18px] border border-ink/10 flex items-end p-5">
           <span className="text-[10px] tracking-[0.16em] text-gold bg-paper px-3 py-1.5">
             {property.tag}

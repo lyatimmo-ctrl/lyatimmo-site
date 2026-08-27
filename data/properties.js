@@ -1,5 +1,6 @@
-// Données d'exemple — seront remplacées par l'import automatique
-// du flux XML Transactimo (passerelle FTP) une fois branché.
+// Liste de repli (dev / preview, ou si NEXT_PUBLIC_SUPABASE_* non defini).
+// En production, les annonces proviennent de la table Supabase `listings`,
+// alimentee par l'ingestion Transactimo (repo lyatimmo-app). Voir lib/listings.js.
 
 export const properties = [
   {

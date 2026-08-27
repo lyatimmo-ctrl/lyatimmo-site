@@ -4,6 +4,30 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { propertyTypes } from "@/data/properties";
+import { getSelection } from "@/lib/listings";
+
+function toHomeCard(c) {
+  return {
+    slug: c.slug,
+    badge: c.tag,
+    commune: c.commune,
+    type: c.title,
+    prix:
+      c.price > 0
+        ? c.transaction === "location"
+          ? `${c.price.toLocaleString("fr-FR")} € / mois`
+          : `${c.price.toLocaleString("fr-FR")} €`
+        : "Prix sur demande",
+    meta: [
+      c.surface ? `${c.surface} m²` : null,
+      c.chambres ? `${c.chambres} ch.` : null,
+      c.pieces ? `${c.pieces} p.` : null,
+    ]
+      .filter(Boolean)
+      .join(" · "),
+    photo: Array.isArray(c.photos) ? c.photos[0] : null,
+  };
+}
 
 export default function Home() {
   const router = useRouter();
@@ -18,10 +42,18 @@ export default function Home() {
     surfaceMin: "",
   });
 
+  const [liveBiens, setLiveBiens] = useState(null);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    getSelection(3)
+      .then(({ rows }) => setLiveBiens(rows.map(toHomeCard)))
+      .catch(() => setLiveBiens([]));
   }, []);
 
   function updateSearch(field, value) {
@@ -232,20 +264,35 @@ export default function Home() {
         <div className="ly-divider" />
         <p className="ly-section-intro">Nous ne mettons pas simplement des biens en ligne. Nous sélectionnons ceux que nous souhaitons vous faire découvrir, pour leur emplacement, leur potentiel, leur singularité ou la qualité du projet qu’ils peuvent accueillir. Retrouvez également l’ensemble de nos biens grâce au moteur de recherche.</p>
         <div className="ly-biens-grid">
-          {biens.map((b,i) => (
-            <div key={i} className="ly-bien-card">
-              <div className="ly-bien-img">
-                <div className="ly-bien-img-ph" />
-                {b.badge && <span className="ly-bien-badge">{b.badge}</span>}
+          {(liveBiens && liveBiens.length ? liveBiens : biens).map((b, i) => {
+            const inner = (
+              <>
+                <div className="ly-bien-img">
+                  {b.photo ? (
+                    <Image src={b.photo} alt={b.type} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover" }} />
+                  ) : (
+                    <div className="ly-bien-img-ph" />
+                  )}
+                  {b.badge && <span className="ly-bien-badge">{b.badge}</span>}
+                </div>
+                <div className="ly-bien-body">
+                  <p className="ly-bien-commune">{b.commune}</p>
+                  <p className="ly-bien-type">{b.type}</p>
+                  <p className="ly-bien-prix">{b.prix}</p>
+                  <p className="ly-bien-meta">{b.meta}</p>
+                </div>
+              </>
+            );
+            return b.slug ? (
+              <Link key={b.slug} href={`/biens/${b.slug}`} className="ly-bien-card">
+                {inner}
+              </Link>
+            ) : (
+              <div key={i} className="ly-bien-card">
+                {inner}
               </div>
-              <div className="ly-bien-body">
-                <p className="ly-bien-commune">{b.commune}</p>
-                <p className="ly-bien-type">{b.type}</p>
-                <p className="ly-bien-prix">{b.prix}</p>
-                <p className="ly-bien-meta">{b.meta}</p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
