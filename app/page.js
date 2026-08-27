@@ -109,6 +109,7 @@ export default function Home() {
           <Link href="/biens">Biens</Link>
           <a href="#agence">Notre agence</a>
           <a href="#services">Nos services</a>
+          <Link href="/nous-rejoindre">Nous rejoindre</Link>
           <a href="#contact">Contact</a>
           <a href="/contact" className="ly-nav-cta">Estimer mon bien</a>
         </nav>
@@ -122,6 +123,7 @@ export default function Home() {
         <Link href="/biens" onClick={() => setMobileOpen(false)}>Biens</Link>
         <a href="#agence" onClick={() => setMobileOpen(false)}>Notre agence</a>
         <a href="#services" onClick={() => setMobileOpen(false)}>Nos services</a>
+        <Link href="/nous-rejoindre" onClick={() => setMobileOpen(false)}>Nous rejoindre</Link>
         <a href="#contact" onClick={() => setMobileOpen(false)}>Contact</a>
         <a href="/contact" onClick={() => setMobileOpen(false)} className="ly-or">Estimer mon bien</a>
         <a href="https://app.lyatimmo.com" target="_blank" rel="noreferrer">Espace Conseiller</a>
