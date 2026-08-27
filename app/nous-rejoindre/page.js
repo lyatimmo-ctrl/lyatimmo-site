@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NousRejoindrePage() {
   const [scrolled, setScrolled] = useState(false);
@@ -202,10 +203,10 @@ export default function NousRejoindrePage() {
 
       {/* SECTION 1 — HERO */}
       <section className="ly-hero" id="top">
-        {/* IMAGE HERO — à fournir */}
+        {/* IMAGE HERO */}
         <div
-          aria-hidden="true"
-          style={{ position: "absolute", inset: 0, background: "var(--creme-dark)", zIndex: 0 }}
+          className="ly-hero-img"
+          style={{ backgroundImage: "url('/nous-rejoindre/hero.jpg')" }}
         />
         <div className="ly-hero-inner">
           <p className="ly-hero-tag">Rejoindre LYAT IMMO</p>
@@ -301,11 +302,16 @@ export default function NousRejoindrePage() {
         <p className="ly-section-intro" style={{ marginTop: 32 }}>
           Un professionnel expérimenté venant d’une autre structure peut, sous réserve des critères d’admission de LYAT IMMO, intégrer directement le réseau à un niveau correspondant à son expérience.
         </p>
-        {/* IMAGE ÉVOLUTION — à fournir */}
-        <div
-          aria-hidden="true"
-          style={{ width: "100%", maxWidth: 900, aspectRatio: "3 / 2", background: "var(--creme-dark)", marginTop: 40 }}
-        />
+        {/* IMAGE ÉVOLUTION */}
+        <div className="ly-service-img" style={{ maxWidth: 520, aspectRatio: "4 / 5", marginTop: 40 }}>
+          <Image
+            src="/nous-rejoindre/evolution.jpg"
+            alt="Deux professionnels de LYAT IMMO échangeant autour d’un dossier"
+            fill
+            sizes="(max-width: 768px) 100vw, 520px"
+            className="ly-service-img-el"
+          />
+        </div>
       </section>
 
       {/* SECTION 5 — OUTILS ET FONCTIONNEMENT */}
@@ -330,8 +336,19 @@ export default function NousRejoindrePage() {
       </section>
 
       {/* SECTION 6 — CULTURE LYAT IMMO */}
-      {/* IMAGE CULTURE — à fournir */}
-      <div aria-hidden="true" style={{ width: "100%", height: 420, background: "var(--creme-dark)" }} />
+      {/* IMAGE CULTURE */}
+      <div
+        className="ly-service-img"
+        style={{ width: "100%", height: "clamp(300px, 40vw, 480px)", aspectRatio: "auto" }}
+      >
+        <Image
+          src="/nous-rejoindre/culture.jpg"
+          alt="Plusieurs professionnels de LYAT IMMO en situation de travail"
+          fill
+          sizes="100vw"
+          className="ly-service-img-el"
+        />
+      </div>
       <section className="ly-section ly-bg-creme" id="culture">
         <div className="ly-section-label">Notre culture</div>
         <h2 className="ly-section-title">Nous ne cherchons pas à être les plus nombreux.</h2>
