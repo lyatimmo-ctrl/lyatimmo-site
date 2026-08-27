@@ -259,7 +259,15 @@ export default function Home() {
         <div className="ly-divider" />
         <p className="ly-section-intro">Nous ne mettons pas simplement des biens en ligne. Nous sélectionnons ceux que nous souhaitons vous faire découvrir, pour leur emplacement, leur potentiel, leur singularité ou la qualité du projet qu’ils peuvent accueillir. Retrouvez également l’ensemble de nos biens grâce au moteur de recherche.</p>
         {liveBiens && liveBiens.length > 0 && (
-          <div className="ly-biens-grid">
+          <div
+            className="ly-biens-grid"
+            style={{
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 360px))",
+              justifyContent: "center",
+              maxWidth: 1140,
+              marginInline: "auto",
+            }}
+          >
             {liveBiens.map((b) => (
               <Link key={b.slug} href={`/biens/${b.slug}`} className="ly-bien-card">
                 <div className="ly-bien-img">

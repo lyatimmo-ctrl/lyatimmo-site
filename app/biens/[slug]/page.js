@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import VirtualTourEmbed from "@/components/consent/VirtualTourEmbed";
+import PropertyGallery from "@/components/PropertyGallery";
 import { getListingBySlug } from "@/lib/listings";
 
 export const revalidate = 300;
@@ -21,7 +21,6 @@ export default async function PropertyPage({ params }) {
       : "Prix sur demande";
 
   const photos = Array.isArray(property.photos) ? property.photos : [];
-  const [cover, ...rest] = photos;
 
   return (
     <>
@@ -34,47 +33,18 @@ export default async function PropertyPage({ params }) {
 
       <section className="px-6 md:px-14 py-10 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-12">
         <div>
-          <div
-            className="relative w-full overflow-hidden bg-paper-deep"
-            style={{ aspectRatio: "4 / 3" }}
-          >
-            {cover ? (
-              <Image
-                src={cover}
-                alt={property.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 60vw"
-                style={{ objectFit: "cover" }}
-                priority
-                unoptimized
-              />
-            ) : (
+          {photos.length > 0 ? (
+            <PropertyGallery photos={photos} alt={property.title} />
+          ) : (
+            <div
+              className="relative w-full overflow-hidden bg-paper-deep"
+              style={{ aspectRatio: "4 / 3" }}
+            >
               <div className="absolute inset-5 border border-ink/10 flex items-end p-6">
                 <span className="text-[10px] tracking-[0.16em] text-gold bg-paper px-3 py-1.5">
                   {property.tag}
                 </span>
               </div>
-            )}
-          </div>
-
-          {rest.length > 0 && (
-            <div className="grid grid-cols-3 gap-3 mt-3">
-              {rest.slice(0, 6).map((src, i) => (
-                <div
-                  key={i}
-                  className="relative w-full overflow-hidden bg-paper-deep"
-                  style={{ aspectRatio: "4 / 3" }}
-                >
-                  <Image
-                    src={src}
-                    alt={`${property.title} - photo ${i + 2}`}
-                    fill
-                    sizes="(max-width: 768px) 33vw, 20vw"
-                    style={{ objectFit: "cover" }}
-                    unoptimized
-                  />
-                </div>
-              ))}
             </div>
           )}
 
