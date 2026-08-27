@@ -270,6 +270,7 @@ export default function Home() {
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       style={{ objectFit: "cover" }}
+                      unoptimized
                     />
                   ) : (
                     <div className="ly-bien-img-ph" />

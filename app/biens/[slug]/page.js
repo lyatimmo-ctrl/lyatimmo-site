@@ -43,6 +43,7 @@ export default async function PropertyPage({ params }) {
                 sizes="(max-width: 768px) 100vw, 60vw"
                 className="object-cover"
                 priority
+                unoptimized
               />
             ) : (
               <div className="absolute inset-5 border border-ink/10 flex items-end p-6">
@@ -63,6 +64,7 @@ export default async function PropertyPage({ params }) {
                     fill
                     sizes="(max-width: 768px) 33vw, 20vw"
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
               ))}

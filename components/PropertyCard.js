@@ -21,6 +21,7 @@ export default function PropertyCard({ property }) {
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover"
+            unoptimized
           />
         ) : null}
         <div className="absolute inset-[18px] border border-ink/10 flex items-end p-5">
