@@ -131,7 +131,19 @@ export default function Home() {
 
       {/* ESPACES */}
       <div className="ly-espaces">
-        <a href="https://app.lyatimmo.com" className="ly-esp-btn" target="_blank" rel="noreferrer">Espace Conseiller</a>
+        <a
+          href="https://app.lyatimmo.com"
+          className="ly-esp-btn"
+          target="_blank"
+          rel="noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+        >
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="4" y="10.5" width="16" height="10.5" rx="2.5" />
+            <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+          </svg>
+          Espace Conseiller
+        </a>
       </div>
 
       {/* SECTION 1 — HERO */}
