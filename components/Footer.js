@@ -54,6 +54,9 @@ export default function Footer() {
           <Link href="/confidentialite" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
             Politique de confidentialité
           </Link>
+          <Link href="/cookies" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
+            Gestion des cookies
+          </Link>
         </div>
       </div>
       <div className="border-t border-line pt-6 flex flex-wrap justify-between gap-3 text-[11px] tracking-[0.1em] text-stone">
