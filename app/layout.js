@@ -1,5 +1,8 @@
 import "./globals.css";
 import { Playfair_Display, Inter } from "next/font/google";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import ConsentBanner from "@/components/consent/ConsentBanner";
+import MetaPixel from "@/components/consent/MetaPixel";
 
 // Polices auto-hébergées par next/font : les fichiers sont téléchargés au build
 // et servis depuis le domaine du site. Aucun appel vers fonts.googleapis.com
@@ -28,7 +31,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fr" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ConsentProvider>
+          {children}
+          <ConsentBanner />
+          <MetaPixel />
+        </ConsentProvider>
+      </body>
     </html>
   );
 }

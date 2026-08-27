@@ -559,9 +559,17 @@ export default function ConfidentialitePage() {
           {/* 18 */}
           <H2>18. Cookies et traceurs</H2>
           <p>
-            En l’état actuel, le site ne dépose pas de cookie de mesure d’audience ni de
-            ciblage publicitaire. Les principes détaillés et, le cas échéant, la gestion
-            des choix relatifs aux traceurs sont présentés dans la rubrique{" "}
+            Le site dépose un cookie de préférence (« lyat_consent ») dont l’unique
+            objet est de mémoriser votre choix en matière de cookies ; il ne contient
+            aucune donnée personnelle. Les technologies soumises au consentement
+            (mesure d’audience, publicité, contenus externes) ne sont chargées
+            qu’après votre acceptation via le bandeau prévu à cet effet. En l’état
+            actuel, aucun outil de mesure d’audience ni de ciblage publicitaire n’est
+            actif.
+          </p>
+          <p className="mt-3">
+            Le détail des technologies utilisées et la possibilité de modifier votre
+            choix à tout moment sont présentés dans la rubrique{" "}
             <Link href="/cookies" className="underline underline-offset-2 hover:text-ink">
               Gestion des cookies
             </Link>{" "}
