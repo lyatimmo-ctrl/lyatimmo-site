@@ -1,38 +1,11 @@
-"use client";
-
-import { useState } from "react";
+import { Suspense } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import ContactForm from "@/components/ContactForm";
+
+export const metadata = { title: "Contact — LYAT IMMO" };
 
 export default function ContactPage() {
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setSending(true);
-    setError("");
-
-    const payload = Object.fromEntries(new FormData(e.currentTarget).entries());
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("send-failed");
-      setSent(true);
-    } catch {
-      setError(
-        "Une erreur est survenue lors de l'envoi. Merci de réessayer, ou de nous contacter directement par téléphone ou par email."
-      );
-    } finally {
-      setSending(false);
-    }
-  }
-
   return (
     <>
       <Nav />
@@ -41,84 +14,21 @@ export default function ContactPage() {
           Contact
         </span>
         <h1 className="font-serif text-[34px] md:text-[54px] font-medium max-w-[640px] mx-auto">
-          Parlons de votre bien
+          Parlons de votre projet
         </h1>
-        <p className="max-w-[440px] mx-auto mt-5 text-stone text-[15px] leading-[1.8]">
-          Vente, location ou simple estimation : décrivez votre projet, nous
-          revenons vers vous sous 24h.
+        <p className="max-w-[460px] mx-auto mt-5 text-stone text-[15px] leading-[1.8]">
+          Projet de vente, estimation, expertise ou intérêt pour le réseau :
+          décrivez votre demande, nous revenons vers vous sous 24h ouvrées.
         </p>
       </section>
 
       <section className="px-6 md:px-14 pb-32 max-w-[640px] mx-auto w-full">
-        {sent ? (
-          <div className="border border-line px-8 py-16 text-center mt-10">
-            <p className="font-serif text-2xl mb-3">Message envoyé</p>
-            <p className="text-stone text-[14px]">
-              Nous revenons vers vous sous 24h ouvrées.
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="mt-10 space-y-7">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-              <FormField label="Nom" id="nom" required />
-              <FormField label="Téléphone" id="tel" type="tel" />
-            </div>
-            <FormField label="Email" id="email" type="email" required />
-            <div>
-              <label htmlFor="motif" className="block text-[10px] tracking-[0.12em] uppercase text-stone mb-2">
-                Votre demande
-              </label>
-              <select id="motif" name="motif" className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold">
-                <option>Estimation de mon bien</option>
-                <option>Vendre un bien</option>
-                <option>Mettre un bien en location</option>
-                <option>Question sur une annonce</option>
-                <option>Autre demande</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-[10px] tracking-[0.12em] uppercase text-stone mb-2">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold resize-none"
-                placeholder="Décrivez votre bien ou votre projet…"
-              />
-            </div>
-            {error && <p className="text-red-600 text-[13px]">{error}</p>}
-            <button
-              type="submit"
-              disabled={sending}
-              className="bg-ink text-paper px-9 py-4 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {sending ? "Envoi en cours…" : "Envoyer ma demande"}
-            </button>
-          </form>
-        )}
+        <Suspense fallback={null}>
+          <ContactForm />
+        </Suspense>
       </section>
 
       <Footer />
     </>
-  );
-}
-
-function FormField({ label, id, type = "text", required }) {
-  return (
-    <div>
-      <label htmlFor={id} className="block text-[10px] tracking-[0.12em] uppercase text-stone mb-2">
-        {label}
-      </label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        required={required}
-        className="w-full border-b border-line bg-transparent py-2.5 text-[15px] focus:outline-none focus:border-gold"
-      />
-    </div>
   );
 }

@@ -77,12 +77,14 @@ export default function Home() {
       titre:"Transaction immobilière",
       texte:"Vendre un bien demande davantage qu’une mise en ligne. Nous accompagnons les propriétaires dans l’évaluation, la préparation, la présentation et la commercialisation de maisons, appartements, villas, immeubles, locaux professionnels et terrains, jusqu’à la signature de l’acte authentique.",
       img:"/images/services/transaction.jpg",
+      cta:{ label:"Parler de mon projet de vente", href:"/contact?motif=vente", kind:"btn" },
     },
     {
       key:"expertise",
       titre:"Expertise immobilière",
       texte:"Nous déterminons la valeur d’un bien à partir de ses caractéristiques juridiques, techniques et économiques, de son environnement et des données du marché. Selon la nature de la mission, notre intervention peut prendre la forme d’un avis de valeur ou d’un rapport d’expertise détaillé.",
       img:"/images/services/expertise.jpg",
+      cta:{ label:"Demander une expertise", href:"/contact?motif=expertise", kind:"link" },
     },
   ];
 
@@ -110,8 +112,8 @@ export default function Home() {
           <a href="#agence">Notre agence</a>
           <a href="#services">Nos services</a>
           <Link href="/nous-rejoindre">Nous rejoindre</Link>
-          <a href="#contact">Contact</a>
-          <a href="/contact" className="ly-nav-cta">Estimer mon bien</a>
+          <Link href="/contact">Contact</Link>
+          <a href="/contact?motif=estimation" className="ly-nav-cta">Estimer mon bien</a>
         </nav>
         <button className="ly-hamburger" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           <span /><span /><span />
@@ -124,8 +126,8 @@ export default function Home() {
         <a href="#agence" onClick={() => setMobileOpen(false)}>Notre agence</a>
         <a href="#services" onClick={() => setMobileOpen(false)}>Nos services</a>
         <Link href="/nous-rejoindre" onClick={() => setMobileOpen(false)}>Nous rejoindre</Link>
-        <a href="#contact" onClick={() => setMobileOpen(false)}>Contact</a>
-        <a href="/contact" onClick={() => setMobileOpen(false)} className="ly-or">Estimer mon bien</a>
+        <Link href="/contact" onClick={() => setMobileOpen(false)}>Contact</Link>
+        <a href="/contact?motif=estimation" onClick={() => setMobileOpen(false)} className="ly-or">Estimer mon bien</a>
         <a href="https://app.lyatimmo.com" target="_blank" rel="noreferrer">Espace Conseiller</a>
       </div>
 
@@ -154,8 +156,8 @@ export default function Home() {
           <h1 className="ly-hero-title">L&apos;art de vendre<br/>avec <em>exigence</em></h1>
           <p className="ly-hero-body">Bien vendre ne consiste pas seulement à publier une annonce. Il faut comprendre le bien, défendre sa valeur, préparer chaque étape et savoir à qui le présenter. C’est cette exigence que nous mettons au service de votre projet.</p>
           <div className="ly-hero-ctas">
-            <a href="/contact" className="ly-btn-primary">Estimer mon bien</a>
-            <a href="#biens" className="ly-btn-secondary">Découvrir nos biens</a>
+            <a href="/contact?motif=vente" className="ly-btn-primary">Projet de vente</a>
+            <a href="/contact?motif=estimation" className="ly-btn-secondary">Estimer mon bien</a>
           </div>
         </div>
       </section>
@@ -306,6 +308,11 @@ export default function Home() {
               <div className="ly-service-body-wrap">
                 <p className="ly-service-name">{s.titre}</p>
                 <p className="ly-service-body">{s.texte}</p>
+                {s.cta && (s.cta.kind === "btn" ? (
+                  <a href={s.cta.href} className="ly-btn-secondary" style={{ marginTop: 20 }}>{s.cta.label}</a>
+                ) : (
+                  <a href={s.cta.href} className="ly-temo-cta" style={{ margin: "20px 0 0" }}>{s.cta.label}</a>
+                ))}
               </div>
             </div>
           ))}
@@ -366,7 +373,7 @@ export default function Home() {
         <p className="ly-section-label" style={{color:"var(--or)",marginBottom:"16px"}}>Vous vendez ?</p>
         <h2 className="ly-cta-title">Une vente réussie commence bien avant la première visite</h2>
         <p className="ly-cta-text">Vous envisagez de vendre un bien ? Prenons d’abord le temps d’en comprendre la valeur, les particularités et les conditions de commercialisation.</p>
-        <a href="/contact" className="ly-btn-cta">Estimer mon bien</a>
+        <a href="/contact?motif=estimation" className="ly-btn-cta">Estimer mon bien</a>
       </div>
 
       {/* SECTION 11 — FOOTER */}
@@ -383,7 +390,8 @@ export default function Home() {
           <div className="ly-footer-col">
             <p className="ly-footer-col-title">Navigation</p>
             <Link href="/biens">Nos biens</Link>
-            <a href="/contact">Estimer mon bien</a>
+            <a href="/contact?motif=vente">Projet de vente</a>
+            <a href="/contact?motif=estimation">Estimer mon bien</a>
           </div>
           <div className="ly-footer-col">
             <p className="ly-footer-col-title">Informations</p>

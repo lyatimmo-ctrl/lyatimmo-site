@@ -28,7 +28,7 @@ export default function Nav() {
         </Link>
       </div>
       <Link
-        href="/contact"
+        href="/contact?motif=estimation"
         className="text-[11px] tracking-[0.18em] border border-ink px-6 py-2.5 text-ink hover:bg-ink hover:text-paper transition-colors"
       >
         Estimer mon bien

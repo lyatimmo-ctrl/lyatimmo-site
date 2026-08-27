@@ -178,7 +178,7 @@ export default function NousRejoindrePage() {
           <Link href="/#services">Nos services</Link>
           <Link href="/nous-rejoindre">Nous rejoindre</Link>
           <Link href="/contact">Contact</Link>
-          <a href="/contact" className="ly-nav-cta">Estimer mon bien</a>
+          <a href="/contact?motif=estimation" className="ly-nav-cta">Estimer mon bien</a>
         </nav>
         <button className="ly-hamburger" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           <span /><span /><span />
@@ -192,7 +192,7 @@ export default function NousRejoindrePage() {
         <Link href="/#services" onClick={() => setMobileOpen(false)}>Nos services</Link>
         <Link href="/nous-rejoindre" onClick={() => setMobileOpen(false)}>Nous rejoindre</Link>
         <Link href="/contact" onClick={() => setMobileOpen(false)}>Contact</Link>
-        <a href="/contact" onClick={() => setMobileOpen(false)} className="ly-or">Estimer mon bien</a>
+        <a href="/contact?motif=estimation" onClick={() => setMobileOpen(false)} className="ly-or">Estimer mon bien</a>
         <a href="https://app.lyatimmo.com" target="_blank" rel="noreferrer">Espace Conseiller</a>
       </div>
 
@@ -219,7 +219,7 @@ export default function NousRejoindrePage() {
           </p>
           <div className="ly-hero-ctas">
             <a href="#reseau" className="ly-btn-primary">Découvrir le réseau</a>
-            <Link href="/contact" className="ly-btn-secondary">Nous contacter</Link>
+            <Link href="/contact?motif=reseau" className="ly-btn-secondary">Nous contacter</Link>
           </div>
         </div>
       </section>
@@ -421,7 +421,7 @@ export default function NousRejoindrePage() {
         <p className="ly-cta-text">
           Découvrez le fonctionnement de LYAT IMMO et échangeons sur votre projet professionnel.
         </p>
-        <Link href="/contact" className="ly-btn-cta">Découvrir LYAT IMMO</Link>
+        <Link href="/contact?motif=reseau&demande=infos" className="ly-btn-cta">Échanger avec LYAT IMMO</Link>
       </div>
 
       {/* FOOTER */}
@@ -438,7 +438,7 @@ export default function NousRejoindrePage() {
           <div className="ly-footer-col">
             <p className="ly-footer-col-title">Navigation</p>
             <Link href="/biens">Nos biens</Link>
-            <a href="/contact">Estimer mon bien</a>
+            <a href="/contact?motif=estimation">Estimer mon bien</a>
           </div>
           <div className="ly-footer-col">
             <p className="ly-footer-col-title">Informations</p>

@@ -3,6 +3,35 @@ import { Resend } from "resend";
 const CONTACT_TO = "contact@lyatimmo.com";
 const CONTACT_FROM = "LYAT IMMO — Site <contact@lyatimmo.com>";
 
+const MOTIF_LABEL = {
+  vente: "Projet de vente",
+  estimation: "Estimation",
+  expertise: "Expertise immobilière",
+  reseau: "Rejoindre LYAT IMMO",
+  autre: "Autre demande",
+};
+
+// Champs obligatoires côté serveur, par motif (miroir de la validation client).
+const REQUIRED_BY_MOTIF = {
+  vente: ["typeBien", "commune"],
+  estimation: ["typeBien", "commune"],
+  expertise: ["typeBien", "commune", "contexte"],
+  reseau: ["situation", "experience", "secteur"],
+  autre: [],
+};
+
+const CONSENT_MOTIFS = ["vente", "estimation", "expertise"];
+const CONSENT_TEXT_FALLBACK =
+  "J'accepte que LYAT IMMO utilise mes coordonnées pour me recontacter ultérieurement au sujet de ses services immobiliers et de mon projet, notamment par téléphone, e-mail ou SMS.";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function clean(v) {
+  if (typeof v === "string") return v.trim();
+  if (v == null) return "";
+  return String(v).trim();
+}
+
 export async function POST(request) {
   let data;
   try {
@@ -11,20 +40,106 @@ export async function POST(request) {
     return Response.json({ error: "invalid_body" }, { status: 400 });
   }
 
-  const nom = (data?.nom || "").trim();
-  const tel = (data?.tel || "").trim();
-  const email = (data?.email || "").trim();
-  const motif = (data?.motif || "").trim();
-  const message = (data?.message || "").trim();
+  const motif = clean(data?.motif);
+  const nom = clean(data?.nom);
+  const email = clean(data?.email);
+  const tel = clean(data?.tel);
+  const message = clean(data?.message);
 
-  if (!nom || !email || !message) {
+  if (!MOTIF_LABEL[motif]) {
+    return Response.json({ error: "invalid_motif" }, { status: 400 });
+  }
+  if (!nom || !email || !tel) {
     return Response.json({ error: "missing_fields" }, { status: 400 });
+  }
+  if (!EMAIL_RE.test(email)) {
+    return Response.json({ error: "invalid_email" }, { status: 400 });
+  }
+  for (const field of REQUIRED_BY_MOTIF[motif]) {
+    if (!clean(data?.[field])) {
+      return Response.json({ error: "missing_fields", field }, { status: 400 });
+    }
+  }
+  if (motif === "autre" && !message) {
+    return Response.json({ error: "missing_fields", field: "message" }, { status: 400 });
   }
 
   if (!process.env.RESEND_API_KEY) {
     console.error("[contact] RESEND_API_KEY manquante dans l'environnement.");
     return Response.json({ error: "server_misconfigured" }, { status: 500 });
   }
+
+  // Lignes propres au motif — aucune ligne vide.
+  const L = (label, value, suffix = "") => {
+    const v = clean(value);
+    return v ? `${label} : ${v}${suffix}` : null;
+  };
+  const isTerrain = clean(data?.typeBien) === "Terrain";
+
+  let details = [];
+  if (motif === "vente") {
+    details = [
+      L("Type de bien", data?.typeBien),
+      L("Commune / secteur", data?.commune),
+      L("Adresse", data?.adresse),
+      L("Surface approximative", data?.surface, " m²"),
+      isTerrain ? null : L("Nombre de pièces", data?.pieces),
+      L("Projet", data?.projet),
+      L("Échéance", data?.echeance),
+    ];
+  } else if (motif === "estimation") {
+    details = [
+      L("Type de bien", data?.typeBien),
+      L("Commune / secteur", data?.commune),
+      L("Adresse", data?.adresse),
+      L("Surface approximative", data?.surface, " m²"),
+      isTerrain ? null : L("Nombre de pièces", data?.pieces),
+      L("Projet", data?.projet),
+    ];
+  } else if (motif === "expertise") {
+    details = [
+      L("Type de bien", data?.typeBien),
+      L("Commune / secteur", data?.commune),
+      L("Adresse", data?.adresse),
+      L("Contexte", data?.contexte),
+      L("Délai", data?.delai),
+    ];
+  } else if (motif === "reseau") {
+    details = [
+      L("Situation actuelle", data?.situation),
+      L("Expérience", data?.experience),
+      L("Secteur", data?.secteur),
+      L("Demande", data?.demande),
+    ];
+  }
+  details = details.filter(Boolean);
+
+  // Consentement à une sollicitation commerciale ultérieure (particuliers uniquement).
+  const consentGiven =
+    CONSENT_MOTIFS.includes(motif) && clean(data?.consentCommercial) === "oui";
+  const consentBlock = [
+    `Consentement à une sollicitation commerciale ultérieure : ${consentGiven ? "OUI" : "NON"}`,
+  ];
+  if (consentGiven) {
+    consentBlock.push(`  — Date/heure du consentement : ${new Date().toISOString()}`);
+    consentBlock.push(`  — Texte présenté : "${clean(data?.consentText) || CONSENT_TEXT_FALLBACK}"`);
+    consentBlock.push(
+      `  — Contexte de collecte : ${clean(data?.consentContext) || `${MOTIF_LABEL[motif]} — formulaire de contact, lyatimmo.com`}`
+    );
+  }
+
+  const text = [
+    "Nouvelle demande LYAT IMMO",
+    "",
+    `Motif : ${MOTIF_LABEL[motif]}`,
+    `Nom : ${nom}`,
+    `Email : ${email}`,
+    `Téléphone : ${tel}`,
+    ...(details.length ? ["", ...details] : []),
+    ...(message ? ["", `Message : ${message}`] : []),
+    "",
+    ...consentBlock,
+  ].join("\n");
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -33,16 +148,8 @@ export async function POST(request) {
       from: CONTACT_FROM,
       to: CONTACT_TO,
       replyTo: email,
-      subject: `Nouvelle demande de contact — ${motif || "site LYAT IMMO"}`,
-      text: [
-        `Nom : ${nom}`,
-        `Téléphone : ${tel || "non renseigné"}`,
-        `Email : ${email}`,
-        `Motif : ${motif || "non précisé"}`,
-        "",
-        "Message :",
-        message,
-      ].join("\n"),
+      subject: `LYAT IMMO — ${MOTIF_LABEL[motif]} — ${nom}`,
+      text,
     });
 
     if (result.error) {

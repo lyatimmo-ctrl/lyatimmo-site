@@ -37,7 +37,7 @@ export default function Footer() {
           <a href="tel:+596696335811" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
             0696 33 58 11
           </a>
-          <Link href="/contact" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
+          <Link href="/contact?motif=estimation" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
             Demander une estimation
           </Link>
         </div>
