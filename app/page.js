@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { propertyTypes } from "@/data/properties";
+import { PROPERTY_TYPES } from "@/lib/property-types";
 import { getSelection } from "@/lib/listings";
 
 function toHomeCard(c) {
@@ -69,11 +69,6 @@ export default function Home() {
     router.push(`/biens?${params.toString()}`);
   }
 
-  const biens = [
-    {badge:"Exclusivité",commune:"Sainte-Anne",type:"Villa vue mer",prix:"Sur demande",meta:"250 m² · 4 ch. · Piscine"},
-    {badge:"Nouveau",commune:"Les Trois-Îlets",type:"Maison avec jardin",prix:"Sur demande",meta:"140 m² · 3 ch. · Terrain 600 m²"},
-    {badge:null,commune:"Fort-de-France",type:"Appartement T3",prix:"Sur demande",meta:"75 m² · 2 ch. · Balcon"},
-  ];
 
   const steps = [
     {n:"01",t:"Comprendre et évaluer",d:"Nous commençons par comprendre le bien, son environnement, ses qualités, ses contraintes et le projet du propriétaire. L’étude du marché et des références disponibles nous permet ensuite de déterminer un positionnement cohérent."},
@@ -212,7 +207,7 @@ export default function Home() {
               <label>Type de bien</label>
               <select value={search.type} onChange={(e) => updateSearch("type", e.target.value)}>
                 <option value="">Tous types</option>
-                {propertyTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                {PROPERTY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div className="ly-search-field">
@@ -263,13 +258,19 @@ export default function Home() {
         <h2 className="ly-section-title">Une sélection exigeante</h2>
         <div className="ly-divider" />
         <p className="ly-section-intro">Nous ne mettons pas simplement des biens en ligne. Nous sélectionnons ceux que nous souhaitons vous faire découvrir, pour leur emplacement, leur potentiel, leur singularité ou la qualité du projet qu’ils peuvent accueillir. Retrouvez également l’ensemble de nos biens grâce au moteur de recherche.</p>
-        <div className="ly-biens-grid">
-          {(liveBiens && liveBiens.length ? liveBiens : biens).map((b, i) => {
-            const inner = (
-              <>
+        {liveBiens && liveBiens.length > 0 && (
+          <div className="ly-biens-grid">
+            {liveBiens.map((b) => (
+              <Link key={b.slug} href={`/biens/${b.slug}`} className="ly-bien-card">
                 <div className="ly-bien-img">
                   {b.photo ? (
-                    <Image src={b.photo} alt={b.type} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover" }} />
+                    <Image
+                      src={b.photo}
+                      alt={b.type}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: "cover" }}
+                    />
                   ) : (
                     <div className="ly-bien-img-ph" />
                   )}
@@ -281,19 +282,16 @@ export default function Home() {
                   <p className="ly-bien-prix">{b.prix}</p>
                   <p className="ly-bien-meta">{b.meta}</p>
                 </div>
-              </>
-            );
-            return b.slug ? (
-              <Link key={b.slug} href={`/biens/${b.slug}`} className="ly-bien-card">
-                {inner}
               </Link>
-            ) : (
-              <div key={i} className="ly-bien-card">
-                {inner}
-              </div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        )}
+        {liveBiens && liveBiens.length === 0 && (
+          <p className="ly-section-intro" style={{ marginTop: 24 }}>
+            De nouvelles annonces sont en cours de mise en ligne.{" "}
+            <Link href="/biens" className="ly-or">Voir tous nos biens</Link>
+          </p>
+        )}
       </section>
 
       {/* SECTION 4 — POSITIONNEMENT */}

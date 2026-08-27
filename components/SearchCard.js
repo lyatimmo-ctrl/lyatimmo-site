@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { propertyTypes } from "@/data/properties";
+import { PROPERTY_TYPES } from "@/lib/property-types";
 
 export default function SearchCard() {
   const router = useRouter();
@@ -64,7 +64,7 @@ export default function SearchCard() {
               className="w-full bg-transparent text-[14px] focus:outline-none"
             >
               <option value="">Tous types</option>
-              {propertyTypes.map((t) => (
+              {PROPERTY_TYPES.map((t) => (
                 <option key={t}>{t}</option>
               ))}
             </select>
