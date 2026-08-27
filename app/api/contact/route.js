@@ -116,16 +116,11 @@ export async function POST(request) {
     const v = clean(value);
     return v ? `${label} : ${v}${suffix}` : null;
   };
-  const isTerrain = clean(data?.typeBien) === "Terrain";
-
   let details = [];
   if (motif === "vente") {
     details = [
       L("Type de bien", data?.typeBien),
       L("Commune / secteur", data?.commune),
-      L("Adresse", data?.adresse),
-      L("Surface approximative", data?.surface, " m²"),
-      isTerrain ? null : L("Nombre de pièces", data?.pieces),
       L("Projet", data?.projet),
       L("Échéance", data?.echeance),
     ];
@@ -133,18 +128,13 @@ export async function POST(request) {
     details = [
       L("Type de bien", data?.typeBien),
       L("Commune / secteur", data?.commune),
-      L("Adresse", data?.adresse),
-      L("Surface approximative", data?.surface, " m²"),
-      isTerrain ? null : L("Nombre de pièces", data?.pieces),
       L("Projet", data?.projet),
     ];
   } else if (motif === "expertise") {
     details = [
       L("Type de bien", data?.typeBien),
       L("Commune / secteur", data?.commune),
-      L("Adresse", data?.adresse),
       L("Contexte", data?.contexte),
-      L("Délai", data?.delai),
     ];
   } else if (motif === "reseau") {
     details = [

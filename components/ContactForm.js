@@ -51,22 +51,13 @@ const CONTEXTE_EXPERTISE = [
   "Divorce ou séparation",
   "Donation / partage",
   "Contentieux",
-  "Valeur locative",
   "Expertise judiciaire",
   "Déclaration patrimoniale",
   "Acquisition / cession",
   "Autre",
 ];
-const DELAI_EXPERTISE = [
-  "Urgent",
-  "Sous 2 semaines",
-  "Sous 1 mois",
-  "Pas de contrainte particulière",
-];
 const SITUATION_RESEAU = [
-  "Conseiller immobilier indépendant",
-  "Agent commercial / mandataire immobilier",
-  "Négociateur immobilier",
+  "Conseiller immobilier / Agent commercial",
   "Agent immobilier / titulaire d'une carte professionnelle",
   "Professionnel de l'immobilier dans une autre fonction",
   "En reconversion professionnelle",
@@ -201,7 +192,6 @@ export default function ContactForm() {
   const motif = values.motif;
   const showConsent = CONSENT_MOTIFS.includes(motif);
   const showBienFields = motif === "vente" || motif === "estimation" || motif === "expertise";
-  const hidePieces = values.typeBien === "Terrain";
   const messageRequired = motif === "autre";
 
   function set(name, value) {
@@ -255,12 +245,10 @@ export default function ContactForm() {
         if (val) p[k] = val;
       }
     };
-    if (motif === "vente") pick(["typeBien", "commune", "adresse", "surface", "pieces", "projet", "echeance"]);
-    else if (motif === "estimation") pick(["typeBien", "commune", "adresse", "surface", "pieces", "projet"]);
-    else if (motif === "expertise") pick(["typeBien", "commune", "adresse", "contexte", "delai"]);
+    if (motif === "vente") pick(["typeBien", "commune", "projet", "echeance"]);
+    else if (motif === "estimation") pick(["typeBien", "commune", "projet"]);
+    else if (motif === "expertise") pick(["typeBien", "commune", "contexte"]);
     else if (motif === "reseau") pick(["situation", "experience", "secteur", "demande"]);
-
-    if ((motif === "vente" || motif === "estimation") && values.typeBien === "Terrain") delete p.pieces;
 
     if (showConsent) {
       p.consentCommercial = values.consent ? "oui" : "non";
@@ -366,16 +354,6 @@ export default function ContactForm() {
         <>
           <SelectField id="typeBien" label="Type de bien" value={values.typeBien} onChange={(v) => set("typeBien", v)} options={TYPES_BIEN} required error={errors.typeBien} />
           <TextField id="commune" label="Commune / secteur" value={values.commune} onChange={(v) => set("commune", v)} required error={errors.commune} />
-          <TextField id="adresse" label="Adresse du bien" optional value={values.adresse} onChange={(v) => set("adresse", v)} />
-        </>
-      )}
-
-      {(motif === "vente" || motif === "estimation") && (
-        <>
-          <TextField id="surface" label="Surface approximative (m²)" optional type="number" inputMode="numeric" value={values.surface} onChange={(v) => set("surface", v)} />
-          {!hidePieces && (
-            <TextField id="pieces" label="Nombre de pièces" optional type="number" inputMode="numeric" value={values.pieces} onChange={(v) => set("pieces", v)} />
-          )}
         </>
       )}
 
@@ -391,10 +369,7 @@ export default function ContactForm() {
       )}
 
       {motif === "expertise" && (
-        <>
-          <SelectField id="contexte" label="Contexte de la demande" value={values.contexte} onChange={(v) => set("contexte", v)} options={CONTEXTE_EXPERTISE} required error={errors.contexte} />
-          <SelectField id="delai" label="Délai souhaité" value={values.delai} onChange={(v) => set("delai", v)} options={DELAI_EXPERTISE} />
-        </>
+        <SelectField id="contexte" label="Contexte de la demande" value={values.contexte} onChange={(v) => set("contexte", v)} options={CONTEXTE_EXPERTISE} required error={errors.contexte} />
       )}
 
       {motif === "reseau" && (
