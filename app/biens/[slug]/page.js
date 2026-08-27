@@ -34,14 +34,17 @@ export default async function PropertyPage({ params }) {
 
       <section className="px-6 md:px-14 py-10 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-12">
         <div>
-          <div className="aspect-[4/3] bg-paper-deep relative overflow-hidden">
+          <div
+            className="relative w-full overflow-hidden bg-paper-deep"
+            style={{ aspectRatio: "4 / 3" }}
+          >
             {cover ? (
               <Image
                 src={cover}
                 alt={property.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 60vw"
-                className="object-cover"
+                style={{ objectFit: "cover" }}
                 priority
                 unoptimized
               />
@@ -57,13 +60,17 @@ export default async function PropertyPage({ params }) {
           {rest.length > 0 && (
             <div className="grid grid-cols-3 gap-3 mt-3">
               {rest.slice(0, 6).map((src, i) => (
-                <div key={i} className="aspect-[4/3] bg-paper-deep relative overflow-hidden">
+                <div
+                  key={i}
+                  className="relative w-full overflow-hidden bg-paper-deep"
+                  style={{ aspectRatio: "4 / 3" }}
+                >
                   <Image
                     src={src}
                     alt={`${property.title} - photo ${i + 2}`}
                     fill
                     sizes="(max-width: 768px) 33vw, 20vw"
-                    className="object-cover"
+                    style={{ objectFit: "cover" }}
                     unoptimized
                   />
                 </div>

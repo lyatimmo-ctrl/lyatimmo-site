@@ -13,14 +13,17 @@ export default function PropertyCard({ property }) {
 
   return (
     <Link href={`/biens/${property.slug}`} className="group block">
-      <div className="aspect-[4/5] bg-paper-deep relative overflow-hidden">
+      <div
+        className="relative w-full overflow-hidden bg-paper-deep"
+        style={{ aspectRatio: "4 / 3" }}
+      >
         {photo ? (
           <Image
             src={photo}
             alt={property.title}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
+            style={{ objectFit: "cover" }}
             unoptimized
           />
         ) : null}
