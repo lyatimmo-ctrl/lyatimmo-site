@@ -117,6 +117,13 @@ em { font-style: italic; }
 .ly-search-field select:focus, .ly-search-field input:focus { border-color: var(--or); }
 .ly-search-btn { background: var(--noir); color: var(--creme); border: none; padding: 11px 28px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: background .2s; width: 100%; }
 .ly-search-btn:hover { background: var(--or); color: var(--noir); }
+/* Desktop : les 6 champs + le bouton sur une seule ligne (mobile/tablette
+   conservent le auto-fit empilé ci-dessus). */
+@media (min-width: 1025px) {
+  .ly-search-inner { max-width: 1120px; }
+  .ly-search-grid { grid-template-columns: 1.4fr 1.1fr 0.85fr 0.85fr 1.1fr 1.15fr auto; align-items: end; }
+  .ly-search-field label { white-space: nowrap; }
+}
 
 /* SECTIONS COMMUNES */
 .ly-section { padding: 72px 5%; }
