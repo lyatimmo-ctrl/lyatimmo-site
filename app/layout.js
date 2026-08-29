@@ -22,10 +22,59 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const SITE_URL = "https://lyatimmo.com";
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+const SITE_DESC =
+  "LYAT IMMO accompagne vendeurs et acquéreurs avec exigence : estimation, mise en valeur et suivi jusqu'à l'acte. Transaction et expertise immobilière en Martinique.";
+
 export const metadata = {
-  title: "LYAT IMMO - Transaction & expertise immobilière",
-  description:
-    "LYAT IMMO accompagne vendeurs et acquéreurs avec exigence : estimation, mise en valeur et suivi jusqu'à l'acte.",
+  metadataBase: new URL(SITE_URL),
+  title: "LYAT IMMO — Transaction & expertise immobilière en Martinique",
+  description: SITE_DESC,
+  applicationName: "LYAT IMMO",
+  authors: [{ name: "LYAT IMMO" }],
+  keywords: [
+    "immobilier Martinique",
+    "agence immobilière Martinique",
+    "estimation immobilière",
+    "expertise immobilière",
+    "vendre un bien Martinique",
+    "acheter un bien Martinique",
+    "LYAT IMMO",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "LYAT IMMO",
+    locale: "fr_FR",
+    title: "LYAT IMMO — Transaction & expertise immobilière en Martinique",
+    description: SITE_DESC,
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "LYAT IMMO — Transaction & Expertise Immobilière",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LYAT IMMO — Transaction & expertise immobilière en Martinique",
+    description: SITE_DESC,
+    images: [OG_IMAGE],
+  },
 };
 
 export default function RootLayout({ children }) {
