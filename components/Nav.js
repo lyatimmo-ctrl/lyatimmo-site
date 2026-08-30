@@ -14,6 +14,9 @@ export default function Nav() {
         <Link href="/biens" className="hover:text-ink transition-colors">
           Biens
         </Link>
+        <Link href="/conseillers" className="hover:text-ink transition-colors">
+          Conseillers
+        </Link>
         <Link href="/#agence" className="hover:text-ink transition-colors">
           Notre agence
         </Link>

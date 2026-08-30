@@ -4,8 +4,11 @@
   --ink: #161513;
   --paper: #FAF8F4;
   --paper-deep: #F1EDE5;
-  --gold: #C6963E;
-  --gold-soft: #DCB86A;
+  /* Doré LYAT — référence unique #C9A84C (décision #24 du chantier mini-sites).
+     Auparavant #C6963E : aligné ici sur la charte validée et sur --or (bloc
+     homepage plus bas), pour un seul doré dans tout le site. */
+  --gold: #C9A84C;
+  --gold-soft: #D4B87A;
   --stone: #8A8378;
   --line: #DAD4C7;
 }

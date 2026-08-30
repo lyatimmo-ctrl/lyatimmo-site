@@ -26,6 +26,9 @@ export default function Footer() {
           <Link href="/#services" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
             Nos services
           </Link>
+          <Link href="/conseillers" className="block text-[13px] mb-3 opacity-80 hover:opacity-100">
+            Nos conseillers
+          </Link>
         </div>
         <div>
           <h4 className="text-[11px] tracking-[0.16em] text-gold uppercase mb-4">
