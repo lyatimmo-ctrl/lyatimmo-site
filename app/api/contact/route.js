@@ -41,6 +41,7 @@ const MOTIF_LABEL = {
   expertise: "Expertise immobilière",
   reseau: "Rejoindre LYAT IMMO",
   autre: "Autre demande",
+  bien: "Demande sur un bien",
 };
 
 // Champs obligatoires côté serveur, par motif (miroir de la validation client).
@@ -50,7 +51,12 @@ const REQUIRED_BY_MOTIF = {
   expertise: ["typeBien", "commune", "contexte"],
   reseau: ["situation", "experience", "secteur"],
   autre: [],
+  bien: [],
 };
+
+// Motif "bien" : demande de rappel depuis une fiche annonce. Pas d'email
+// visiteur (rappel telephonique), donc l'email n'est pas exige.
+const EMAIL_OPTIONAL_MOTIFS = ["bien"];
 
 const CONSENT_MOTIFS = ["vente", "estimation", "expertise"];
 const CONSENT_TEXT_FALLBACK =
@@ -91,10 +97,11 @@ export async function POST(request) {
   if (!MOTIF_LABEL[motif]) {
     return Response.json({ error: "invalid_motif" }, { status: 400 });
   }
-  if (!nom || !email || !tel) {
+  const emailRequired = !EMAIL_OPTIONAL_MOTIFS.includes(motif);
+  if (!nom || !tel || (emailRequired && !email)) {
     return Response.json({ error: "missing_fields" }, { status: 400 });
   }
-  if (!EMAIL_RE.test(email)) {
+  if (email && !EMAIL_RE.test(email)) {
     return Response.json({ error: "invalid_email" }, { status: 400 });
   }
   for (const field of REQUIRED_BY_MOTIF[motif]) {
@@ -143,8 +150,20 @@ export async function POST(request) {
       L("Secteur", data?.secteur),
       L("Demande", data?.demande),
     ];
+  } else if (motif === "bien") {
+    details = [
+      L("Référence du bien", data?.propertyRef),
+      L("Lien du bien", data?.propertyUrl),
+    ];
   }
   details = details.filter(Boolean);
+
+  // Motif "bien" : l'agent du bien (email de contact Transactimo) est mis en
+  // copie s'il est renseigné et valide.
+  const propertyAgentEmail =
+    motif === "bien" && EMAIL_RE.test(clean(data?.propertyAgentEmail))
+      ? clean(data?.propertyAgentEmail)
+      : null;
 
   // Consentement à une sollicitation commerciale ultérieure (particuliers uniquement).
   const consentGiven =
@@ -165,22 +184,29 @@ export async function POST(request) {
     "",
     `Motif : ${MOTIF_LABEL[motif]}`,
     `Nom : ${nom}`,
-    `Email : ${email}`,
+    ...(email ? [`Email : ${email}`] : []),
     `Téléphone : ${tel}`,
     ...(details.length ? ["", ...details] : []),
     ...(message ? ["", `Message : ${message}`] : []),
+    ...(motif === "bien" ? ["", "Demande envoyée depuis la fiche du bien sur lyatimmo.com."] : []),
     "",
     ...consentBlock,
   ].join("\n");
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
+  const subject =
+    motif === "bien"
+      ? `LYAT IMMO - Demande sur le bien${clean(data?.propertyRef) ? ` ${clean(data?.propertyRef)}` : ""} - ${nom}`
+      : `LYAT IMMO - ${MOTIF_LABEL[motif]} - ${nom}`;
+
   try {
     const result = await resend.emails.send({
       from: CONTACT_FROM,
       to: CONTACT_TO,
-      replyTo: email,
-      subject: `LYAT IMMO - ${MOTIF_LABEL[motif]} - ${nom}`,
+      ...(propertyAgentEmail ? { cc: [propertyAgentEmail] } : {}),
+      ...(email ? { replyTo: email } : {}),
+      subject,
       text,
     });
 

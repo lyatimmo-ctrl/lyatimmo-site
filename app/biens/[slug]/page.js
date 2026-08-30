@@ -4,13 +4,20 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import VirtualTourEmbed from "@/components/consent/VirtualTourEmbed";
 import PropertyGallery from "@/components/PropertyGallery";
-import { getListingBySlug } from "@/lib/listings";
+import PropertyEnquiry from "@/components/PropertyEnquiry";
+import DpeBadge from "@/components/DpeBadge";
+import { getListingBySlug, getListingExtras } from "@/lib/listings";
 
 export const revalidate = 300;
 
+const SITE_URL = "https://lyatimmo.com";
+
 export default async function PropertyPage({ params }) {
   const { slug } = await params;
-  const property = await getListingBySlug(slug);
+  const [property, extras] = await Promise.all([
+    getListingBySlug(slug),
+    getListingExtras(slug),
+  ]);
   if (!property) notFound();
 
   const priceLabel =
@@ -21,6 +28,16 @@ export default async function PropertyPage({ params }) {
       : "Prix sur demande";
 
   const photos = Array.isArray(property.photos) ? property.photos : [];
+
+  // Mention légale — par agent (RSAC) si le profil est rapproché, sinon générique.
+  const legalMention =
+    extras.agentRsacNumero && (extras.agentPrenom || extras.agentNom)
+      ? `Ce bien est présenté par ${[extras.agentPrenom, extras.agentNom]
+          .filter(Boolean)
+          .join(" ")}, agent commercial - EI inscrit au RSAC de ${
+          extras.agentRsacLieu || "—"
+        } sous le numéro ${extras.agentRsacNumero}.`
+      : "Ce bien est présenté par LYAT IMMO.";
 
   return (
     <>
@@ -49,12 +66,23 @@ export default async function PropertyPage({ params }) {
           )}
 
           {property.virtualTourUrl && (
-            <div className="mt-6">
+            <div className="mt-8">
+              <div className="text-[10px] tracking-[0.16em] uppercase text-gold mb-3">
+                Visite virtuelle
+              </div>
               <VirtualTourEmbed
                 provider="visite virtuelle"
                 url={property.virtualTourUrl}
                 title={`Visite virtuelle - ${property.title}`}
               />
+              <a
+                href={property.virtualTourUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-2 text-[12px] text-stone underline underline-offset-2 hover:text-ink"
+              >
+                Ouvrir la visite dans un nouvel onglet
+              </a>
             </div>
           )}
         </div>
@@ -75,27 +103,14 @@ export default async function PropertyPage({ params }) {
           </div>
 
           {(property.landSurface > 0 ||
-            property.dpeLetter ||
-            property.gesLetter ||
             property.furnished ||
-            property.feesPayer) && (
+            property.feesPayer ||
+            (property.transaction === "location" && property.charges > 0)) && (
             <dl className="text-[13px] leading-[1.9] text-stone mb-8">
               {property.landSurface > 0 && (
                 <Row label="Terrain" value={`${property.landSurface} m²`} />
               )}
               {property.furnished && <Row label="Meublé" value={property.furnished} />}
-              {property.dpeLetter && (
-                <Row
-                  label="DPE"
-                  value={property.dpeValue ? `${property.dpeLetter} (${property.dpeValue})` : property.dpeLetter}
-                />
-              )}
-              {property.gesLetter && (
-                <Row
-                  label="GES"
-                  value={property.gesValue ? `${property.gesLetter} (${property.gesValue})` : property.gesLetter}
-                />
-              )}
               {property.transaction === "location" && property.charges > 0 && (
                 <Row label="Charges" value={`${property.charges.toLocaleString("fr-FR")} €`} />
               )}
@@ -105,18 +120,52 @@ export default async function PropertyPage({ params }) {
             </dl>
           )}
 
+          {/* Bandeau DPE / GES */}
+          <div className="mb-8">
+            <div className="text-[10px] tracking-[0.16em] uppercase text-stone mb-2">
+              Performance énergétique
+            </div>
+            <DpeBadge
+              dpeLetter={property.dpeLetter}
+              dpeValue={property.dpeValue}
+              gesLetter={property.gesLetter}
+              gesValue={property.gesValue}
+            />
+          </div>
+
           {property.description && (
             <p className="text-[15px] leading-[1.8] text-stone mb-10 whitespace-pre-line">
               {property.description}
             </p>
           )}
 
-          <Link
-            href="/contact"
-            className="block text-center bg-ink text-paper px-9 py-4 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity"
-          >
-            Contacter l&apos;agence pour ce bien
-          </Link>
+          {/* Contacter l'agence pour ce bien */}
+          <PropertyEnquiry
+            reference={property.reference}
+            title={property.title}
+            url={`${SITE_URL}/biens/${slug}`}
+            agentEmail={extras.emailContact || undefined}
+          />
+        </div>
+      </section>
+
+      {/* Mentions sous l'annonce */}
+      <section className="px-6 md:px-14 pb-16 max-w-[1000px]">
+        <div className="border-t border-line pt-6 space-y-2 text-[11px] leading-[1.7] text-stone">
+          <p>{legalMention}</p>
+          <p>
+            Les informations sur les risques auxquels ce bien est exposé sont
+            disponibles sur le site{" "}
+            <a
+              href="https://www.georisques.gouv.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-ink"
+            >
+              www.georisques.gouv.fr
+            </a>
+            .
+          </p>
         </div>
       </section>
 
