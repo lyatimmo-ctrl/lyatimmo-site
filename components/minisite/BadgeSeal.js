@@ -105,7 +105,7 @@ export default function BadgeSeal({ badge, size = 74, className = "" }) {
         style={{ minWidth: 174 }}
       >
         <div className="w-7 flex-none bg-gold grid place-items-center">
-          <span className="font-serif text-[15px] font-semibold text-paper leading-none">L</span>
+          <span className="font-serif text-[15px] font-semibold text-white leading-none">L</span>
         </div>
         <span className="w-px bg-gold/70 flex-none" />
         <div className="px-4 py-2.5">

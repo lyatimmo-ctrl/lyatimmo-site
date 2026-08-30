@@ -212,17 +212,17 @@ export default async function ConseillerPage({ params, searchParams }) {
             )}
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#projet" className="bg-ink text-white font-medium px-8 py-3.5 text-[12px] tracking-[0.18em] uppercase hover:bg-gold hover:text-ink transition-colors">
+              <a href="#projet" className="bg-ink text-white font-medium px-8 py-3.5 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity">
                 Me contacter
               </a>
               {profil.telephone_public && (
                 <a href={`tel:${profil.telephone_public.replace(/\s+/g, "")}`}
-                  className="border border-ink px-7 py-3 text-[11px] tracking-[0.18em] uppercase text-ink hover:bg-ink hover:text-paper transition-colors">
+                  className="border border-ink text-ink px-7 py-3 text-[11px] tracking-[0.18em] uppercase hover:bg-ink hover:text-white transition-colors">
                   {profil.telephone_public}
                 </a>
               )}
               <Link href="/contact?motif=estimation"
-                className="border border-ink px-7 py-3 text-[11px] tracking-[0.18em] uppercase text-ink hover:bg-ink hover:text-paper transition-colors">
+                className="border border-ink text-ink px-7 py-3 text-[11px] tracking-[0.18em] uppercase hover:bg-ink hover:text-white transition-colors">
                 Estimer mon bien
               </Link>
             </div>
@@ -318,18 +318,20 @@ export default async function ConseillerPage({ params, searchParams }) {
         </Section>
       )}
 
-      {/* TRANSACTIONS ACCOMPAGNÉES */}
+      {/* RÉALISATIONS RÉCENTES */}
       {ventes.length > 0 && (
-        <Section title="Transactions accompagnées">
+        <Section title="Réalisations récentes">
           <p className="text-[13px] text-stone mb-5 max-w-[640px]">
-            Ventes menées à leur terme (acte signé), seul ou en équipe.
+            Transactions accompagnées jusqu&apos;à l&apos;acte signé, seul ou en équipe.
           </p>
           <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {ventes.map((v, i) => (
               <li key={i} className="border border-line px-4 py-3 text-[13px]">
                 <div className="text-ink">{v.type_bien || "Bien"}</div>
                 <div className="text-stone text-[12px]">
-                  {[v.commune, v.mois_acte].filter(Boolean).join(" · ")}
+                  {[v.commune, formatMoisActe(v.mois_acte, v.annee_acte)]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </div>
               </li>
             ))}
@@ -374,6 +376,21 @@ export default async function ConseillerPage({ params, searchParams }) {
 }
 
 /* ------------------------------------------------------------- helpers ---- */
+const MOIS_FR = [
+  "janvier", "février", "mars", "avril", "mai", "juin",
+  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
+];
+
+// "2026-08" -> "août 2026" ; repli sur l'année seule ou la valeur brute.
+function formatMoisActe(mois, annee) {
+  const m = /^(\d{4})-(\d{2})$/.exec(String(mois || ""));
+  if (m) {
+    const idx = Number(m[2]) - 1;
+    if (idx >= 0 && idx < 12) return `${MOIS_FR[idx]} ${m[1]}`;
+  }
+  return annee ? String(annee) : mois || "";
+}
+
 function Section({ title, children }) {
   return (
     <section className="px-6 md:px-14 py-12 border-t border-line">
