@@ -180,7 +180,7 @@ export default function TemoignageForm({ slug, conseillerNom }) {
         {sendError && <p className="text-red-600 text-[13px]">{sendError}</p>}
 
         <button type="submit" disabled={sending}
-          className="w-full bg-ink text-paper px-9 py-4 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity disabled:opacity-50">
+          className="w-full bg-ink text-white px-9 py-4 text-[12px] tracking-[0.18em] uppercase hover:opacity-90 transition-opacity disabled:opacity-50">
           {sending ? "Envoi en cours…" : "Envoyer mon témoignage"}
         </button>
 
