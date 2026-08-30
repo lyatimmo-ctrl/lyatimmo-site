@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
 
 const CONTACT_TO = "contact@lyatimmo.com";
 const CONTACT_FROM = "LYAT IMMO - Site <contact@lyatimmo.com>";
@@ -68,6 +69,31 @@ function clean(v) {
   if (typeof v === "string") return v.trim();
   if (v == null) return "";
   return String(v).trim();
+}
+
+/* CC de l'agent du bien — résolu CÔTÉ SERVEUR uniquement, jamais transmis par
+   le client. Lecture de la table PRIVÉE public.listing_contact_emails avec la
+   service_role key (variable d'env serveur, non préfixée NEXT_PUBLIC_).
+   Absente ou table vide -> pas de CC (dégradation silencieuse). */
+async function lookupAgentCc(reference) {
+  const ref = clean(reference);
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!ref || !url || !key) return null;
+  try {
+    const admin = createClient(url, key, { auth: { persistSession: false } });
+    const { data, error } = await admin
+      .from("listing_contact_emails")
+      .select("email_contact")
+      .eq("reference", ref)
+      .maybeSingle();
+    if (error || !data) return null;
+    const email = clean(data.email_contact);
+    return EMAIL_RE.test(email) ? email : null;
+  } catch (e) {
+    console.error("[contact] lookupAgentCc:", e?.message || e);
+    return null;
+  }
 }
 
 export async function POST(request) {
@@ -158,12 +184,11 @@ export async function POST(request) {
   }
   details = details.filter(Boolean);
 
-  // Motif "bien" : l'agent du bien (email de contact Transactimo) est mis en
-  // copie s'il est renseigné et valide.
+  // Motif "bien" : l'agent du bien est mis en copie s'il est connu. L'email est
+  // résolu ICI, côté serveur, à partir de la seule référence du bien — il n'est
+  // jamais fourni ni exposé au client.
   const propertyAgentEmail =
-    motif === "bien" && EMAIL_RE.test(clean(data?.propertyAgentEmail))
-      ? clean(data?.propertyAgentEmail)
-      : null;
+    motif === "bien" ? await lookupAgentCc(data?.propertyRef) : null;
 
   // Consentement à une sollicitation commerciale ultérieure (particuliers uniquement).
   const consentGiven =

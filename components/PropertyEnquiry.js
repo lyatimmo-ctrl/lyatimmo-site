@@ -19,7 +19,7 @@ const DEFAULT_MESSAGE =
 const inputCls =
   "w-full border-b border-line bg-transparent py-2.5 text-[15px] text-ink focus:outline-none focus:border-gold";
 
-export default function PropertyEnquiry({ reference, url, agentEmail, title }) {
+export default function PropertyEnquiry({ reference, url, title }) {
   const [nom, setNom] = useState("");
   const [tel, setTel] = useState("");
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
@@ -57,7 +57,6 @@ export default function PropertyEnquiry({ reference, url, agentEmail, title }) {
           message: message.trim(),
           propertyRef: reference || "",
           propertyUrl: url || "",
-          propertyAgentEmail: agentEmail || "",
           site_web: honeypot,
         }),
       });

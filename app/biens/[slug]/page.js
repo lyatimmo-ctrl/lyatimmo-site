@@ -144,7 +144,6 @@ export default async function PropertyPage({ params }) {
             reference={property.reference}
             title={property.title}
             url={`${SITE_URL}/biens/${slug}`}
-            agentEmail={extras.emailContact || undefined}
           />
         </div>
       </section>
