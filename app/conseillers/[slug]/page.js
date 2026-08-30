@@ -4,10 +4,12 @@ import { notFound, permanentRedirect } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import MiniSiteEnquiry from "@/components/minisite/MiniSiteEnquiry";
+import BadgeSeal from "@/components/minisite/BadgeSeal";
 import {
   getMinisiteBundle,
   getMinisiteStatus,
   resolvePreview,
+  sortBadges,
 } from "@/lib/minisites";
 
 export const revalidate = 900; // 15 min (décision #8 : agrégats pré-calculés)
@@ -190,14 +192,23 @@ export default async function ConseillerPage({ params, searchParams }) {
             )}
 
             {Array.isArray(badges) && badges.length > 0 && (
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {badges.map((b) => (
-                  <li key={b.code + (b.annee || "")}
-                    className="text-[11px] tracking-[0.08em] uppercase border border-gold/50 text-ink px-3 py-1.5">
-                    {b.libelle}{b.annee ? ` ${b.annee}` : ""}
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-7">
+                <div className="flex flex-wrap items-end gap-x-6 gap-y-5">
+                  {sortBadges(badges)
+                    .slice(0, 3)
+                    .map((b) => (
+                      <BadgeSeal key={b.code + (b.annee || "")} badge={b} size={68} />
+                    ))}
+                  {badges.length > 3 && mode !== "preview" && (
+                    <Link
+                      href={`/conseillers/${slug}/distinctions`}
+                      className="self-center text-[12px] font-medium text-gold-deep border-b border-gold pb-0.5 hover:text-ink transition-colors whitespace-nowrap"
+                    >
+                      Voir mes distinctions →
+                    </Link>
+                  )}
+                </div>
+              </div>
             )}
 
             <div className="mt-8 flex flex-wrap gap-3">

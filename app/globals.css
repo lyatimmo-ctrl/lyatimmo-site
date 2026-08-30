@@ -9,6 +9,7 @@
      homepage plus bas), pour un seul doré dans tout le site. */
   --gold: #C9A84C;
   --gold-soft: #D4B87A;
+  --gold-deep: #A2802F;
   --stone: #8A8378;
   --line: #DAD4C7;
 }
@@ -19,6 +20,7 @@
   --color-paper-deep: var(--paper-deep);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
+  --color-gold-deep: var(--gold-deep);
   --color-stone: var(--stone);
   --color-line: var(--line);
   --font-serif: var(--font-playfair), "Playfair Display", serif;
