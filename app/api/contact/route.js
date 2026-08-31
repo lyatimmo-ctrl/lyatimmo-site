@@ -46,11 +46,14 @@ const MOTIF_LABEL = {
 };
 
 // Champs obligatoires côté serveur, par motif (miroir de la validation client).
+// "reseau" inclut désormais "prenom" : prénom et nom sont deux champs
+// distincts et obligatoires pour ce motif (décision Miguel — pas de champ
+// unique, pas de découpage automatique).
 const REQUIRED_BY_MOTIF = {
   vente: ["typeBien", "commune"],
   estimation: ["typeBien", "commune"],
   expertise: ["typeBien", "commune", "contexte"],
-  reseau: ["situation", "experience", "secteur"],
+  reseau: ["prenom", "situation", "experience", "secteur"],
   autre: [],
   bien: [],
 };
@@ -59,9 +62,11 @@ const REQUIRED_BY_MOTIF = {
 // visiteur (rappel telephonique), donc l'email n'est pas exige.
 const EMAIL_OPTIONAL_MOTIFS = ["bien"];
 
-const CONSENT_MOTIFS = ["vente", "estimation", "expertise"];
+const CONSENT_MOTIFS = ["vente", "estimation", "expertise", "reseau"];
 const CONSENT_TEXT_FALLBACK =
   "J'accepte que LYAT IMMO utilise mes coordonnées pour me recontacter ultérieurement au sujet de ses services immobiliers et de mon projet, notamment par téléphone, e-mail ou SMS.";
+const CONSENT_TEXT_RESEAU_FALLBACK =
+  "J'accepte que LYAT IMMO utilise les informations transmises pour traiter ma demande d'intégration / de recrutement au sein du réseau LYAT IMMO, notamment par téléphone, e-mail ou SMS. Voir notre Politique de confidentialité (lyatimmo.com/confidentialite).";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -96,6 +101,60 @@ async function lookupAgentCc(reference) {
   }
 }
 
+/* Candidature réseau -> module Recrutement (public.candidats), service_role,
+   même modèle que lookupAgentCc ci-dessus. BEST-EFFORT et volontairement
+   isolé : si Supabase est indisponible ou mal configuré, l'email de
+   notification (canal existant, plus ancien) part quand même — cette
+   écriture ne doit jamais faire échouer la soumission du formulaire.
+   Aucune écriture anonyme directe en base ailleurs que via cette route
+   serveur (service_role) : la table candidats n'accorde rien à `anon`. */
+async function insertCandidatureReseau({
+  prenom, nom, email, tel, secteur, experience, situation, demande, message,
+  consentGiven, consentTextValue, consentContextValue,
+}) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) {
+    console.error("[contact] insertCandidatureReseau: variables Supabase manquantes.");
+    return;
+  }
+  try {
+    const admin = createClient(url, key, { auth: { persistSession: false } });
+    const { data, error } = await admin
+      .from("candidats")
+      .insert({
+        prenom,
+        nom,
+        email,
+        telephone: tel,
+        localisation: secteur || null,
+        experience_immo: experience || null,
+        situation_actuelle: situation || null,
+        demande_initiale: demande || null,
+        message: message || null,
+        source: "site_lyat_nous_rejoindre",
+        consentement_rgpd_at: consentGiven ? new Date().toISOString() : null,
+        consentement_rgpd_texte: consentGiven ? consentTextValue : null,
+      })
+      .select("id")
+      .single();
+    if (error) {
+      console.error("[contact] insertCandidatureReseau insert:", error.message);
+      return;
+    }
+    const { error: auditErr } = await admin.from("audit_log").insert({
+      acteur_id: null, // action système/anonyme — recrutement_v1_schema.sql §0
+      action: "candidature_recue",
+      cible_type: "candidat",
+      cible_id: data.id,
+      metadata: { source: "site_lyat_nous_rejoindre" },
+    });
+    if (auditErr) console.error("[contact] insertCandidatureReseau audit_log:", auditErr.message);
+  } catch (e) {
+    console.error("[contact] insertCandidatureReseau exception:", e?.message || e);
+  }
+}
+
 export async function POST(request) {
   if (isRateLimited(request)) {
     return Response.json({ error: "rate_limited" }, { status: 429 });
@@ -116,6 +175,7 @@ export async function POST(request) {
 
   const motif = clean(data?.motif);
   const nom = clean(data?.nom);
+  const prenom = clean(data?.prenom);
   const email = clean(data?.email);
   const tel = clean(data?.tel);
   const message = clean(data?.message);
@@ -171,6 +231,7 @@ export async function POST(request) {
     ];
   } else if (motif === "reseau") {
     details = [
+      L("Prénom", prenom),
       L("Situation actuelle", data?.situation),
       L("Expérience", data?.experience),
       L("Secteur", data?.secteur),
@@ -190,25 +251,49 @@ export async function POST(request) {
   const propertyAgentEmail =
     motif === "bien" ? await lookupAgentCc(data?.propertyRef) : null;
 
-  // Consentement à une sollicitation commerciale ultérieure (particuliers uniquement).
+  // Consentement à une sollicitation commerciale ultérieure, ou — pour
+  // "reseau" — au traitement de la demande d'intégration/recrutement.
   const consentGiven =
     CONSENT_MOTIFS.includes(motif) && clean(data?.consentCommercial) === "oui";
+  const fallbackConsentText = motif === "reseau" ? CONSENT_TEXT_RESEAU_FALLBACK : CONSENT_TEXT_FALLBACK;
+  const consentTextValue = clean(data?.consentText) || fallbackConsentText;
+  const consentContextValue =
+    clean(data?.consentContext) || `${MOTIF_LABEL[motif]} - formulaire de contact, lyatimmo.com`;
+  // "reseau" n'est pas une sollicitation commerciale (demande d'intégration /
+  // recrutement) : libellé sans "commerciale". Les autres motifs conservent
+  // le libellé d'origine.
+  const consentLabel =
+    motif === "reseau"
+      ? "Consentement à une sollicitation ultérieure"
+      : "Consentement à une sollicitation commerciale ultérieure";
   const consentBlock = [
-    `Consentement à une sollicitation commerciale ultérieure : ${consentGiven ? "OUI" : "NON"}`,
+    `${consentLabel} : ${consentGiven ? "OUI" : "NON"}`,
   ];
   if (consentGiven) {
     consentBlock.push(`  - Date/heure du consentement : ${new Date().toISOString()}`);
-    consentBlock.push(`  - Texte présenté : "${clean(data?.consentText) || CONSENT_TEXT_FALLBACK}"`);
-    consentBlock.push(
-      `  - Contexte de collecte : ${clean(data?.consentContext) || `${MOTIF_LABEL[motif]} - formulaire de contact, lyatimmo.com`}`
-    );
+    consentBlock.push(`  - Texte présenté : "${consentTextValue}"`);
+    consentBlock.push(`  - Contexte de collecte : ${consentContextValue}`);
   }
+
+  // Candidature réseau -> module Recrutement. Best-effort, en parallèle du
+  // canal email existant qui n'est jamais bloqué par cet ajout (cf.
+  // insertCandidatureReseau ci-dessus).
+  if (motif === "reseau") {
+    await insertCandidatureReseau({
+      prenom, nom, email, tel,
+      secteur: data?.secteur, experience: data?.experience, situation: data?.situation,
+      demande: data?.demande, message,
+      consentGiven, consentTextValue, consentContextValue,
+    });
+  }
+
+  const nomAffiche = motif === "reseau" && prenom ? `${prenom} ${nom}` : nom;
 
   const text = [
     "Nouvelle demande LYAT IMMO",
     "",
     `Motif : ${MOTIF_LABEL[motif]}`,
-    `Nom : ${nom}`,
+    `Nom : ${nomAffiche}`,
     ...(email ? [`Email : ${email}`] : []),
     `Téléphone : ${tel}`,
     ...(details.length ? ["", ...details] : []),
@@ -222,8 +307,8 @@ export async function POST(request) {
 
   const subject =
     motif === "bien"
-      ? `LYAT IMMO - Demande sur le bien${clean(data?.propertyRef) ? ` ${clean(data?.propertyRef)}` : ""} - ${nom}`
-      : `LYAT IMMO - ${MOTIF_LABEL[motif]} - ${nom}`;
+      ? `LYAT IMMO - Demande sur le bien${clean(data?.propertyRef) ? ` ${clean(data?.propertyRef)}` : ""} - ${nomAffiche}`
+      : `LYAT IMMO - ${MOTIF_LABEL[motif]} - ${nomAffiche}`;
 
   try {
     const result = await resend.emails.send({

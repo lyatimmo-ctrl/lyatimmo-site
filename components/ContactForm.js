@@ -11,6 +11,12 @@ import { useSearchParams } from "next/navigation";
    parcours réseau). Les champs affichés s'adaptent au motif ;
    les valeurs devenues sans objet sont retirées de l'état et
    ne sont jamais envoyées.
+
+   Motif "reseau" (candidature réseau / recrutement) : prénom et nom
+   sont deux champs distincts et obligatoires (pas de champ unique,
+   pas de découpage automatique — alimentent directement
+   candidats.prenom / candidats.nom côté module Recrutement), et une
+   case de consentement RGPD dédiée est proposée, non précochée.
    ───────────────────────────────────────────────────────────── */
 
 const MOTIFS = [
@@ -80,15 +86,28 @@ const DEMANDE_RESEAU = [
   "Autre",
 ];
 
-const CONSENT_TEXT =
+// Texte de consentement par motif — celui pour "reseau" décrit l'usage
+// recrutement/intégration, distinct du consentement de sollicitation
+// commerciale utilisé pour vente/estimation/expertise.
+const CONSENT_TEXT_COMMERCIAL =
   "J'accepte que LYAT IMMO utilise mes coordonnées pour me recontacter ultérieurement au sujet de ses services immobiliers et de mon projet, notamment par téléphone, e-mail ou SMS.";
-// Motifs particuliers pour lesquels la case de consentement commercial est proposée.
-const CONSENT_MOTIFS = ["vente", "estimation", "expertise"];
+const CONSENT_TEXT_RESEAU =
+  "J'accepte que LYAT IMMO utilise les informations transmises pour traiter ma demande d'intégration / de recrutement au sein du réseau LYAT IMMO, notamment par téléphone, e-mail ou SMS. Voir notre Politique de confidentialité (lyatimmo.com/confidentialite).";
+const CONSENT_TEXT_BY_MOTIF = {
+  vente: CONSENT_TEXT_COMMERCIAL,
+  estimation: CONSENT_TEXT_COMMERCIAL,
+  expertise: CONSENT_TEXT_COMMERCIAL,
+  reseau: CONSENT_TEXT_RESEAU,
+};
+// Motifs pour lesquels la case de consentement est proposée.
+const CONSENT_MOTIFS = ["vente", "estimation", "expertise", "reseau"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TEL_RE = /^\+?[0-9 .\-()]{6,}$/;
 
-// Champs communs conservés lorsque le motif change.
+// Champs communs conservés lorsque le motif change. "prenom" n'y figure pas
+// volontairement : c'est un champ propre au motif "reseau", il ne doit pas
+// se propager si le visiteur change ensuite de motif.
 const COMMON_KEYS = ["nom", "email", "tel", "message"];
 
 const inputCls =
@@ -174,6 +193,7 @@ export default function ContactForm() {
 
   const [values, setValues] = useState(() => ({
     nom: "",
+    prenom: "",
     email: "",
     tel: "",
     message: "",
@@ -190,6 +210,7 @@ export default function ContactForm() {
   const [honeypot, setHoneypot] = useState("");
 
   const motif = values.motif;
+  const isReseau = motif === "reseau";
   const showConsent = CONSENT_MOTIFS.includes(motif);
   const showBienFields = motif === "vente" || motif === "estimation" || motif === "expertise";
   const messageRequired = motif === "autre";
@@ -203,6 +224,7 @@ export default function ContactForm() {
     setValues((v) => {
       const kept = { motif: next, consent: CONSENT_MOTIFS.includes(next) ? v.consent : false };
       for (const k of COMMON_KEYS) kept[k] = v[k];
+      if (next === "reseau") kept.prenom = v.prenom || "";
       return kept; // tous les champs spécifiques à l'ancien motif sont retirés
     });
     setErrors({});
@@ -210,7 +232,8 @@ export default function ContactForm() {
 
   function validate() {
     const e = {};
-    if (!values.nom.trim()) e.nom = "Merci d'indiquer votre nom et prénom.";
+    if (!values.nom.trim()) e.nom = isReseau ? "Merci d'indiquer votre nom." : "Merci d'indiquer votre nom et prénom.";
+    if (isReseau && !(values.prenom || "").trim()) e.prenom = "Merci d'indiquer votre prénom.";
     if (!values.email.trim()) e.email = "Merci d'indiquer votre email.";
     else if (!EMAIL_RE.test(values.email.trim())) e.email = "Le format de l'email est invalide.";
     if (!values.tel.trim()) e.tel = "Merci d'indiquer un numéro de téléphone.";
@@ -222,7 +245,7 @@ export default function ContactForm() {
       if (!values.commune || !values.commune.trim()) e.commune = "Merci d'indiquer une commune ou un secteur.";
     }
     if (motif === "expertise" && !values.contexte) e.contexte = "Merci de préciser le contexte.";
-    if (motif === "reseau") {
+    if (isReseau) {
       if (!values.situation) e.situation = "Merci de préciser votre situation.";
       if (!values.experience) e.experience = "Merci de préciser votre expérience.";
       if (!values.secteur || !values.secteur.trim()) e.secteur = "Merci d'indiquer votre secteur géographique.";
@@ -239,6 +262,8 @@ export default function ContactForm() {
       tel: values.tel.trim(),
       message: values.message.trim(),
     };
+    if (isReseau) p.prenom = (values.prenom || "").trim();
+
     const pick = (keys) => {
       for (const k of keys) {
         const val = (values[k] ?? "").toString().trim();
@@ -248,12 +273,12 @@ export default function ContactForm() {
     if (motif === "vente") pick(["typeBien", "commune", "projet", "echeance"]);
     else if (motif === "estimation") pick(["typeBien", "commune", "projet"]);
     else if (motif === "expertise") pick(["typeBien", "commune", "contexte"]);
-    else if (motif === "reseau") pick(["situation", "experience", "secteur", "demande"]);
+    else if (isReseau) pick(["situation", "experience", "secteur", "demande"]);
 
     if (showConsent) {
       p.consentCommercial = values.consent ? "oui" : "non";
       if (values.consent) {
-        p.consentText = CONSENT_TEXT;
+        p.consentText = CONSENT_TEXT_BY_MOTIF[motif] || CONSENT_TEXT_COMMERCIAL;
         p.consentContext = `${MOTIF_LABEL[motif]} - formulaire de contact, lyatimmo.com`;
       }
     }
@@ -323,11 +348,26 @@ export default function ContactForm() {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-        <TextField id="nom" label="Nom et prénom" value={values.nom} onChange={(v) => set("nom", v)} required autoComplete="name" error={errors.nom} />
-        <TextField id="tel" label="Téléphone" type="tel" value={values.tel} onChange={(v) => set("tel", v)} required autoComplete="tel" error={errors.tel} />
-      </div>
-      <TextField id="email" label="Email" type="email" value={values.email} onChange={(v) => set("email", v)} required autoComplete="email" error={errors.email} />
+      {isReseau ? (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            <TextField id="prenom" label="Prénom" value={values.prenom} onChange={(v) => set("prenom", v)} required autoComplete="given-name" error={errors.prenom} />
+            <TextField id="nom" label="Nom" value={values.nom} onChange={(v) => set("nom", v)} required autoComplete="family-name" error={errors.nom} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            <TextField id="tel" label="Téléphone" type="tel" value={values.tel} onChange={(v) => set("tel", v)} required autoComplete="tel" error={errors.tel} />
+            <TextField id="email" label="Email" type="email" value={values.email} onChange={(v) => set("email", v)} required autoComplete="email" error={errors.email} />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            <TextField id="nom" label="Nom et prénom" value={values.nom} onChange={(v) => set("nom", v)} required autoComplete="name" error={errors.nom} />
+            <TextField id="tel" label="Téléphone" type="tel" value={values.tel} onChange={(v) => set("tel", v)} required autoComplete="tel" error={errors.tel} />
+          </div>
+          <TextField id="email" label="Email" type="email" value={values.email} onChange={(v) => set("email", v)} required autoComplete="email" error={errors.email} />
+        </>
+      )}
 
       <div>
         <Label htmlFor="motif">Motif de la demande</Label>
@@ -372,7 +412,7 @@ export default function ContactForm() {
         <SelectField id="contexte" label="Contexte de la demande" value={values.contexte} onChange={(v) => set("contexte", v)} options={CONTEXTE_EXPERTISE} required error={errors.contexte} />
       )}
 
-      {motif === "reseau" && (
+      {isReseau && (
         <>
           <SelectField id="situation" label="Votre situation actuelle" value={values.situation} onChange={(v) => set("situation", v)} options={SITUATION_RESEAU} required error={errors.situation} />
           <SelectField id="experience" label="Votre expérience dans l'immobilier" value={values.experience} onChange={(v) => set("experience", v)} options={EXPERIENCE_RESEAU} required error={errors.experience} />
@@ -410,7 +450,21 @@ export default function ContactForm() {
             onChange={(e) => set("consent", e.target.checked)}
             className="mt-1 shrink-0 accent-gold"
           />
-          <span>{CONSENT_TEXT}</span>
+          <span>
+            {isReseau ? (
+              <>
+                J&apos;accepte que LYAT IMMO utilise les informations transmises pour traiter ma
+                demande d&apos;intégration / de recrutement au sein du réseau LYAT IMMO, notamment
+                par téléphone, e-mail ou SMS. Voir notre{" "}
+                <Link href="/confidentialite" className="underline underline-offset-2 hover:text-ink" target="_blank">
+                  Politique de confidentialité
+                </Link>
+                .
+              </>
+            ) : (
+              CONSENT_TEXT_COMMERCIAL
+            )}
+          </span>
         </label>
       )}
 
