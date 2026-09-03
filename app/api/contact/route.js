@@ -109,7 +109,7 @@ async function lookupAgentCc(reference) {
    Aucune écriture anonyme directe en base ailleurs que via cette route
    serveur (service_role) : la table candidats n'accorde rien à `anon`. */
 async function insertCandidatureReseau({
-  prenom, nom, email, tel, secteur, experience, situation, demande, message,
+  prenom, nom, email, tel, secteur, experience, situation, demande, message, parrainDeclare,
   consentGiven, consentTextValue, consentContextValue,
 }) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -132,6 +132,7 @@ async function insertCandidatureReseau({
         situation_actuelle: situation || null,
         demande_initiale: demande || null,
         message: message || null,
+        parrain_declare_texte: parrainDeclare || null,
         source: "site_lyat_nous_rejoindre",
         consentement_rgpd_at: consentGiven ? new Date().toISOString() : null,
         consentement_rgpd_texte: consentGiven ? consentTextValue : null,
@@ -283,6 +284,8 @@ export async function POST(request) {
       prenom, nom, email, tel,
       secteur: data?.secteur, experience: data?.experience, situation: data?.situation,
       demande: data?.demande, message,
+      // Filet serveur du maxLength={120} du formulaire : on tronque, jamais de rejet.
+      parrainDeclare: clean(data?.parrainDeclare).slice(0, 120) || null,
       consentGiven, consentTextValue, consentContextValue,
     });
   }

@@ -199,6 +199,7 @@ export default function ContactForm() {
     message: "",
     motif: initialMotif,
     demande: preselectDemande,
+    parrainDeclare: "",
     consent: false,
   }));
   const [errors, setErrors] = useState({});
@@ -273,7 +274,7 @@ export default function ContactForm() {
     if (motif === "vente") pick(["typeBien", "commune", "projet", "echeance"]);
     else if (motif === "estimation") pick(["typeBien", "commune", "projet"]);
     else if (motif === "expertise") pick(["typeBien", "commune", "contexte"]);
-    else if (isReseau) pick(["situation", "experience", "secteur", "demande"]);
+    else if (isReseau) pick(["situation", "experience", "secteur", "demande", "parrainDeclare"]);
 
     if (showConsent) {
       p.consentCommercial = values.consent ? "oui" : "non";
@@ -418,6 +419,21 @@ export default function ContactForm() {
           <SelectField id="experience" label="Votre expérience dans l'immobilier" value={values.experience} onChange={(v) => set("experience", v)} options={EXPERIENCE_RESEAU} required error={errors.experience} />
           <TextField id="secteur" label="Votre secteur géographique" value={values.secteur} onChange={(v) => set("secteur", v)} required error={errors.secteur} />
           <SelectField id="demande" label="Votre demande" value={values.demande} onChange={(v) => set("demande", v)} options={DEMANDE_RESEAU} />
+          <div>
+            <Label htmlFor="parrainDeclare">Qui vous a fait connaître LYAT IMMO ?</Label>
+            <input
+              id="parrainDeclare"
+              name="parrainDeclare"
+              type="text"
+              maxLength={120}
+              value={values.parrainDeclare || ""}
+              onChange={(e) => set("parrainDeclare", e.target.value)}
+              className={inputCls}
+            />
+            <p className="text-[12px] text-stone leading-[1.6] mt-2">
+              Facultatif. Si un conseiller LYAT vous a orienté, indiquez son nom.
+            </p>
+          </div>
         </>
       )}
 

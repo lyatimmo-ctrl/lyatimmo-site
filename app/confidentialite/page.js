@@ -132,12 +132,24 @@ export default function ConfidentialitePage() {
             <li>expérience dans l’immobilier ;</li>
             <li>secteur géographique d’activité ;</li>
             <li>nature de la demande ;</li>
+            <li>
+              le cas échéant, le nom, saisi librement, de la personne qui vous a
+              fait connaître LYAT IMMO (champ facultatif) ;
+            </li>
             <li>contenu libre du message.</li>
           </ul>
           <p className="mt-3">
             À ce stade, nous ne demandons pas de revenus, de chiffre d’affaires, de
             données bancaires, de pièce d’identité ni de documents sans rapport avec
             l’examen initial de la demande.
+          </p>
+          <p className="mt-3">
+            Lorsque vous indiquez le nom de la personne qui vous a fait connaître
+            LYAT IMMO, cette information est utilisée uniquement pour identifier
+            cette personne dans le cadre du recrutement et, le cas échéant, de la
+            qualification du parrainage au sein du réseau. Elle n’est pas diffusée
+            publiquement et est conservée selon la même durée que le reste de votre
+            dossier de recrutement (voir la section 10).
           </p>
           <p className="text-ink mt-4">Consentement à une prospection commerciale ultérieure</p>
           <p className="mt-2">
