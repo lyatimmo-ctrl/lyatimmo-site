@@ -47,7 +47,7 @@ export default function PropertyCard({ property }) {
       </div>
       <div className="pt-6 pb-2">
         <div className="text-[11px] tracking-[0.14em] text-stone mb-2 uppercase">
-          {property.commune}
+          {[property.codePostal, property.commune].filter(Boolean).join(" ")}
         </div>
         <h3 className="font-serif text-xl mb-2.5 group-hover:text-gold transition-colors">
           {property.title}

@@ -29,6 +29,30 @@ export default async function PropertyPage({ params }) {
 
   const photos = Array.isArray(property.photos) ? property.photos : [];
 
+  // Caracteristiques complementaires (bloc <dl>), selon le type et la transaction.
+  const isLoc = property.transaction === "location";
+  const euro = (n) => `${Number(n).toLocaleString("fr-FR")} €`;
+  const specs = [];
+  if (!property.isLand && property.landSurface > 0) specs.push(["Terrain", `${property.landSurface} m²`]);
+  if (!property.isLand && property.floor) specs.push(["Étage", property.floor]);
+  if (!property.isLand && property.bathrooms > 0)
+    specs.push([property.bathrooms > 1 ? "Salles de bain" : "Salle de bain", property.bathrooms]);
+  if (!property.isLand && property.showerRooms > 0)
+    specs.push([property.showerRooms > 1 ? "Salles d'eau" : "Salle d'eau", property.showerRooms]);
+  if (property.furnished) specs.push(["Meublé", property.furnished]);
+  if (isLoc && property.charges > 0) specs.push(["Charges", euro(property.charges)]);
+  if (isLoc && property.depotGarantie > 0) specs.push(["Dépôt de garantie", euro(property.depotGarantie)]);
+  if (property.feesPayer || property.fees > 0)
+    specs.push([
+      "Honoraires",
+      [
+        property.fees > 0 ? `${euro(property.fees)} TTC` : null,
+        property.feesPayer ? `à la charge du ${property.feesPayer}` : null,
+      ]
+        .filter(Boolean)
+        .join(", "),
+    ]);
+
   // Mention légale — par agent (RSAC) si le profil est rapproché, sinon générique.
   const legalMention =
     extras.agentRsacNumero && (extras.agentPrenom || extras.agentNom)
@@ -89,11 +113,22 @@ export default async function PropertyPage({ params }) {
 
         <div>
           <div className="text-[11px] tracking-[0.16em] text-stone uppercase mb-3">
-            {[property.commune, property.type].filter(Boolean).join(" · ")}
+            {[
+              [property.codePostal, property.commune].filter(Boolean).join(" "),
+              property.secteur,
+              property.type,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
           </div>
-          <h1 className="font-serif text-[32px] md:text-[42px] font-medium mb-5">
+          <h1 className="font-serif text-[32px] md:text-[42px] font-medium mb-4">
             {property.title}
           </h1>
+          {property.accroche && property.accroche !== property.title && (
+            <p className="text-stone text-[14px] leading-[1.7] mb-6 max-w-[46ch]">
+              {property.accroche}
+            </p>
+          )}
           <div className="text-2xl font-serif text-gold mb-8">{priceLabel}</div>
 
           <div
@@ -121,21 +156,11 @@ export default async function PropertyPage({ params }) {
             ))}
           </div>
 
-          {((!property.isLand && property.landSurface > 0) ||
-            property.furnished ||
-            property.feesPayer ||
-            (property.transaction === "location" && property.charges > 0)) && (
+          {specs.length > 0 && (
             <dl className="text-[13px] leading-[1.9] text-stone mb-8">
-              {!property.isLand && property.landSurface > 0 && (
-                <Row label="Terrain" value={`${property.landSurface} m²`} />
-              )}
-              {property.furnished && <Row label="Meublé" value={property.furnished} />}
-              {property.transaction === "location" && property.charges > 0 && (
-                <Row label="Charges" value={`${property.charges.toLocaleString("fr-FR")} €`} />
-              )}
-              {property.feesPayer && (
-                <Row label="Honoraires" value={`à la charge du ${property.feesPayer}`} />
-              )}
+              {specs.map(([label, value]) => (
+                <Row key={label} label={label} value={value} />
+              ))}
             </dl>
           )}
 
