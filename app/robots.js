@@ -1,5 +1,5 @@
 // Génère /robots.txt (convention Next.js App Router).
-const SITE_URL = "https://lyatimmo.com";
+const SITE_URL = "https://www.lyatimmo.com";
 
 export default function robots() {
   return {

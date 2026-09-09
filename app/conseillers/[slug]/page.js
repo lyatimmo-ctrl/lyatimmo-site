@@ -14,7 +14,7 @@ import {
 
 export const revalidate = 900; // 15 min (décision #8 : agrégats pré-calculés)
 
-const SITE_URL = "https://lyatimmo.com";
+const SITE_URL = "https://www.lyatimmo.com";
 
 const RESEAU_LABEL = {
   linkedin: "LinkedIn",

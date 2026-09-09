@@ -1,7 +1,12 @@
 // Génère /sitemap.xml (convention Next.js App Router).
 import { listPublishedMinisites } from "@/lib/minisites";
+import { getPublishedListingSlugs } from "@/lib/listings";
 
-const SITE_URL = "https://lyatimmo.com";
+// Régénéré au plus toutes les heures : une annonce (ou un mini-site) publié
+// entre deux déploiements apparaît sans intervention manuelle.
+export const revalidate = 3600;
+
+const SITE_URL = "https://www.lyatimmo.com";
 
 const ROUTES = [
   { path: "/", changeFrequency: "weekly", priority: 1.0 },
@@ -24,6 +29,21 @@ export default async function sitemap() {
     priority: r.priority,
   }));
 
+  // Annonces publiées (status='published' + RLS). Une annonce retirée du flux
+  // Transactimo passe en 'withdrawn' et sort automatiquement du sitemap.
+  let biens = [];
+  try {
+    const rows = await getPublishedListingSlugs();
+    biens = rows.map((b) => ({
+      url: `${SITE_URL}/biens/${b.slug}`,
+      lastModified: b.updated_at ? new Date(b.updated_at) : now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    }));
+  } catch {
+    biens = [];
+  }
+
   // Mini-sites conseillers publiés (statut='publie' + profil actif). Les
   // conseillers suspendus / partis ne sont pas dans v_minisite_index -> exclus.
   let conseillers = [];
@@ -39,5 +59,5 @@ export default async function sitemap() {
     conseillers = [];
   }
 
-  return [...base, ...conseillers];
+  return [...base, ...biens, ...conseillers];
 }

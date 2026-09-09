@@ -22,11 +22,15 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const SITE_URL = "https://lyatimmo.com";
+// Domaine canonique effectivement servi en production (lyatimmo.com -> 308 www).
+// Reference unique : title, canonical, Open Graph, sitemap, robots, JSON-LD.
+const SITE_URL = "https://www.lyatimmo.com";
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-const SITE_TITLE = "LYAT IMMO | L'art de vendre avec exigence en Martinique";
+// Identite generique de la marque : volontairement SANS ancrage geographique
+// ("Martinique" reste sur les pages locales / biens / conseillers, pas ici).
+const SITE_TITLE = "LYAT IMMO | Transaction & expertise immobilière";
 const SITE_DESC =
-  "Transaction et expertise immobilière en Martinique. LYAT IMMO accompagne vendeurs et acquéreurs avec exigence, de l'estimation à la signature.";
+  "LYAT IMMO accompagne chaque projet immobilier avec méthode, transparence et engagement, de l'estimation à la signature.";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,13 +39,13 @@ export const metadata = {
   applicationName: "LYAT IMMO",
   authors: [{ name: "LYAT IMMO" }],
   keywords: [
-    "immobilier Martinique",
-    "agence immobilière Martinique",
-    "estimation immobilière",
-    "expertise immobilière",
-    "vendre un bien Martinique",
-    "acheter un bien Martinique",
     "LYAT IMMO",
+    "réseau immobilier",
+    "transaction immobilière",
+    "expertise immobilière",
+    "estimation immobilière",
+    "conseiller immobilier",
+    "immobilier Martinique",
   ],
   robots: {
     index: true,

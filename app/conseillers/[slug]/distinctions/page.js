@@ -7,7 +7,7 @@ import { getMinisite, getMinisiteBadges, sortBadges } from "@/lib/minisites";
 
 export const revalidate = 900;
 
-const SITE_URL = "https://lyatimmo.com";
+const SITE_URL = "https://www.lyatimmo.com";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

@@ -10,7 +10,104 @@ import { getListingBySlug, getListingExtras } from "@/lib/listings";
 
 export const revalidate = 300;
 
-const SITE_URL = "https://lyatimmo.com";
+const SITE_URL = "https://www.lyatimmo.com";
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+
+/** "Le Robert" -> "au Robert" | "Les Trois-Îlets" -> "aux Trois-Îlets" | sinon "à X". */
+function auLieu(commune) {
+  if (!commune) return "";
+  if (/^les\s+/i.test(commune)) return `aux ${commune.replace(/^les\s+/i, "")}`;
+  if (/^le\s+/i.test(commune)) return `au ${commune.replace(/^le\s+/i, "")}`;
+  return `à ${commune}`;
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const property = await getListingBySlug(slug);
+  if (!property) {
+    return { title: "Bien introuvable | LYAT IMMO", robots: { index: false, follow: false } };
+  }
+
+  const url = `${SITE_URL}/biens/${slug}`;
+  const verbe = property.transaction === "location" ? "à louer" : "à vendre";
+  const lieu = auLieu(property.commune);
+
+  // Caracteristique forte du titre : surface pour un terrain, nb de pieces sinon.
+  const carac = property.isLand
+    ? property.landSurface || property.surface
+      ? `${property.landSurface || property.surface} m²`
+      : null
+    : property.pieces
+    ? `${property.pieces} pièce${property.pieces > 1 ? "s" : ""}`
+    : property.surface
+    ? `${property.surface} m²`
+    : null;
+
+  const base = [property.type || "Bien", verbe, lieu].filter(Boolean).join(" ");
+  const title = carac ? `${base} | ${carac}` : `${base} | LYAT IMMO`;
+
+  // Description : uniquement des donnees reelles du bien.
+  const prix =
+    property.price > 0
+      ? property.transaction === "location"
+        ? `${property.price.toLocaleString("fr-FR")} € / mois`
+        : `${property.price.toLocaleString("fr-FR")} €`
+      : null;
+  const faits = [
+    property.isLand
+      ? property.landSurface
+        ? `terrain de ${property.landSurface} m²`
+        : null
+      : property.surface
+      ? `${property.surface} m²`
+      : null,
+    !property.isLand && property.pieces ? `${property.pieces} pièces` : null,
+    !property.isLand && property.chambres
+      ? `${property.chambres} chambre${property.chambres > 1 ? "s" : ""}`
+      : null,
+    prix,
+  ].filter(Boolean);
+
+  let description = `${property.type || "Bien"} ${verbe} ${lieu}`.trim();
+  description += faits.length ? ` : ${faits.join(", ")}.` : ".";
+  if (property.description && description.length < 150) {
+    description += ` ${property.description}`;
+  }
+  description = description.replace(/\s+/g, " ").trim();
+  if (description.length > 200) description = `${description.slice(0, 197).trimEnd()}…`;
+
+  // og:image = 1re photo reelle du bien (URL absolue publique Transactimo).
+  // Fallback institutionnel UNIQUEMENT si le bien n'a aucune photo.
+  const photo =
+    Array.isArray(property.photos) && typeof property.photos[0] === "string"
+      ? property.photos[0]
+      : null;
+  const images = photo
+    ? [{ url: photo, alt: property.title || title }]
+    : [{ url: OG_IMAGE, width: 1200, height: 630, alt: "LYAT IMMO" }];
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      url,
+      siteName: "LYAT IMMO",
+      locale: "fr_FR",
+      title,
+      description,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: images.map((i) => i.url),
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 export default async function PropertyPage({ params }) {
   const { slug } = await params;

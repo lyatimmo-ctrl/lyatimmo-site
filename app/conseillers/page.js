@@ -6,7 +6,7 @@ import { listPublishedMinisites } from "@/lib/minisites";
 
 export const revalidate = 900;
 
-const SITE_URL = "https://lyatimmo.com";
+const SITE_URL = "https://www.lyatimmo.com";
 
 export const metadata = {
   title: "Nos conseillers immobiliers | LYAT IMMO",
