@@ -7,7 +7,8 @@ import PropertyGallery from "@/components/PropertyGallery";
 import PropertyEnquiry from "@/components/PropertyEnquiry";
 import DpeBadge from "@/components/DpeBadge";
 import { getListingBySlug, getListingExtras } from "@/lib/listings";
-import { analyzeMediaUrl } from "@/lib/media-embed";
+import { analyzeMediaUrl, mediaLayout } from "@/lib/media-embed";
+import { getVideoRatio } from "@/lib/media-oembed";
 
 export const revalidate = 300;
 
@@ -127,7 +128,17 @@ export default async function PropertyPage({ params }) {
       : "Prix sur demande";
 
   const photos = Array.isArray(property.photos) ? property.photos : [];
+
+  // Bloc vidéo / visite : type + URL d'embed (pur), puis format du cadre. Pour
+  // une vidéo YouTube / Vimeo, on interroge l'oEmbed du fournisseur (24 h de
+  // cache, 3 s max, non bloquant) pour connaître son orientation réelle.
   const media = analyzeMediaUrl(property.virtualTourUrl);
+  let mediaView = null;
+  if (media) {
+    const ratioInfo =
+      media.type === "video" ? await getVideoRatio(media.provider, media.oembedUrl) : null;
+    mediaView = { ...media, ...mediaLayout(media, ratioInfo) };
+  }
 
   // Caracteristiques complementaires (bloc <dl>), selon le type et la transaction.
   const isLoc = property.transaction === "location";
@@ -189,7 +200,7 @@ export default async function PropertyPage({ params }) {
             </div>
           )}
 
-          <PropertyMedia media={media} contextTitle={property.title} />
+          <PropertyMedia media={mediaView} contextTitle={property.title} />
         </div>
 
         <div>

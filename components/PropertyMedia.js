@@ -19,9 +19,11 @@ export default function PropertyMedia({ media, contextTitle }) {
   if (!media) return null;
 
   const isExterne = media.type === "externe" || !media.embedUrl;
-  // Réseaux sociaux : contenu vertical -> cadre 9:16 plafonné (~700 px de haut
-  // sur desktop, pleine largeur sur mobile), pas le 16:9 des vidéos.
-  const isSocial = media.type === "social";
+  // Orientation et ratio du cadre calculés en amont (mediaLayout + oEmbed) :
+  //   vertical -> cadre plafonné à 400 px, centré, au ratio réel
+  //   sinon    -> cadre 16/9 pleine largeur
+  const vertical = media.vertical === true;
+  const aspectRatio = media.aspectRatio || (vertical ? "9 / 16" : "16 / 9");
 
   return (
     <div className="mt-8">
@@ -44,8 +46,8 @@ export default function PropertyMedia({ media, contextTitle }) {
           title={contextTitle ? `${media.title} | ${contextTitle}` : media.title}
           allow={EMBED_ALLOW}
           allowFullScreen
-          aspectRatio={isSocial ? "9 / 16" : "16 / 9"}
-          className={isSocial ? "max-w-[400px]" : ""}
+          aspectRatio={aspectRatio}
+          className={vertical ? "max-w-[400px] mx-auto" : ""}
         />
       )}
 
