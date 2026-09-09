@@ -2,11 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import VirtualTourEmbed from "@/components/consent/VirtualTourEmbed";
+import PropertyMedia from "@/components/PropertyMedia";
 import PropertyGallery from "@/components/PropertyGallery";
 import PropertyEnquiry from "@/components/PropertyEnquiry";
 import DpeBadge from "@/components/DpeBadge";
 import { getListingBySlug, getListingExtras } from "@/lib/listings";
+import { analyzeMediaUrl } from "@/lib/media-embed";
 
 export const revalidate = 300;
 
@@ -126,6 +127,7 @@ export default async function PropertyPage({ params }) {
       : "Prix sur demande";
 
   const photos = Array.isArray(property.photos) ? property.photos : [];
+  const media = analyzeMediaUrl(property.virtualTourUrl);
 
   // Caracteristiques complementaires (bloc <dl>), selon le type et la transaction.
   const isLoc = property.transaction === "location";
@@ -187,26 +189,7 @@ export default async function PropertyPage({ params }) {
             </div>
           )}
 
-          {property.virtualTourUrl && (
-            <div className="mt-8">
-              <div className="text-[10px] tracking-[0.16em] uppercase text-gold mb-3">
-                Visite virtuelle
-              </div>
-              <VirtualTourEmbed
-                provider="visite virtuelle"
-                url={property.virtualTourUrl}
-                title={`Visite virtuelle | ${property.title}`}
-              />
-              <a
-                href={property.virtualTourUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 text-[12px] text-stone underline underline-offset-2 hover:text-ink"
-              >
-                Ouvrir la visite dans un nouvel onglet
-              </a>
-            </div>
-          )}
+          <PropertyMedia media={media} contextTitle={property.title} />
         </div>
 
         <div>
