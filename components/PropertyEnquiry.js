@@ -100,7 +100,7 @@ export default function PropertyEnquiry({ reference, url, title }) {
         {reference ? (
           <>
             Réf. <span className="text-ink">{reference}</span>
-            {title ? <> — {title}</> : null}.{" "}
+            {title ? <> | {title}</> : null}.{" "}
           </>
         ) : null}
         Laissez vos coordonnées, nous vous rappelons.

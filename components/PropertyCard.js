@@ -11,6 +11,18 @@ export default function PropertyCard({ property }) {
 
   const photo = Array.isArray(property.photos) ? property.photos[0] : null;
 
+  // Un terrain n'a ni pieces ni chambres : on montre sa surface foncière.
+  const meta = property.isLand
+    ? property.landSurface
+      ? `${property.landSurface} m² de terrain`
+      : ""
+    : [
+        property.surface ? `${property.surface} m²` : null,
+        property.chambres ? `${property.chambres} ch.` : null,
+      ]
+        .filter(Boolean)
+        .join(" · ");
+
   return (
     <Link href={`/biens/${property.slug}`} className="group block">
       <div
@@ -41,10 +53,8 @@ export default function PropertyCard({ property }) {
           {property.title}
         </h3>
         <div className="text-sm">
-          {priceLabel}{" "}
-          <span className="text-stone text-xs ml-1.5">
-            · {property.surface} m² · {property.chambres} ch.
-          </span>
+          {priceLabel}
+          {meta && <span className="text-stone text-xs ml-1.5">· {meta}</span>}
         </div>
       </div>
     </Link>

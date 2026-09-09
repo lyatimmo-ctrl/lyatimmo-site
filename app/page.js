@@ -62,7 +62,10 @@ export default function Home() {
 
   function handleSearchSubmit(e) {
     e.preventDefault();
-    const params = new URLSearchParams({ transaction: "vente", ...search });
+    // Le formulaire de la home ne propose pas vente/location : on n'impose donc
+    // aucun filtre `transaction` a /biens (sinon toute annonce non "vente" est
+    // masquee a l'arrivee).
+    const params = new URLSearchParams({ ...search });
     for (const [key, value] of [...params.entries()]) {
       if (!value) params.delete(key);
     }

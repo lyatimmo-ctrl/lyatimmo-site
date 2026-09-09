@@ -34,8 +34,8 @@ export default async function PropertyPage({ params }) {
     extras.agentRsacNumero && (extras.agentPrenom || extras.agentNom)
       ? `Ce bien est présenté par ${[extras.agentPrenom, extras.agentNom]
           .filter(Boolean)
-          .join(" ")}, agent commercial - EI inscrit au RSAC de ${
-          extras.agentRsacLieu || "—"
+          .join(" ")}, agent commercial (EI)${
+          extras.agentRsacLieu ? ` inscrit au RSAC de ${extras.agentRsacLieu}` : ""
         } sous le numéro ${extras.agentRsacNumero}.`
       : "Ce bien est présenté par LYAT IMMO.";
 
@@ -73,7 +73,7 @@ export default async function PropertyPage({ params }) {
               <VirtualTourEmbed
                 provider="visite virtuelle"
                 url={property.virtualTourUrl}
-                title={`Visite virtuelle - ${property.title}`}
+                title={`Visite virtuelle | ${property.title}`}
               />
               <a
                 href={property.virtualTourUrl}
@@ -96,18 +96,37 @@ export default async function PropertyPage({ params }) {
           </h1>
           <div className="text-2xl font-serif text-gold mb-8">{priceLabel}</div>
 
-          <div className="grid grid-cols-3 border-t border-b border-line py-6 mb-8">
-            <Metric label="Surface" value={property.surface ? `${property.surface} m²` : "-"} />
-            <Metric label="Pièces" value={property.pieces || "-"} />
-            <Metric label="Chambres" value={property.chambres || "-"} />
+          <div
+            className={`grid ${
+              property.isLand ? "grid-cols-1" : "grid-cols-3"
+            } border-t border-b border-line py-6 mb-8`}
+          >
+            {(property.isLand
+              ? [
+                  {
+                    label: "Surface du terrain",
+                    value:
+                      property.landSurface || property.surface
+                        ? `${property.landSurface || property.surface} m²`
+                        : "-",
+                  },
+                ]
+              : [
+                  { label: "Surface", value: property.surface ? `${property.surface} m²` : "-" },
+                  { label: "Pièces", value: property.pieces || "-" },
+                  { label: "Chambres", value: property.chambres || "-" },
+                ]
+            ).map((m) => (
+              <Metric key={m.label} label={m.label} value={m.value} />
+            ))}
           </div>
 
-          {(property.landSurface > 0 ||
+          {((!property.isLand && property.landSurface > 0) ||
             property.furnished ||
             property.feesPayer ||
             (property.transaction === "location" && property.charges > 0)) && (
             <dl className="text-[13px] leading-[1.9] text-stone mb-8">
-              {property.landSurface > 0 && (
+              {!property.isLand && property.landSurface > 0 && (
                 <Row label="Terrain" value={`${property.landSurface} m²`} />
               )}
               {property.furnished && <Row label="Meublé" value={property.furnished} />}
