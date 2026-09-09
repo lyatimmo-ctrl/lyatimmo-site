@@ -3,7 +3,11 @@ import Footer from "@/components/Footer";
 import BiensBrowser from "@/components/BiensBrowser";
 import { getPublishedListings, filterOptions } from "@/lib/listings";
 
-export const revalidate = 300; // rafraichit la liste au plus toutes les 5 min
+// Toujours servir la liste a jour : une annonce publiee (ou retiree) cote
+// Transactimo doit apparaitre (ou disparaitre) immediatement, comme sur la
+// page d'accueil qui lit Supabase cote client. Le cache ISR de 5 min faisait
+// apparaitre /biens vide juste apres une publication.
+export const dynamic = "force-dynamic";
 
 export default async function BiensPage() {
   const { rows } = await getPublishedListings();
