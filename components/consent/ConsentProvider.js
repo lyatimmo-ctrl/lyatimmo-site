@@ -69,9 +69,14 @@ function parseState(raw) {
         return { decided: true, categories, legacyV2: false };
       }
       if (p && p.v === 2 && (p.s === "accepted" || p.s === "rejected")) {
+        // v2 "accepted" : à l'époque, seule la catégorie "Contenus externes"
+        // était réellement en jeu (aucun outil publicité / mesure d'audience
+        // actif). On ne présume donc PAS du consentement analytics — il reste
+        // refusé ; l'utilisateur l'activera explicitement via le nouveau
+        // réglage granulaire (c'est le sens du passage à CONSENT_VERSION 3).
         return {
           decided: true,
-          categories: p.s === "accepted" ? { ...ALL } : { ...NONE },
+          categories: { ...NONE, external: p.s === "accepted" },
           legacyV2: true,
         };
       }
