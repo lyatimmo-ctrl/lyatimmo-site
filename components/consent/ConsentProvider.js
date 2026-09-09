@@ -1,30 +1,35 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import {
   CONSENT_COOKIE,
   CONSENT_MAX_AGE_DAYS,
   CONSENT_VERSION,
-  CONSENT_STATUS,
+  CONSENTABLE_CATEGORIES,
 } from "@/lib/consent/config";
 
 /**
- * Gestionnaire de consentement centralisé.
+ * Gestionnaire de consentement centralisé — consentement PAR CATÉGORIE.
  *
  * Source de vérité unique : le cookie first-party `lyat_consent` (aucune donnée
- * personnelle). L'état est exposé aux composants via `useConsent()` :
+ * personnelle). Format v3 :
  *
- *   status : "pending" | "accepted" | "rejected"
- *   ready  : true une fois l'hydratation client faite (évite tout flash de bandeau)
- *   accept() / reject() : enregistrent le choix et notifient tous les abonnés
+ *   { "v": 3, "c": { "external": true|false, "analytics": true|false }, "t": "AAAA-MM-JJ" }
  *
- * Implémenté avec `useSyncExternalStore` : pas de contexte à propager, pas d'effet,
- * cohérent SSR/hydratation. `ConsentProvider` reste un point de montage stable
- * dans le layout pour d'éventuelles évolutions (UI plus granulaire, etc.).
+ * Les cookies v2 (ancien binaire { "v":2, "s":"accepted"|"rejected" }) sont
+ * migrés : "accepted" -> toutes catégories acceptées, "rejected" -> toutes
+ * refusées, sans re-solliciter l'utilisateur.
+ *
+ * `useConsent()` expose :
+ *   ready         : true une fois l'hydratation client faite (évite le flash de bandeau)
+ *   decided       : true si un choix explicite (ou migré) existe -> le bandeau se masque
+ *   categories    : { necessary:true, external:bool, analytics:bool }
+ *   isAllowed(id) : booléen (necessary toujours true)
+ *   acceptAll() / rejectAll()
+ *   setCategories(partial) : fusionne et enregistre
  */
 
 const listeners = new Set();
-
 function subscribe(cb) {
   listeners.add(cb);
   return () => listeners.delete(cb);
@@ -50,38 +55,45 @@ function writeCookie(name, value, maxAgeDays) {
     secure;
 }
 
-function parseStatus(raw) {
-  if (!raw) return CONSENT_STATUS.PENDING;
-  try {
-    const p = JSON.parse(raw);
-    if (
-      p &&
-      p.v === CONSENT_VERSION &&
-      (p.s === CONSENT_STATUS.ACCEPTED || p.s === CONSENT_STATUS.REJECTED)
-    ) {
-      return p.s;
+const NONE = Object.fromEntries(CONSENTABLE_CATEGORIES.map((c) => [c, false]));
+const ALL = Object.fromEntries(CONSENTABLE_CATEGORIES.map((c) => [c, true]));
+
+/** Interprète la chaîne brute du cookie -> { decided, categories, legacyV2 }. */
+function parseState(raw) {
+  if (raw) {
+    try {
+      const p = JSON.parse(raw);
+      if (p && p.v === CONSENT_VERSION && p.c && typeof p.c === "object") {
+        const categories = {};
+        for (const c of CONSENTABLE_CATEGORIES) categories[c] = p.c[c] === true;
+        return { decided: true, categories, legacyV2: false };
+      }
+      if (p && p.v === 2 && (p.s === "accepted" || p.s === "rejected")) {
+        return {
+          decided: true,
+          categories: p.s === "accepted" ? { ...ALL } : { ...NONE },
+          legacyV2: true,
+        };
+      }
+    } catch {
+      /* cookie illisible / version inconnue -> pending */
     }
-  } catch {
-    /* cookie illisible ou version antérieure → "pending" */
   }
-  return CONSENT_STATUS.PENDING;
+  return { decided: false, categories: { ...NONE }, legacyV2: false };
 }
 
-// Snapshots pour useSyncExternalStore — chaîne brute du cookie (comparée par valeur).
 const clientCookieSnapshot = () => readCookie(CONSENT_COOKIE);
 const serverCookieSnapshot = () => "";
 const clientReady = () => true;
 const serverReady = () => false;
 
-/** Enregistre le choix et notifie tous les abonnés. */
-export function setConsent(next) {
+/** Écrit le cookie au format v3 et notifie tous les abonnés. */
+export function persistConsent(categories) {
+  const c = {};
+  for (const k of CONSENTABLE_CATEGORIES) c[k] = categories?.[k] === true;
   writeCookie(
     CONSENT_COOKIE,
-    JSON.stringify({
-      v: CONSENT_VERSION,
-      s: next,
-      t: new Date().toISOString().slice(0, 10),
-    }),
+    JSON.stringify({ v: CONSENT_VERSION, c, t: new Date().toISOString().slice(0, 10) }),
     CONSENT_MAX_AGE_DAYS
   );
   listeners.forEach((l) => l());
@@ -90,12 +102,38 @@ export function setConsent(next) {
 export function useConsent() {
   const raw = useSyncExternalStore(subscribe, clientCookieSnapshot, serverCookieSnapshot);
   const ready = useSyncExternalStore(subscribe, clientReady, serverReady);
-  const accept = useCallback(() => setConsent(CONSENT_STATUS.ACCEPTED), []);
-  const reject = useCallback(() => setConsent(CONSENT_STATUS.REJECTED), []);
-  return { status: parseStatus(raw), ready, accept, reject };
+  const { decided, categories } = parseState(raw);
+
+  const setCategories = useCallback((partial) => {
+    const current = parseState(readCookie(CONSENT_COOKIE)).categories;
+    persistConsent({ ...current, ...partial });
+  }, []);
+  const acceptAll = useCallback(() => persistConsent(ALL), []);
+  const rejectAll = useCallback(() => persistConsent(NONE), []);
+  const isAllowed = useCallback(
+    (category) => category === "necessary" || categories[category] === true,
+    [categories]
+  );
+
+  return {
+    ready,
+    decided,
+    categories: { necessary: true, ...categories },
+    isAllowed,
+    acceptAll,
+    rejectAll,
+    setCategories,
+  };
 }
 
-/** Point de montage stable — n'ajoute aucun comportement pour l'instant. */
+/**
+ * Point de montage stable dans le layout. Migre une fois un éventuel cookie v2
+ * vers le format v3 (réécriture silencieuse, choix conservé).
+ */
 export function ConsentProvider({ children }) {
+  useEffect(() => {
+    const { decided, categories, legacyV2 } = parseState(readCookie(CONSENT_COOKIE));
+    if (decided && legacyV2) persistConsent(categories);
+  }, []);
   return children;
 }

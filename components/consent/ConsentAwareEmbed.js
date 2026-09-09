@@ -2,19 +2,17 @@
 
 import Image from "next/image";
 import { useConsent } from "./ConsentProvider";
-import { CONSENT_STATUS } from "@/lib/consent/config";
 
 /**
  * Enveloppe générique pour tout contenu tiers embarqué (vidéo, visite virtuelle,
  * iframe externe…).
  *
- *   consentement "accepted"           → l'iframe est réellement rendue
- *   consentement "pending" / "rejected" → l'iframe N'EST PAS créée (pas seulement
- *                                        masquée) ; aucune requête vers le
- *                                        fournisseur tiers n'est déclenchée
+ *   catégorie `category` acceptée      → l'iframe est réellement rendue
+ *   catégorie non acceptée (pending / refusée) → l'iframe N'EST PAS créée (pas
+ *     seulement masquée) ; aucune requête vers le fournisseur tiers.
  *
- * En cas de refus/attente, un bloc discret dans la DA LYAT IMMO invite à
- * autoriser l'affichage en une seule action.
+ * En cas de refus / attente, un bloc discret dans la DA LYAT IMMO invite à
+ * autoriser la catégorie concernée en une seule action.
  */
 export default function ConsentAwareEmbed({
   provider,
@@ -25,10 +23,11 @@ export default function ConsentAwareEmbed({
   allowFullScreen = true,
   aspectRatio = "16 / 9",
   requiresConsent = true,
+  category = "external",
   className = "",
 }) {
-  const { status, accept } = useConsent();
-  const authorized = !requiresConsent || status === CONSENT_STATUS.ACCEPTED;
+  const { isAllowed, setCategories } = useConsent();
+  const authorized = !requiresConsent || isAllowed(category);
 
   return (
     <div
@@ -65,7 +64,7 @@ export default function ConsentAwareEmbed({
             </p>
             <button
               type="button"
-              onClick={accept}
+              onClick={() => setCategories({ [category]: true })}
               className="text-[12px] tracking-[0.18em] uppercase bg-ink text-paper px-6 py-3 hover:opacity-90 transition-opacity"
             >
               Autoriser et afficher

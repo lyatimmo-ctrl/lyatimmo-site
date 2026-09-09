@@ -39,6 +39,7 @@ export default function PropertyMedia({ media, contextTitle }) {
       ) : (
         <ConsentAwareEmbed
           provider={media.provider || media.title}
+          category="external"
           src={media.embedUrl}
           title={contextTitle ? `${media.title} | ${contextTitle}` : media.title}
           allow={EMBED_ALLOW}

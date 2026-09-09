@@ -1,55 +1,69 @@
 "use client";
 
+import { useState } from "react";
 import { useConsent } from "./ConsentProvider";
-import { CONSENT_STATUS } from "@/lib/consent/config";
-
-const LABEL = {
-  [CONSENT_STATUS.ACCEPTED]: "Tout accepté",
-  [CONSENT_STATUS.REJECTED]: "Tout refusé",
-  [CONSENT_STATUS.PENDING]: "Aucun choix enregistré",
-};
+import CategoryToggle from "./CategoryToggle";
+import { CATEGORY_LIST, CONSENTABLE_CATEGORIES } from "@/lib/consent/config";
 
 /**
- * Bloc « Votre choix actuel » de la page /cookies : affiche l'état courant et
- * permet d'en changer dans les deux sens, avec une facilité d'usage identique.
+ * Bloc « Vos choix » de la page /cookies : un interrupteur par catégorie,
+ * modifiable à tout moment, dans les deux sens.
+ *
+ * Si une catégorie passe de acceptée à refusée, la page est rechargée après
+ * l'enregistrement pour garantir qu'aucun script / iframe chargé sous l'ancien
+ * consentement ne reste actif.
  */
 export default function CookiePreferences() {
-  const { status, ready, accept, reject } = useConsent();
+  const { ready, categories, setCategories } = useConsent();
+  // Modifications en attente d'enregistrement (uniquement les catégories touchées).
+  const [pending, setPending] = useState({});
+  const [saved, setSaved] = useState(false);
 
-  function apply(next) {
-    const wasAccepted = status === CONSENT_STATUS.ACCEPTED;
-    if (next === CONSENT_STATUS.ACCEPTED) accept();
-    else reject();
-    // Passage d'"accepté" à "refusé" : rechargement pour garantir qu'aucun
-    // service chargé sous l'ancien consentement ne reste actif.
-    if (wasAccepted && next === CONSENT_STATUS.REJECTED && typeof window !== "undefined") {
-      window.location.reload();
-    }
+  const base = Object.fromEntries(CONSENTABLE_CATEGORIES.map((c) => [c, categories[c] === true]));
+  const effective = { ...base, ...pending };
+  const dirty = CONSENTABLE_CATEGORIES.some((c) => base[c] !== effective[c]);
+
+  function save() {
+    const downgraded = CONSENTABLE_CATEGORIES.some((c) => base[c] === true && effective[c] !== true);
+    setCategories(effective);
+    setPending({});
+    setSaved(true);
+    if (downgraded && typeof window !== "undefined") window.location.reload();
   }
 
   return (
     <div className="border border-line p-6 md:p-8 my-8">
-      <p className="text-[10px] tracking-[0.2em] uppercase text-stone mb-2">
-        Votre choix actuel
-      </p>
-      <p className="font-serif text-[20px] text-ink mb-6" aria-live="polite">
-        {ready ? LABEL[status] : "…"}
-      </p>
-      <div className="flex flex-col sm:flex-row gap-3">
+      <p className="text-[10px] tracking-[0.2em] uppercase text-stone mb-4">Vos choix</p>
+
+      <div className="border-t border-line">
+        {CATEGORY_LIST.map((cat) => (
+          <CategoryToggle
+            key={cat.id}
+            category={cat}
+            locked={cat.alwaysOn}
+            checked={cat.alwaysOn || effective[cat.id] === true}
+            onChange={(v) => {
+              setSaved(false);
+              setPending((p) => ({ ...p, [cat.id]: v }));
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="mt-6 flex items-center gap-4">
         <button
           type="button"
-          onClick={() => apply(CONSENT_STATUS.REJECTED)}
-          className="flex-1 text-[12px] tracking-[0.18em] uppercase border border-ink px-6 py-3 text-ink hover:bg-ink hover:text-paper transition-colors"
+          onClick={save}
+          disabled={!ready || !dirty}
+          className="text-[12px] tracking-[0.18em] uppercase bg-ink text-paper px-6 py-3 hover:opacity-90 transition-opacity disabled:opacity-40"
         >
-          Tout refuser
+          Enregistrer mes choix
         </button>
-        <button
-          type="button"
-          onClick={() => apply(CONSENT_STATUS.ACCEPTED)}
-          className="flex-1 text-[12px] tracking-[0.18em] uppercase bg-ink text-paper px-6 py-3 hover:opacity-90 transition-opacity"
-        >
-          Tout accepter
-        </button>
+        {saved && !dirty && (
+          <span className="text-[13px] text-stone" aria-live="polite">
+            Choix enregistrés.
+          </span>
+        )}
       </div>
     </div>
   );
