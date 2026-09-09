@@ -24,7 +24,7 @@ const inter = Inter({
 
 const SITE_URL = "https://lyatimmo.com";
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-const SITE_TITLE = "LYAT IMMO — L'art de vendre avec exigence | Martinique";
+const SITE_TITLE = "LYAT IMMO | L'art de vendre avec exigence en Martinique";
 const SITE_DESC =
   "Transaction et expertise immobilière en Martinique. LYAT IMMO accompagne vendeurs et acquéreurs avec exigence, de l'estimation à la signature.";
 
@@ -66,7 +66,7 @@ export const metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "LYAT IMMO — Transaction & Expertise Immobilière",
+        alt: "LYAT IMMO, Transaction & Expertise Immobilière",
       },
     ],
   },

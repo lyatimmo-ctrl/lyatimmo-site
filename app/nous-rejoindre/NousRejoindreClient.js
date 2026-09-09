@@ -967,7 +967,7 @@ export default function NousRejoindreClient({ statuts = [] }) {
           <div>
             <div className="ly-footer-logo-name">LYAT IMMO</div>
             <div className="ly-footer-logo-sub">Transaction &amp; Expertise Immobilière</div>
-            <div className="ly-footer-cfei">Miguel Attelly, fondateur de LYAT IMMO, est personnellement certifié CFEI®. Cette qualification lui est propre et ne constitue pas un statut du réseau.</div>
+            <div className="ly-footer-cfei">Un expert certifié CFEI® appartenant au réseau LYAT IMMO.</div>
             <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et de l&apos;exigence de chaque vendeur.</p>
             <a href="mailto:contact@lyatimmo.com" className="ly-footer-email">contact@lyatimmo.com</a>
             <a href="tel:+596696335811" className="ly-footer-email">0696 33 58 11</a>

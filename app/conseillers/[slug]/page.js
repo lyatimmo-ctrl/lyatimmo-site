@@ -74,11 +74,11 @@ export async function generateMetadata({ params, searchParams }) {
   const sp = await searchParams;
   const preview = sp?.preview;
   if (preview) {
-    return { title: "Aperçu — Mini-site conseiller", robots: { index: false, follow: false } };
+    return { title: "Aperçu du mini-site conseiller", robots: { index: false, follow: false } };
   }
   const { mode, profil } = await load(slug);
   if (mode !== "public" || !profil) {
-    return { title: "Conseiller — LYAT IMMO", robots: { index: false, follow: false } };
+    return { title: "Conseiller | LYAT IMMO", robots: { index: false, follow: false } };
   }
   const nom = [profil.prenom, profil.nom].filter(Boolean).join(" ");
   const secteur = Array.isArray(profil.secteurs) && profil.secteurs.length ? profil.secteurs[0] : "Martinique";
@@ -89,11 +89,11 @@ export async function generateMetadata({ params, searchParams }) {
       .slice(0, 155) || `${nom}, conseiller immobilier LYAT IMMO en ${secteur}.`;
   const url = `${SITE_URL}/conseillers/${slug}`;
   return {
-    title: `${nom} — Conseiller immobilier ${secteur} | LYAT IMMO`,
+    title: `${nom}, conseiller immobilier ${secteur} | LYAT IMMO`,
     description: desc,
     alternates: { canonical: url },
     openGraph: {
-      title: `${nom} — LYAT IMMO`,
+      title: `${nom} | LYAT IMMO`,
       description: desc,
       url,
       type: "profile",
