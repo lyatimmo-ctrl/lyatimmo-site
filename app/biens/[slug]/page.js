@@ -43,8 +43,9 @@ export async function generateMetadata({ params }) {
     ? `${property.surface} m²`
     : null;
 
+  // Format unique pour toutes les fiches : "<Type> <verbe> <lieu>[, <carac>] | LYAT IMMO".
   const base = [property.type || "Bien", verbe, lieu].filter(Boolean).join(" ");
-  const title = carac ? `${base} | ${carac}` : `${base} | LYAT IMMO`;
+  const title = carac ? `${base}, ${carac} | LYAT IMMO` : `${base} | LYAT IMMO`;
 
   // Description : uniquement des donnees reelles du bien.
   const prix =
