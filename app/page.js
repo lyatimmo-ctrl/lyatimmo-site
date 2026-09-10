@@ -76,7 +76,7 @@ export default function Home() {
   const steps = [
     {n:"01",t:"Comprendre et évaluer",d:"Nous commençons par comprendre le bien, son environnement, ses qualités, ses contraintes et le projet du propriétaire. L’étude du marché et des références disponibles nous permet ensuite de déterminer un positionnement cohérent."},
     {n:"02",t:"Préparer le dossier",d:"Une vente peut être retardée par un document manquant ou une difficulté découverte trop tard. Nous réunissons les pièces nécessaires, anticipons les diagnostics et identifions en amont les points qui doivent être clarifiés."},
-    {n:"03",t:"Révéler le bien",d:"Photographies, visite virtuelle, présentation des espaces et rédaction de l’annonce : chaque élément est travaillé pour montrer le bien avec justesse, sans le dénaturer ni masquer ses particularités."},
+    {n:"03",t:"Révéler le bien",d:"Photographies, visite virtuelle, présentation des espaces et rédaction de l’annonce : chaque élément est travaillé pour donner à voir le bien sans le dénaturer ni masquer ses particularités."},
     {n:"04",t:"Sélectionner les acquéreurs",d:"Toutes les demandes ne conduisent pas à une visite. Nous vérifions l’adéquation du bien avec le projet de l’acquéreur, sa motivation et la cohérence de son financement afin de privilégier des visites réellement utiles."},
     {n:"05",t:"Défendre les intérêts du vendeur",d:"Nous analysons chaque offre au-delà du prix proposé : financement, apport, conditions suspensives, calendrier et solidité globale du projet. Nous conseillons ensuite le vendeur et conduisons la négociation dans son intérêt."},
     {n:"06",t:"Rester présent jusqu’à l’acte",d:"Notre accompagnement ne s’arrête pas à l’acceptation d’une offre. Nous préparons la suite de la vente, coordonnons les échanges avec les différents intervenants et restons présents jusqu’à la signature de l’acte authentique et la remise des clés."},
@@ -312,10 +312,10 @@ export default function Home() {
           <div>
             <p className="ly-section-label">Positionnement</p>
             <h2 className="ly-bn-title">Notre métier ne s’arrête pas à la mise en vente</h2>
-            <p className="ly-bn-text">Un bien immobilier ne se résume ni à une surface ni à un prix au mètre carré. Il possède une situation, des caractéristiques techniques, un potentiel, parfois des contraintes, et toujours une histoire qu’il faut savoir comprendre.</p>
+            <p className="ly-bn-text">Un bien immobilier ne se résume ni à une surface ni à un prix au mètre carré. Il possède une situation, des caractéristiques techniques, un potentiel, parfois des contraintes, et toujours une histoire qu’il faut prendre le temps de comprendre.</p>
             <p className="ly-bn-text" style={{marginTop:"16px"}}>Notre rôle est d’analyser l’ensemble de ces éléments pour déterminer une valeur cohérente, construire une stratégie de commercialisation adaptée et défendre les intérêts de notre client jusqu’à l’aboutissement de la vente.</p>
             <p className="ly-bn-text" style={{marginTop:"16px"}}>Nous ne promettons pas de vendre à n’importe quel prix ni dans un délai irréaliste. Nous préférons une recommandation sincère à une promesse séduisante, parce qu’une vente réussie commence toujours par un positionnement juste et un dossier bien préparé.</p>
-            <p className="ly-bn-text" style={{marginTop:"16px"}}>Les acquéreurs qui se positionnent sur les biens qui nous sont confiés bénéficient, eux aussi, d’informations claires et d’un accompagnement attentif. Une bonne transaction est celle dans laquelle chacun sait ce qu’il achète, ce qu’il vend et dans quelles conditions il s’engage.</p>
+            <p className="ly-bn-text" style={{marginTop:"16px"}}>Les acquéreurs qui se positionnent sur les biens qui nous sont confiés bénéficient, eux aussi, d’informations claires et d’un accompagnement attentif. Une bonne transaction est celle où chacun comprend clairement ce qu’il achète, ce qu’il vend et les conditions dans lesquelles il s’engage.</p>
           </div>
         </div>
       </div>
@@ -440,7 +440,7 @@ export default function Home() {
             <div className="ly-footer-logo-name">LYAT IMMO</div>
             <div className="ly-footer-logo-sub">Transaction &amp; Expertise Immobilière</div>
             <div className="ly-footer-cfei">CFEI®</div>
-            <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et du projet de chaque vendeur.</p>
+            <p className="ly-footer-desc">Nous portons la même attention à la valeur de chaque bien qu’au projet de chaque vendeur.</p>
             <a href="mailto:contact@lyatimmo.com" className="ly-footer-email">contact@lyatimmo.com</a>
             <a href="tel:+596696335811" className="ly-footer-email">0696 33 58 11</a>
           </div>

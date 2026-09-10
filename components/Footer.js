@@ -11,6 +11,9 @@ export default function Footer() {
           <p className="mt-4 text-[14px] leading-relaxed text-stone max-w-[260px]">
             L&apos;immobilier, avec justesse.
           </p>
+          <p className="mt-2 text-[10px] tracking-[0.14em] uppercase text-stone opacity-70">
+            Transaction &amp; expertise immobilière
+          </p>
         </div>
         <div>
           <h4 className="text-[11px] tracking-[0.16em] text-gold uppercase mb-4">
