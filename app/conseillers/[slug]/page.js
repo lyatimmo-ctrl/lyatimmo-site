@@ -11,6 +11,7 @@ import {
   resolvePreview,
   sortBadges,
 } from "@/lib/minisites";
+import { telHref } from "@/lib/phone";
 
 export const revalidate = 900; // 15 min (décision #8 : agrégats pré-calculés)
 
@@ -216,7 +217,7 @@ export default async function ConseillerPage({ params, searchParams }) {
                 Me contacter
               </a>
               {profil.telephone_public && (
-                <a href={`tel:${profil.telephone_public.replace(/\s+/g, "")}`}
+                <a href={`tel:${telHref(profil.telephone_public)}`}
                   className="border border-ink text-ink px-7 py-3 text-[11px] tracking-[0.18em] uppercase hover:bg-ink hover:text-white transition-colors">
                   {profil.telephone_public}
                 </a>

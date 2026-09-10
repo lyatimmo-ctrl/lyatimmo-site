@@ -5,8 +5,10 @@ import Footer from "@/components/Footer";
 import PropertyMedia from "@/components/PropertyMedia";
 import PropertyGallery from "@/components/PropertyGallery";
 import PropertyEnquiry from "@/components/PropertyEnquiry";
+import PropertyAdvisor from "@/components/PropertyAdvisor";
 import DpeBadge from "@/components/DpeBadge";
 import { getListingBySlug, getListingExtras } from "@/lib/listings";
+import { getListingAdvisor } from "@/lib/advisor";
 import { analyzeMediaUrl, mediaLayout } from "@/lib/media-embed";
 import { getVideoRatio } from "@/lib/media-oembed";
 
@@ -114,9 +116,10 @@ export async function generateMetadata({ params }) {
 
 export default async function PropertyPage({ params }) {
   const { slug } = await params;
-  const [property, extras] = await Promise.all([
+  const [property, extras, advisor] = await Promise.all([
     getListingBySlug(slug),
     getListingExtras(slug),
+    getListingAdvisor(slug),
   ]);
   if (!property) notFound();
 
@@ -274,6 +277,9 @@ export default async function PropertyPage({ params }) {
               {property.description}
             </p>
           )}
+
+          {/* Conseiller responsable (rien si non résolu) — au-dessus du formulaire */}
+          <PropertyAdvisor advisor={advisor} reference={property.reference} />
 
           {/* Contacter l'agence pour ce bien */}
           <PropertyEnquiry
