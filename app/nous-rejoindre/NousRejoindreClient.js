@@ -196,7 +196,7 @@ export default function NousRejoindreClient({ statuts = [] }) {
   const developpement = [
     {
       t: "Transmission",
-      d: "Vous présentez LYAT IMMO à des professionnels de votre entourage qui partagent la même exigence du métier.",
+      d: "Vous présentez LYAT IMMO à des professionnels de votre entourage qui partagent la même vision du métier.",
     },
     {
       t: "Un parrainage tracé",
@@ -396,7 +396,7 @@ export default function NousRejoindreClient({ statuts = [] }) {
             <em>autrement.</em>
           </h1>
           <p className="ly-hero-body">
-            Votre indépendance mérite mieux qu&apos;une simple boîte à outils. LYAT IMMO réunit technologie, accompagnement, visibilité et outils métier dans un environnement pensé pour vous permettre d&apos;exercer avec autonomie et exigence.
+            Votre indépendance mérite mieux qu&apos;une simple boîte à outils. LYAT IMMO réunit technologie, accompagnement, visibilité et outils métier dans un environnement pensé pour vous permettre d&apos;exercer avec autonomie et méthode.
           </p>
           <div className="ly-hero-ctas">
             <a href="#reseau" className="ly-btn-primary">Découvrir l&apos;environnement</a>
@@ -968,7 +968,7 @@ export default function NousRejoindreClient({ statuts = [] }) {
             <div className="ly-footer-logo-name">LYAT IMMO</div>
             <div className="ly-footer-logo-sub">Transaction &amp; Expertise Immobilière</div>
             <div className="ly-footer-cfei">Un expert certifié CFEI® appartenant au réseau LYAT IMMO.</div>
-            <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et de l&apos;exigence de chaque vendeur.</p>
+            <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et du projet de chaque vendeur.</p>
             <a href="mailto:contact@lyatimmo.com" className="ly-footer-email">contact@lyatimmo.com</a>
             <a href="tel:+596696335811" className="ly-footer-email">0696 33 58 11</a>
           </div>

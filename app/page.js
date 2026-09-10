@@ -183,8 +183,8 @@ export default function Home() {
         <div className="ly-hero-img" />
         <div className="ly-hero-inner">
           <p className="ly-hero-tag">Transaction &amp; Expertise Immobilière</p>
-          <h1 className="ly-hero-title">L&apos;art de vendre<br/>avec <em>exigence</em></h1>
-          <p className="ly-hero-body">Bien vendre ne consiste pas seulement à publier une annonce. Il faut comprendre le bien, défendre sa valeur, préparer chaque étape et savoir à qui le présenter. C’est cette exigence que nous mettons au service de votre projet.</p>
+          <h1 className="ly-hero-title">L&apos;immobilier,<br/>avec <em>justesse</em>.</h1>
+          <p className="ly-hero-body">Bien vendre ne consiste pas seulement à publier une annonce. Il faut comprendre le bien, défendre sa valeur, préparer chaque étape et savoir à qui le présenter. C’est ce travail que nous mettons au service de votre projet.</p>
           <div className="ly-hero-ctas">
             <a href="/contact?motif=vente" className="ly-btn-primary">Projet de vente</a>
             <a href="/contact?motif=estimation" className="ly-btn-secondary">Estimer mon bien</a>
@@ -258,7 +258,7 @@ export default function Home() {
       {/* SECTION 3 — SÉLECTION DE BIENS */}
       <section id="biens" className="ly-section ly-bg-creme">
         <div className="ly-section-label">Sélection</div>
-        <h2 className="ly-section-title">Une sélection exigeante</h2>
+        <h2 className="ly-section-title">Une sélection, pas un catalogue</h2>
         <div className="ly-divider" />
         <p className="ly-section-intro">Nous ne mettons pas simplement des biens en ligne. Nous sélectionnons ceux que nous souhaitons vous faire découvrir, pour leur emplacement, leur potentiel, leur singularité ou la qualité du projet qu’ils peuvent accueillir. Retrouvez également l’ensemble de nos biens grâce au moteur de recherche.</p>
         {liveBiens && liveBiens.length > 0 && (
@@ -325,7 +325,7 @@ export default function Home() {
         <div className="ly-section-label">Méthode</div>
         <h2 className="ly-section-title">Une méthode, six étapes</h2>
         <div className="ly-divider" />
-        <p className="ly-section-intro">De la préparation du bien à la signature chez le notaire, chaque étape est conduite avec la même exigence.</p>
+        <p className="ly-section-intro">De la préparation du bien à la signature chez le notaire, chaque étape est conduite avec le même soin.</p>
         <div className="ly-methode-grid">
           {steps.map((s,i) => (
             <div key={i} className="ly-methode-step">
@@ -440,7 +440,7 @@ export default function Home() {
             <div className="ly-footer-logo-name">LYAT IMMO</div>
             <div className="ly-footer-logo-sub">Transaction &amp; Expertise Immobilière</div>
             <div className="ly-footer-cfei">CFEI®</div>
-            <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et de l’exigence de chaque vendeur.</p>
+            <p className="ly-footer-desc">Nous mettons une approche rigoureuse au service de la valeur de chaque bien et du projet de chaque vendeur.</p>
             <a href="mailto:contact@lyatimmo.com" className="ly-footer-email">contact@lyatimmo.com</a>
             <a href="tel:+596696335811" className="ly-footer-email">0696 33 58 11</a>
           </div>

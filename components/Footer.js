@@ -9,8 +9,7 @@ export default function Footer() {
             LYAT IMMO
           </span>
           <p className="mt-4 text-[14px] leading-relaxed text-stone max-w-[260px]">
-            Transaction et expertise immobilière. Une méthode exigeante, où
-            que vous vendiez.
+            L&apos;immobilier, avec justesse.
           </p>
         </div>
         <div>

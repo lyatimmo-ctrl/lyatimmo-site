@@ -26,7 +26,7 @@ export default async function ConseillersIndex() {
         <div className="text-[10px] tracking-[0.18em] uppercase text-gold mb-3">LYAT IMMO</div>
         <h1 className="font-serif text-[34px] md:text-[46px] font-medium text-ink">Nos conseillers</h1>
         <p className="mt-4 text-[15px] text-stone leading-[1.8] max-w-[620px]">
-          Chaque conseiller LYAT IMMO accompagne ses clients avec la même méthode exigeante.
+          Chaque conseiller LYAT IMMO accompagne ses clients avec la même méthode.
           Choisissez votre interlocuteur par secteur et contactez-le directement.
         </p>
       </section>
