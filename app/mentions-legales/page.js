@@ -79,15 +79,6 @@ export default function MentionsLegalesPage() {
             que de conseil et d’accompagnement en immobilier.
           </p>
 
-          {/*
-            ════════════════════════════════════════════════════════════════
-            À COMPLÉTER ULTÉRIEUREMENT (1/2) — NUMÉRO DE CARTE PROFESSIONNELLE
-            Dès délivrance de la carte professionnelle (Carte T) par la CCIM,
-            remplacer le paragraphe « en cours de traitement » ci-dessous par
-            le numéro de la carte et les mentions réglementaires associées.
-            NE JAMAIS inventer ni deviner ce numéro.
-            ════════════════════════════════════════════════════════════════
-          */}
           <H2>Carte professionnelle</H2>
           <div className="space-y-4">
             <p>
@@ -96,25 +87,12 @@ export default function MentionsLegalesPage() {
               décret d’application.
             </p>
             <p>
-              La demande de carte professionnelle de LYAT IMMO est actuellement
-              en cours de traitement auprès de la Chambre de Commerce et
-              d’Industrie de la Martinique (CCIM).
-            </p>
-            <p>
-              Les présentes mentions seront actualisées dès la délivrance de la
-              carte professionnelle afin d’y faire figurer son numéro et les
-              mentions réglementaires correspondantes.
-            </p>
-          </div>
-
-          {/* ─── Absence de détention de fonds ─── */}
-          <H2>Absence de détention de fonds et de garantie financière</H2>
-          <div className="space-y-4">
-            <p>
-              LYAT IMMO déclare ne recevoir ni détenir, directement ou
-              indirectement, d’autres fonds, effets ou valeurs que ceux
-              représentatifs de sa rémunération ou de sa commission au titre de
-              l’activité de transaction sur immeubles et fonds de commerce.
+              LYAT IMMO, SARLU, est titulaire de la carte professionnelle
+              n° CPI 9721 2026 000 000 014, portant la mention « Transaction sur
+              immeubles et fonds de commerce », délivrée par la Chambre de
+              Commerce et d’Industrie de la Martinique. LYAT IMMO ne reçoit ni ne
+              détient d’autres fonds, effets ou valeurs que ceux représentatifs
+              de sa rémunération ou de sa commission.
             </p>
             <p>À ce titre, LYAT IMMO ne souscrit pas de garantie financière.</p>
           </div>
@@ -136,23 +114,34 @@ export default function MentionsLegalesPage() {
             de commerce.
           </p>
 
-          {/*
-            ════════════════════════════════════════════════════════════════
-            À COMPLÉTER ULTÉRIEUREMENT (2/2) — MÉDIATION DE LA CONSOMMATION
-            Dès réception de l’attestation d’adhésion ANM Consommation,
-            remplacer le paragraphe provisoire ci-dessous par les
-            coordonnées réglementaires définitives du médiateur
-            (dénomination, adresse postale, site internet / URL de saisine).
-            NE PAS publier de coordonnées, d’adresse ou d’URL non vérifiées.
-            ════════════════════════════════════════════════════════════════
-          */}
           <H2>Médiation de la consommation</H2>
           <div className="space-y-4">
-            <p>LYAT IMMO est en cours d’adhésion auprès de :</p>
-            <p className="text-ink">ANM Consommation</p>
             <p>
-              L’attestation d’adhésion et les informations définitives
-              nécessaires à la médiation seront communiquées prochainement.
+              Conformément aux articles L. 611-1 et suivants et R. 612-1 et
+              suivants du Code de la consommation, LYAT IMMO adhère au service de
+              médiation de l’ANM Consommation. Pour tout litige de nature
+              contractuelle portant sur l’exécution d’un contrat ou la prestation
+              de services n’ayant pu être résolu dans le cadre d’une réclamation
+              préalablement adressée à LYAT IMMO, le consommateur peut recourir
+              gratuitement à la médiation. Il contacte l’ANM Consommation par
+              courrier au 25 allée Rose Dieng-Kuntz, 75019 Paris (en précisant
+              obligatoirement, outre ses propres coordonnées, son numéro de
+              téléphone et son adresse e-mail), ou en remplissant le formulaire
+              de saisine en ligne sur le site{" "}
+              <a
+                href="https://www.anmconso.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-ink"
+              >
+                https://www.anmconso.com
+              </a>
+              . Renseignements par téléphone au 01 58 64 00 05, du lundi au
+              vendredi de 9h00 à 12h00, ou par courriel à{" "}
+              <a href="mailto:contact@anmconso.com" className="underline underline-offset-2 hover:text-ink">
+                contact@anmconso.com
+              </a>
+              .
             </p>
           </div>
 
