@@ -31,14 +31,15 @@ export default function ConfidentialitePage() {
         <h1 className="font-serif text-[34px] md:text-[48px] font-medium mb-3">
           Politique de confidentialité
         </h1>
-        <p className="text-[13px] text-stone mb-10">Dernière mise à jour : 27 août 2026</p>
+        <p className="text-[13px] text-stone mb-10">Dernière mise à jour : 10 septembre 2026</p>
 
         <p className="text-stone text-[15px] leading-[1.8]">
           Cette politique explique comment LYAT IMMO traite les données personnelles
-          transmises via le site lyatimmo.com, en particulier au travers du formulaire
-          de contact (projet de vente, estimation, expertise immobilière, demande relative
-          au réseau LYAT IMMO ou autre demande). Elle décrit le fonctionnement réel du site
-          à la date ci-dessus.
+          transmises via le site lyatimmo.com : formulaire de contact (projet de vente,
+          estimation, expertise immobilière, demande relative au réseau LYAT IMMO ou autre
+          demande) et, lorsqu’un conseiller dispose d’un mini-site publié, formulaires de
+          ce mini-site (demande de mise en relation et dépôt d’un avis). Elle décrit le
+          fonctionnement réel du site à la date ci-dessus.
         </p>
 
         <div className="text-stone text-[15px] leading-[1.8]">
@@ -79,11 +80,23 @@ export default function ConfidentialitePage() {
           <H2>2. Dans quels cas collectons-nous vos données ?</H2>
           <p>
             Nous collectons des données uniquement lorsque vous nous les transmettez
-            volontairement, essentiellement en remplissant et en envoyant le formulaire
-            de contact du site. Les champs affichés s’adaptent au motif que vous
-            sélectionnez : nous ne recueillons que les informations correspondant à ce
-            motif. Aucun compte n’est créé sur ce site.
+            volontairement :
           </p>
+          <ul className="list-disc pl-5 space-y-1 mt-2">
+            <li>
+              en remplissant et en envoyant le formulaire de contact du site (les champs
+              affichés s’adaptent au motif que vous sélectionnez : nous ne recueillons
+              que les informations correspondant à ce motif) ;
+            </li>
+            <li>
+              en adressant une demande de mise en relation depuis le mini-site d’un
+              conseiller, lorsque celui-ci est publié ;
+            </li>
+            <li>
+              en déposant un avis sur le mini-site d’un conseiller.
+            </li>
+          </ul>
+          <p className="mt-3">Aucun compte n’est créé sur ce site.</p>
 
           {/* 3 */}
           <H2>3. Quelles données collectons-nous ?</H2>
@@ -150,6 +163,41 @@ export default function ConfidentialitePage() {
             qualification du parrainage au sein du réseau. Elle n’est pas diffusée
             publiquement et est conservée selon la même durée que le reste de votre
             dossier de recrutement (voir la section 10).
+          </p>
+          <p className="mt-3">
+            Les informations transmises par ce formulaire sont adressées par e-mail à
+            LYAT IMMO et enregistrées dans sa base de recrutement (voir la section 8).
+          </p>
+          <p className="text-ink mt-4">Mise en relation via le mini-site d’un conseiller</p>
+          <ul className="list-disc pl-5 space-y-1 mt-2">
+            <li>prénom et nom ;</li>
+            <li>numéro de téléphone ;</li>
+            <li>adresse e-mail, lorsque vous la renseignez ;</li>
+            <li>commune, lorsque vous la renseignez ;</li>
+            <li>nature de votre projet ;</li>
+            <li>contenu libre du message.</li>
+          </ul>
+          <p className="mt-3">
+            Ces informations sont enregistrées dans la base de données de LYAT IMMO
+            (voir la section 8) et adressées, par une notification e-mail, au conseiller
+            titulaire du mini-site ainsi qu’à LYAT IMMO.
+          </p>
+          <p className="text-ink mt-4">Dépôt d’un avis sur le mini-site d’un conseiller</p>
+          <ul className="list-disc pl-5 space-y-1 mt-2">
+            <li>le nom d’affichage que vous souhaitez voir figurer avec l’avis (par exemple « Sophie M. ») ;</li>
+            <li>votre nom complet, à usage interne, qui n’est pas publié ;</li>
+            <li>votre adresse e-mail, utilisée pour une confirmation par lien avant toute publication de l’avis ;</li>
+            <li>commune, lorsque vous la renseignez ;</li>
+            <li>une note et l’indication de votre relation avec le conseiller, lorsque vous les renseignez ;</li>
+            <li>le contenu de l’avis.</li>
+          </ul>
+          <p className="mt-3">
+            Une empreinte technique de votre adresse IP (obtenue par une fonction de
+            hachage à sens unique, SHA-256) est enregistrée avec l’avis, afin de limiter
+            les dépôts abusifs et automatisés. Cette empreinte ne permet pas de retrouver
+            votre adresse IP, qui n’est pas conservée. L’avis n’est mis en ligne
+            qu’après confirmation par le lien reçu par e-mail et validation par LYAT IMMO,
+            et vous pouvez en demander le retrait à tout moment.
           </p>
           <p className="text-ink mt-4">Consentement à une prospection commerciale ultérieure</p>
           <p className="mt-2">
@@ -272,10 +320,16 @@ export default function ConfidentialitePage() {
               pour traiter votre demande ;
             </li>
             <li>
-              le conseiller LYAT IMMO chargé de traiter votre demande : lorsque cela est
-              nécessaire, votre demande lui est transmise individuellement, avec les
-              seules informations utiles à sa prise en charge. Les conseillers ne
-              disposent pas d’un accès général à l’ensemble des demandes reçues ;
+              le conseiller LYAT IMMO chargé de traiter votre demande, avec les seules
+              informations utiles à sa prise en charge. Selon le canal utilisé, cette
+              transmission est soit effectuée par LYAT IMMO au cas par cas, soit
+              automatique : pour une demande adressée depuis la fiche d’un bien, le
+              conseiller responsable de ce bien est mis en copie de votre demande
+              lorsqu’une adresse de contact lui est associée ; pour une demande de mise
+              en relation ou un avis déposés depuis le mini-site d’un conseiller, ce
+              conseiller est destinataire direct de la notification, adressée en même
+              temps à LYAT IMMO. Les conseillers ne disposent pas d’un accès général à
+              l’ensemble des demandes reçues ;
             </li>
             <li>
               nos prestataires techniques, qui agissent pour le compte de LYAT IMMO et
@@ -318,17 +372,32 @@ export default function ConfidentialitePage() {
             d’exécution sont conservés par Vercel pendant 1 jour sur l’offre Pro,
             conformément à sa documentation.
           </p>
-          <p className="text-ink mt-4">Resend, Inc. (États-Unis) - envoi de l’e-mail</p>
+          <p className="text-ink mt-4">
+            Supabase (Union européenne) - base de données et fonctions applicatives
+          </p>
           <p className="mt-1">
-            Le contenu de votre demande est transmis par e-mail à{" "}
+            La base de données de LYAT IMMO est hébergée par Supabase, dans un centre de
+            données situé dans l’Union européenne (région Europe de l’Ouest, Paris). Y
+            sont enregistrées les données transmises via le formulaire « Rejoindre
+            LYAT IMMO » (base de recrutement) et via les formulaires des mini-sites
+            conseillers (demandes de mise en relation et avis, y compris l’empreinte
+            technique de l’adresse IP décrite à la section 3). Supabase agit en qualité
+            de sous-traitant, pour le compte de LYAT IMMO et selon ses instructions. Les
+            notifications par e-mail liées aux mini-sites sont émises depuis cette
+            infrastructure.
+          </p>
+          <p className="text-ink mt-4">Resend, Inc. (États-Unis) - envoi des e-mails</p>
+          <p className="mt-1">
+            Le contenu de votre demande de contact est transmis par e-mail à{" "}
             <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
               contact@lyatimmo.com
             </a>{" "}
-            via Resend, qui agit en qualité de sous-traitant. Les données transmises à
-            Resend sont celles figurant dans cet e-mail. Resend traite ces données aux
-            États-Unis, recourt à des prestataires d’infrastructure cloud (liste
-            disponible sur son site) et supprime les données au plus tard 90 jours après
-            la clôture du compte.
+            via Resend, qui agit en qualité de sous-traitant. Resend achemine également
+            les notifications e-mail liées aux mini-sites conseillers. Les données
+            transmises à Resend sont celles figurant dans ces e-mails. Resend traite ces
+            données aux États-Unis, recourt à des prestataires d’infrastructure cloud
+            (liste disponible sur son site) et supprime les données au plus tard 90 jours
+            après la clôture du compte.
           </p>
           <p className="text-ink mt-4">
             Google (Google Workspace / Gmail, États-Unis) - messagerie
@@ -338,10 +407,10 @@ export default function ConfidentialitePage() {
             <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
               contact@lyatimmo.com
             </a>{" "}
-            est hébergée sur Google Workspace. Les demandes reçues sont donc conservées
-            dans cette messagerie. Google agit en qualité de sous-traitant. Il peut
-            arriver qu’une demande soit ensuite transférée par e-mail au conseiller
-            chargé de son traitement.
+            est hébergée sur Google Workspace. Les demandes reçues par e-mail sont donc
+            conservées dans cette messagerie. Google agit en qualité de sous-traitant.
+            Une demande peut également être transmise par e-mail au conseiller chargé de
+            son traitement (voir la section 7).
           </p>
           <p className="mt-4">
             Les polices de caractères du site sont hébergées directement sur le domaine
@@ -375,6 +444,11 @@ export default function ConfidentialitePage() {
               inscription au registre du Data Privacy Framework UE-États-Unis.
             </li>
           </ul>
+          <p className="mt-3">
+            Les données enregistrées dans la base de données Supabase sont hébergées
+            dans l’Union européenne et ne font, à ce titre, l’objet d’aucun transfert en
+            dehors de l’Espace économique européen.
+          </p>
           <p className="mt-3">
             Une copie des garanties applicables peut être demandée à{" "}
             <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
@@ -476,11 +550,15 @@ export default function ConfidentialitePage() {
             et ne remet pas en cause la licéité des traitements réalisés avant celui-ci.
           </p>
           <p className="mt-3 text-[13px]">
-            À ce jour, le statut de ce consentement (accordé ou non), sa date et son
-            heure, son contexte et le texte présenté figurent dans l’e-mail reçu par
-            LYAT IMMO. Il n’existe pas encore de registre de consentement structuré
-            distinct ; un tel dispositif sera mis en place si LYAT IMMO se dote d’un
-            outil de gestion de la relation client.
+            S’agissant de cette prospection commerciale (projet de vente, estimation,
+            expertise), le statut du consentement, sa date et son heure, son contexte et
+            le texte présenté figurent à ce jour dans l’e-mail reçu par LYAT IMMO ; il
+            n’existe pas encore de registre structuré dédié à cette prospection, qui sera
+            mis en place si LYAT IMMO se dote d’un outil de gestion de la relation
+            client. En revanche, pour les candidatures « Rejoindre LYAT IMMO » et pour
+            les avis déposés sur les mini-sites conseillers, les éléments du consentement
+            recueilli (statut, date, texte présenté) sont enregistrés dans la base de
+            données de LYAT IMMO (voir la section 8).
           </p>
 
           {/* 12 */}
@@ -545,6 +623,12 @@ export default function ConfidentialitePage() {
             demander des informations complémentaires permettant de la vérifier ; la
             transmission d’une copie de pièce d’identité n’est pas exigée de façon
             systématique.
+          </p>
+          <p className="mt-3">
+            LYAT IMMO répond à votre demande dans un délai d’un mois à compter de sa
+            réception. Ce délai peut être prolongé de deux mois compte tenu de la
+            complexité ou du nombre de demandes ; vous en êtes alors informé dans le
+            mois suivant la réception de votre demande.
           </p>
 
           {/* 17 */}
