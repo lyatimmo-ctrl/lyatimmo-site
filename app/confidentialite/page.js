@@ -459,10 +459,15 @@ export default function ConfidentialitePage() {
 
           {/* 10 */}
           <H2>10. Combien de temps conservons-nous vos données ?</H2>
+          <p className="mb-3">
+            Sauf mention contraire, le point de départ des durées ci-dessous est le
+            dernier contact ou la dernière action vous concernant.
+          </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <span className="text-ink">Demande sans suite</span> : 3 ans à compter du
-              dernier contact ou de la dernière manifestation d’intérêt de votre part.
+              <span className="text-ink">Demande sans suite</span> (formulaire de
+              contact) : 3 ans à compter du dernier contact ou de la dernière
+              manifestation d’intérêt de votre part.
             </li>
             <li>
               <span className="text-ink">Prospect ayant consenti à la prospection</span>{" "}
@@ -477,9 +482,29 @@ export default function ConfidentialitePage() {
               la défense des droits de LYAT IMMO.
             </li>
             <li>
-              <span className="text-ink">Professionnel n’intégrant pas le réseau</span>{" "}
-              : 2 ans à compter du dernier échange, sauf opposition ou demande
-              d’effacement recevable avant ce terme.
+              <span className="text-ink">Candidature « Rejoindre LYAT IMMO »</span> :
+              24 mois à compter du dernier échange. À l’issue de ce délai, les données
+              sont anonymisées ; des informations statistiques non personnelles
+              relatives au recrutement peuvent être conservées. Lorsqu’un candidat
+              intègre le réseau, ses données basculent dans la gestion du dossier
+              professionnel et suivent les durées correspondantes.
+            </li>
+            <li>
+              <span className="text-ink">Demande de mise en relation adressée via un
+              mini-site conseiller</span> (et, plus largement, prospect n’étant pas
+              devenu client) : 36 mois à compter du dernier contact, puis suppression,
+              sauf rattachement à une transaction ou à une relation en cours.
+            </li>
+            <li>
+              <span className="text-ink">Avis déposé sur un mini-site conseiller</span> :
+              conservé pendant toute la durée de sa publication. Un avis qui n’est pas
+              publié (adresse e-mail non confirmée ou avis refusé) ou qui est ensuite
+              retiré est supprimé ; l’adresse e-mail et le nom complet de l’auteur,
+              strictement internes, ne sont pas conservés au-delà.
+            </li>
+            <li>
+              <span className="text-ink">Empreinte technique de l’adresse IP associée à
+              un avis</span> : 12 mois à compter du dépôt de l’avis, puis effacée.
             </li>
             <li>
               <span className="text-ink">Clients</span> : les données sont utilisées
@@ -502,9 +527,11 @@ export default function ConfidentialitePage() {
             </li>
           </ul>
           <p className="mt-3">
-            Les demandes reçues sont conservées dans la messagerie Google Workspace de
-            LYAT IMMO. La suppression n’y est pas automatique : LYAT IMMO procède aux
-            suppressions et archivages nécessaires pour appliquer les durées ci-dessus.
+            Ces durées constituent la politique de conservation de LYAT IMMO. Les
+            données figurant dans la messagerie de LYAT IMMO font l’objet des
+            suppressions et archivages manuels nécessaires ; celles enregistrées dans
+            sa base de données font l’objet de suppressions et d’anonymisations
+            appliquées selon les durées ci-dessus.
           </p>
 
           {/* 11 */}
