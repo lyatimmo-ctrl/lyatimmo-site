@@ -400,17 +400,17 @@ export default function ConfidentialitePage() {
             après la clôture du compte.
           </p>
           <p className="text-ink mt-4">
-            Google (Google Workspace / Gmail, États-Unis) - messagerie
+            Google (Google Workspace, États-Unis) - messagerie professionnelle
           </p>
           <p className="mt-1">
-            L’adresse{" "}
+            La messagerie professionnelle{" "}
             <a href="mailto:contact@lyatimmo.com" className="hover:text-ink">
               contact@lyatimmo.com
             </a>{" "}
-            est hébergée sur Google Workspace. Les demandes reçues par e-mail sont donc
-            conservées dans cette messagerie. Google agit en qualité de sous-traitant.
-            Une demande peut également être transmise par e-mail au conseiller chargé de
-            son traitement (voir la section 7).
+            est hébergée sur Google Workspace. Les demandes reçues par e-mail y sont
+            donc conservées. Google agit en qualité de sous-traitant. Une demande peut
+            également être transmise par e-mail au conseiller chargé de son traitement
+            (voir la section 7).
           </p>
           <p className="mt-4">
             Les polices de caractères du site sont hébergées directement sur le domaine
